@@ -1,9 +1,9 @@
 services:
   bentopdf:
+  # default mode
+  # simple mode - bentopdf-simple:latest
     image: bentopdf/bentopdf:latest
     container_name: bentopdf
     restart: unless-stopped
     ports:
       - '3000:80'
-    environment:
-      - SIMPLE_MODE=${SIMPLE_MODE:-false}
