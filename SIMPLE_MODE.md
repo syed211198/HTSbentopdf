@@ -57,7 +57,20 @@ docker build --build-arg SIMPLE_MODE=true -t bentopdf-simple .
 docker run -p 3000:80 bentopdf-simple
 ```
 
-### Method 4: Using Environment Variables
+### Method 4: Using npm Script (Easiest for Local Development)
+
+Use the built-in npm script that handles everything:
+
+```bash
+npm run serve:simple
+```
+
+This command automatically:
+- Sets `SIMPLE_MODE=true`
+- Builds the project with Simple Mode enabled
+- Serves the built files on `http://localhost:3000`
+
+### Method 5: Using Environment Variables
 
 Set the environment variable before building:
 
@@ -69,7 +82,15 @@ npx serve dist -p 3000
 
 ## 🧪 Testing Simple Mode Locally
 
-### Method 1: Using Pre-built Image (Easiest)
+### Method 1: Using npm Script (Easiest for Development)
+
+```bash
+npm run serve:simple
+```
+
+This automatically builds and serves Simple Mode on `http://localhost:3000`.
+
+### Method 2: Using Pre-built Image (Easiest for Production)
 
 ```bash
 # Pull and run the Simple Mode image
@@ -79,7 +100,7 @@ docker run -p 3000:80 bentopdf/bentopdf-simple:latest
 
 Open `http://localhost:3000` in your browser.
 
-### Method 2: Build and Test Locally
+### Method 3: Build and Test Locally
 
 ```bash
 # Build with simple mode
@@ -91,7 +112,7 @@ npx serve dist -p 3000
 
 Open `http://localhost:3000` in your browser.
 
-### Method 3: Compare Both Modes
+### Method 4: Compare Both Modes
 
 ```bash
 # Test Normal Mode
