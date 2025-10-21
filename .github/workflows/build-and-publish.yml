@@ -6,7 +6,7 @@ on:
       - 'main'
     tags:
       - 'v*'
-  workflow_dispatch: 
+  workflow_dispatch:
 
 jobs:
   docker-build-and-push:
@@ -19,10 +19,10 @@ jobs:
         mode:
           - name: default
             simple_mode: false
-            suffix: ""
+            suffix: ''
           - name: simple
             simple_mode: true
-            suffix: "-simple"
+            suffix: '-simple'
     steps:
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3

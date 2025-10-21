@@ -66,6 +66,7 @@ npm run serve:simple
 ```
 
 This command automatically:
+
 - Sets `SIMPLE_MODE=true`
 - Builds the project with Simple Mode enabled
 - Serves the built files on `http://localhost:3000`
@@ -118,7 +119,7 @@ Open `http://localhost:3000` in your browser.
 # Test Normal Mode
 docker run -p 3000:80 bentopdf/bentopdf:latest
 
-# Test Simple Mode  
+# Test Simple Mode
 docker run -p 3001:80 bentopdf/bentopdf-simple:latest
 ```
 
@@ -140,16 +141,19 @@ When Simple Mode is working correctly, you should see:
 ## 📦 Available Docker Images
 
 ### Normal Mode (Full Branding)
+
 - `bentopdf/bentopdf:latest`
 - `bentopdf/bentopdf:v1.0.0` (versioned)
 
 ### Simple Mode (Clean Interface)
+
 - `bentopdf/bentopdf-simple:latest`
 - `bentopdf/bentopdf-simple:v1.0.0` (versioned)
 
 ## 🚀 Production Deployment Examples
 
 ### Internal Company Tool
+
 ```yaml
 services:
   bentopdf:
@@ -157,13 +161,11 @@ services:
     container_name: bentopdf
     restart: unless-stopped
     ports:
-      - "80:80"
+      - '80:80'
     environment:
       - PUID=1000
       - PGID=1000
 ```
-
-
 
 ## ⚠️ Important Notes
 

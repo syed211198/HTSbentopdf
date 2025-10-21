@@ -19,10 +19,11 @@ const init = () => {
       if (nav) {
         // Hide the entire nav but we'll create a minimal one with just logo
         nav.style.display = 'none';
-        
+
         // Create a simple nav with just logo on the right
         const simpleNav = document.createElement('nav');
-        simpleNav.className = 'bg-gray-800 border-b border-gray-700 sticky top-0 z-30';
+        simpleNav.className =
+          'bg-gray-800 border-b border-gray-700 sticky top-0 z-30';
         simpleNav.innerHTML = `
           <div class="container mx-auto px-4">
             <div class="flex justify-start items-center h-16">
@@ -58,7 +59,9 @@ const init = () => {
         faqSection.style.display = 'none';
       }
 
-      const testimonialsSection = document.getElementById('testimonials-section');
+      const testimonialsSection = document.getElementById(
+        'testimonials-section'
+      );
       if (testimonialsSection) {
         testimonialsSection.style.display = 'none';
       }
@@ -72,7 +75,7 @@ const init = () => {
       const footer = document.querySelector('footer');
       if (footer) {
         footer.style.display = 'none';
-        
+
         const simpleFooter = document.createElement('footer');
         simpleFooter.className = 'mt-16 border-t-2 border-gray-700 py-8';
         simpleFooter.innerHTML = `
