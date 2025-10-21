@@ -81,7 +81,7 @@ When Simple Mode is working correctly, you should see:
 ```yaml
 services:
   bentopdf:
-    image: bentopdf/bentopdf:latest
+    image: bentopdf/bentopdf-simple:latest
     container_name: bentopdf
     restart: unless-stopped
     ports:

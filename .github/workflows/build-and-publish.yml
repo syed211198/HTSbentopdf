@@ -52,9 +52,9 @@ jobs:
           build-args: |
             SIMPLE_MODE=${{ matrix.mode.simple_mode }}
           tags: |
-            altruisticisopod/bentopdf${{ matrix.mode.suffix }}:latest
-            altruisticisopod/bentopdf${{ matrix.mode.suffix }}:${{ steps.version.outputs.version_without_v }}
-            altruisticisopod/bentopdf${{ matrix.mode.suffix }}:${{ steps.version.outputs.version }}
+            bentopdf/bentopdf${{ matrix.mode.suffix }}:latest
+            bentopdf/bentopdf${{ matrix.mode.suffix }}:${{ steps.version.outputs.version_without_v }}
+            bentopdf/bentopdf${{ matrix.mode.suffix }}:${{ steps.version.outputs.version }}
           platforms: linux/amd64,linux/arm64
           cache-from: type=gha
           cache-to: type=gha,mode=max
