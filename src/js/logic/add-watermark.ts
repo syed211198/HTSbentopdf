@@ -4,7 +4,7 @@ import {
   readFileAsArrayBuffer,
   hexToRgb,
 } from '../utils/helpers.js';
-import { state , resetState } from '../state.js';
+import { state, resetState } from '../state.js';
 
 import {
   PDFDocument as PDFLibDocument,
@@ -184,7 +184,6 @@ export async function addWatermark() {
       ) as HTMLElement;
       if (element) element.click();
     }
-
   } catch (e) {
     console.error(e);
     showAlert(
