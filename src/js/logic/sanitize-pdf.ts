@@ -391,9 +391,6 @@ export async function sanitizePdf() {
                 pageDict.delete(PDFName.of('Annots'));
               }
               changesMade = true;
-              console.log(
-                `Page ${pageIndex + 1}: Removed ${linksRemoved} link(s)`
-              );
             }
           } catch (pageError) {
             console.warn(
