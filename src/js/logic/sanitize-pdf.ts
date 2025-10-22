@@ -113,13 +113,76 @@ export async function sanitizePdf() {
         for (const page of pages) {
           try {
             const pageDict = page.node;
+            
             if (pageDict.has(PDFName.of('AA'))) {
               pageDict.delete(PDFName.of('AA'));
               changesMade = true;
             }
+
+            const annotRefs = pageDict.Annots()?.asArray() || [];
+            for (const annotRef of annotRefs) {
+              try {
+                const annot = pdfDoc.context.lookup(annotRef);
+                
+                if (annot.has(PDFName.of('A'))) {
+                  const actionRef = annot.get(PDFName.of('A'));
+                  try {
+                    const actionDict = pdfDoc.context.lookup(actionRef);
+                    const actionType = actionDict.get(PDFName.of('S'))?.toString().substring(1);
+                    
+                    if (actionType === 'JavaScript') {
+                      annot.delete(PDFName.of('A'));
+                      changesMade = true;
+                    }
+                  } catch (e) {
+                    console.warn('Could not read action:', e.message);
+                  }
+                }
+
+                if (annot.has(PDFName.of('AA'))) {
+                  annot.delete(PDFName.of('AA'));
+                  changesMade = true;
+                }
+              } catch (e) {
+                console.warn('Could not process annotation for JS:', e.message);
+              }
+            }
           } catch (e) {
             console.warn('Could not remove page actions:', e.message);
           }
+        }
+
+        try {
+          const acroFormRef = catalogDict.get(PDFName.of('AcroForm'));
+          if (acroFormRef) {
+            const acroFormDict = pdfDoc.context.lookup(acroFormRef);
+            const fieldsRef = acroFormDict.get(PDFName.of('Fields'));
+            
+            if (fieldsRef) {
+              const fieldsArray = pdfDoc.context.lookup(fieldsRef);
+              const fields = fieldsArray.asArray();
+              
+              for (const fieldRef of fields) {
+                try {
+                  const field = pdfDoc.context.lookup(fieldRef);
+                  
+                  if (field.has(PDFName.of('A'))) {
+                    field.delete(PDFName.of('A'));
+                    changesMade = true;
+                  }
+                  
+                  if (field.has(PDFName.of('AA'))) {
+                    field.delete(PDFName.of('AA'));
+                    changesMade = true;
+                  }
+                } catch (e) {
+                  console.warn('Could not process field for JS:', e.message);
+                }
+              }
+            }
+          }
+        } catch (e) {
+          console.warn('Could not process form fields for JS:', e.message);
         }
       } catch (e) {
         console.warn(`Could not remove JavaScript: ${e.message}`);
@@ -245,62 +308,66 @@ export async function sanitizePdf() {
       try {
         const pages = pdfDoc.getPages();
 
-        for (const page of pages) {
+        for (let pageIndex = 0; pageIndex < pages.length; pageIndex++) {
           try {
+            const page = pages[pageIndex];
             const annotRefs = page.node.Annots()?.asArray() || [];
+            
+            if (annotRefs.length === 0) continue;
+
             const annotsToKeep = [];
+            let linksRemoved = 0;
 
             for (const ref of annotRefs) {
               try {
                 const annot = pdfDoc.context.lookup(ref);
-                const subtype = annot
-                  .get(PDFName.of('Subtype'))
-                  ?.toString()
-                  .substring(1);
+                const subtype = annot.get(PDFName.of('Subtype'))?.toString().substring(1);
 
-                let hasExternalLink = false;
+                let shouldRemove = false;
 
                 if (subtype === 'Link') {
-                  const action = annot.get(PDFName.of('A'));
-                  if (action) {
+                  const actionRef = annot.get(PDFName.of('A'));
+                  if (actionRef) {
                     try {
-                      const actionDict = pdfDoc.context.lookup(action);
-                      const actionType = actionDict
-                        .get(PDFName.of('S'))
-                        ?.toString()
-                        .substring(1);
+                      const actionDict = pdfDoc.context.lookup(actionRef);
+                      const actionType = actionDict.get(PDFName.of('S'))?.toString().substring(1);
 
-                      if (actionType === 'URI' || actionType === 'Launch') {
-                        hasExternalLink = true;
-                        changesMade = true;
+                      if (actionType === 'URI' || actionType === 'Launch' || actionType === 'GoTo') {
+                        shouldRemove = true;
+                        linksRemoved++;
                       }
                     } catch (e) {
-                      // Keep if we can't determine
+                      console.warn('Could not read link action:', e.message);
                     }
+                  }
+
+                  const dest = annot.get(PDFName.of('Dest'));
+                  if (dest && !shouldRemove) {
+                    // TODO:@ALAM - Check if this is an internal link
                   }
                 }
 
-                if (!hasExternalLink) {
+                if (!shouldRemove) {
                   annotsToKeep.push(ref);
                 }
               } catch (e) {
-                // Keep annotation if we can't read it
+                console.warn('Could not process annotation:', e.message);
                 annotsToKeep.push(ref);
               }
             }
 
-            if (annotsToKeep.length !== annotRefs.length) {
+            if (linksRemoved > 0) {
               if (annotsToKeep.length > 0) {
                 const newAnnotsArray = pdfDoc.context.obj(annotsToKeep);
                 page.node.set(PDFName.of('Annots'), newAnnotsArray);
               } else {
                 page.node.delete(PDFName.of('Annots'));
               }
+              changesMade = true;
+              console.log(`Page ${pageIndex + 1}: Removed ${linksRemoved} link(s)`);
             }
           } catch (pageError) {
-            console.warn(
-              `Could not process page for links: ${pageError.message}`
-            );
+            console.warn(`Could not process page ${pageIndex + 1} for links: ${pageError.message}`);
           }
         }
       } catch (e) {
@@ -361,8 +428,9 @@ export async function sanitizePdf() {
       try {
         const pages = pdfDoc.getPages();
 
-        for (const page of pages) {
+        for (let pageIndex = 0; pageIndex < pages.length; pageIndex++) {
           try {
+            const page = pages[pageIndex];
             const pageDict = page.node;
             const resourcesRef = pageDict.get(PDFName.of('Resources'));
 
@@ -371,18 +439,47 @@ export async function sanitizePdf() {
                 const resourcesDict = pdfDoc.context.lookup(resourcesRef);
 
                 if (resourcesDict.has(PDFName.of('Font'))) {
-                  resourcesDict.delete(PDFName.of('Font'));
-                  changesMade = true;
+                  const fontRef = resourcesDict.get(PDFName.of('Font'));
+                  
+                  try {
+                    const fontDict = pdfDoc.context.lookup(fontRef);
+                    const fontKeys = fontDict.keys();
+                    
+                    for (const fontKey of fontKeys) {
+                      try {
+                        const specificFontRef = fontDict.get(fontKey);
+                        const specificFont = pdfDoc.context.lookup(specificFontRef);
+                        
+                        if (specificFont.has(PDFName.of('FontDescriptor'))) {
+                          const descriptorRef = specificFont.get(PDFName.of('FontDescriptor'));
+                          const descriptor = pdfDoc.context.lookup(descriptorRef);
+                          
+                          const fontFileKeys = ['FontFile', 'FontFile2', 'FontFile3'];
+                          for (const key of fontFileKeys) {
+                            if (descriptor.has(PDFName.of(key))) {
+                              descriptor.delete(PDFName.of(key));
+                              changesMade = true;
+                            }
+                          }
+                        }
+                        
+                        // Users/Developers: Uncomment this if you can delete the entire font entry
+                        // fontDict.delete(fontKey);
+                        // changesMade = true;
+                      } catch (e) {
+                        console.warn(`Could not process font ${fontKey}:`, e.message);
+                      }
+                    }
+                  } catch (e) {
+                    console.warn('Could not access font dictionary:', e.message);
+                  }
                 }
               } catch (e) {
-                console.warn(
-                  'Could not access Resources for fonts:',
-                  e.message
-                );
+                console.warn('Could not access Resources for fonts:', e.message);
               }
             }
           } catch (e) {
-            console.warn('Could not remove page fonts:', e.message);
+            console.warn(`Could not remove fonts from page ${pageIndex + 1}:`, e.message);
           }
         }
 
