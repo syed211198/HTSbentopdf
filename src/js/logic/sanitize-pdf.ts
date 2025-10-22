@@ -113,7 +113,7 @@ export async function sanitizePdf() {
         for (const page of pages) {
           try {
             const pageDict = page.node;
-            
+
             if (pageDict.has(PDFName.of('AA'))) {
               pageDict.delete(PDFName.of('AA'));
               changesMade = true;
@@ -123,13 +123,16 @@ export async function sanitizePdf() {
             for (const annotRef of annotRefs) {
               try {
                 const annot = pdfDoc.context.lookup(annotRef);
-                
+
                 if (annot.has(PDFName.of('A'))) {
                   const actionRef = annot.get(PDFName.of('A'));
                   try {
                     const actionDict = pdfDoc.context.lookup(actionRef);
-                    const actionType = actionDict.get(PDFName.of('S'))?.toString().substring(1);
-                    
+                    const actionType = actionDict
+                      .get(PDFName.of('S'))
+                      ?.toString()
+                      .substring(1);
+
                     if (actionType === 'JavaScript') {
                       annot.delete(PDFName.of('A'));
                       changesMade = true;
@@ -157,20 +160,20 @@ export async function sanitizePdf() {
           if (acroFormRef) {
             const acroFormDict = pdfDoc.context.lookup(acroFormRef);
             const fieldsRef = acroFormDict.get(PDFName.of('Fields'));
-            
+
             if (fieldsRef) {
               const fieldsArray = pdfDoc.context.lookup(fieldsRef);
               const fields = fieldsArray.asArray();
-              
+
               for (const fieldRef of fields) {
                 try {
                   const field = pdfDoc.context.lookup(fieldRef);
-                  
+
                   if (field.has(PDFName.of('A'))) {
                     field.delete(PDFName.of('A'));
                     changesMade = true;
                   }
-                  
+
                   if (field.has(PDFName.of('AA'))) {
                     field.delete(PDFName.of('AA'));
                     changesMade = true;
@@ -304,6 +307,9 @@ export async function sanitizePdf() {
       }
     }
 
+    // TODO:@ALAM
+    // Currently if the links are embedded in a stream they can't be removed
+    // Find a way to remove them from the stream
     if (shouldRemoveLinks) {
       try {
         const pages = pdfDoc.getPages();
@@ -311,8 +317,14 @@ export async function sanitizePdf() {
         for (let pageIndex = 0; pageIndex < pages.length; pageIndex++) {
           try {
             const page = pages[pageIndex];
-            const annotRefs = page.node.Annots()?.asArray() || [];
-            
+            const pageDict = page.node;
+
+            const annotsRef = pageDict.get(PDFName.of('Annots'));
+            if (!annotsRef) continue;
+
+            const annotsArray = pdfDoc.context.lookup(annotsRef);
+            const annotRefs = annotsArray.asArray();
+
             if (annotRefs.length === 0) continue;
 
             const annotsToKeep = [];
@@ -321,33 +333,48 @@ export async function sanitizePdf() {
             for (const ref of annotRefs) {
               try {
                 const annot = pdfDoc.context.lookup(ref);
-                const subtype = annot.get(PDFName.of('Subtype'))?.toString().substring(1);
+                const subtype = annot
+                  .get(PDFName.of('Subtype'))
+                  ?.toString()
+                  .substring(1);
 
-                let shouldRemove = false;
+                let isLink = false;
 
                 if (subtype === 'Link') {
+                  isLink = true;
+                  linksRemoved++;
+                } else {
                   const actionRef = annot.get(PDFName.of('A'));
                   if (actionRef) {
                     try {
                       const actionDict = pdfDoc.context.lookup(actionRef);
-                      const actionType = actionDict.get(PDFName.of('S'))?.toString().substring(1);
+                      const actionType = actionDict
+                        .get(PDFName.of('S'))
+                        ?.toString()
+                        .substring(1);
 
-                      if (actionType === 'URI' || actionType === 'Launch' || actionType === 'GoTo') {
-                        shouldRemove = true;
+                      if (
+                        actionType === 'URI' ||
+                        actionType === 'Launch' ||
+                        actionType === 'GoTo' ||
+                        actionType === 'GoToR'
+                      ) {
+                        isLink = true;
                         linksRemoved++;
                       }
                     } catch (e) {
-                      console.warn('Could not read link action:', e.message);
+                      console.warn('Could not read action:', e.message);
                     }
                   }
 
                   const dest = annot.get(PDFName.of('Dest'));
-                  if (dest && !shouldRemove) {
-                    // TODO:@ALAM - Check if this is an internal link
+                  if (dest && !isLink) {
+                    isLink = true;
+                    linksRemoved++;
                   }
                 }
 
-                if (!shouldRemove) {
+                if (!isLink) {
                   annotsToKeep.push(ref);
                 }
               } catch (e) {
@@ -359,16 +386,43 @@ export async function sanitizePdf() {
             if (linksRemoved > 0) {
               if (annotsToKeep.length > 0) {
                 const newAnnotsArray = pdfDoc.context.obj(annotsToKeep);
-                page.node.set(PDFName.of('Annots'), newAnnotsArray);
+                pageDict.set(PDFName.of('Annots'), newAnnotsArray);
               } else {
-                page.node.delete(PDFName.of('Annots'));
+                pageDict.delete(PDFName.of('Annots'));
               }
               changesMade = true;
-              console.log(`Page ${pageIndex + 1}: Removed ${linksRemoved} link(s)`);
+              console.log(
+                `Page ${pageIndex + 1}: Removed ${linksRemoved} link(s)`
+              );
             }
           } catch (pageError) {
-            console.warn(`Could not process page ${pageIndex + 1} for links: ${pageError.message}`);
+            console.warn(
+              `Could not process page ${pageIndex + 1} for links: ${pageError.message}`
+            );
           }
+        }
+
+        try {
+          const catalogDict = pdfDoc.catalog.dict;
+          const namesRef = catalogDict.get(PDFName.of('Names'));
+          if (namesRef) {
+            try {
+              const namesDict = pdfDoc.context.lookup(namesRef);
+              if (namesDict.has(PDFName.of('Dests'))) {
+                namesDict.delete(PDFName.of('Dests'));
+                changesMade = true;
+              }
+            } catch (e) {
+              console.warn('Could not access Names/Dests:', e.message);
+            }
+          }
+
+          if (catalogDict.has(PDFName.of('Dests'))) {
+            catalogDict.delete(PDFName.of('Dests'));
+            changesMade = true;
+          }
+        } catch (e) {
+          console.warn('Could not remove named destinations:', e.message);
         }
       } catch (e) {
         console.warn(`Could not remove links: ${e.message}`);
@@ -440,21 +494,29 @@ export async function sanitizePdf() {
 
                 if (resourcesDict.has(PDFName.of('Font'))) {
                   const fontRef = resourcesDict.get(PDFName.of('Font'));
-                  
+
                   try {
                     const fontDict = pdfDoc.context.lookup(fontRef);
                     const fontKeys = fontDict.keys();
-                    
+
                     for (const fontKey of fontKeys) {
                       try {
                         const specificFontRef = fontDict.get(fontKey);
-                        const specificFont = pdfDoc.context.lookup(specificFontRef);
-                        
+                        const specificFont =
+                          pdfDoc.context.lookup(specificFontRef);
+
                         if (specificFont.has(PDFName.of('FontDescriptor'))) {
-                          const descriptorRef = specificFont.get(PDFName.of('FontDescriptor'));
-                          const descriptor = pdfDoc.context.lookup(descriptorRef);
-                          
-                          const fontFileKeys = ['FontFile', 'FontFile2', 'FontFile3'];
+                          const descriptorRef = specificFont.get(
+                            PDFName.of('FontDescriptor')
+                          );
+                          const descriptor =
+                            pdfDoc.context.lookup(descriptorRef);
+
+                          const fontFileKeys = [
+                            'FontFile',
+                            'FontFile2',
+                            'FontFile3',
+                          ];
                           for (const key of fontFileKeys) {
                             if (descriptor.has(PDFName.of(key))) {
                               descriptor.delete(PDFName.of(key));
@@ -462,24 +524,36 @@ export async function sanitizePdf() {
                             }
                           }
                         }
-                        
-                        // Users/Developers: Uncomment this if you can delete the entire font entry
+
+                        // Users/Developers: Uncomment this if you can delete the entire font entry -- might break the rendering though
                         // fontDict.delete(fontKey);
                         // changesMade = true;
                       } catch (e) {
-                        console.warn(`Could not process font ${fontKey}:`, e.message);
+                        console.warn(
+                          `Could not process font ${fontKey}:`,
+                          e.message
+                        );
                       }
                     }
                   } catch (e) {
-                    console.warn('Could not access font dictionary:', e.message);
+                    console.warn(
+                      'Could not access font dictionary:',
+                      e.message
+                    );
                   }
                 }
               } catch (e) {
-                console.warn('Could not access Resources for fonts:', e.message);
+                console.warn(
+                  'Could not access Resources for fonts:',
+                  e.message
+                );
               }
             }
           } catch (e) {
-            console.warn(`Could not remove fonts from page ${pageIndex + 1}:`, e.message);
+            console.warn(
+              `Could not remove fonts from page ${pageIndex + 1}:`,
+              e.message
+            );
           }
         }
 
