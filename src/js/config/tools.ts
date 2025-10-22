@@ -413,6 +413,12 @@ export const categories = [
         subtitle: 'Add a password to protect your PDF.',
       },
       {
+        id: 'sanitize-pdf',
+        name: 'Sanitize PDF',
+        icon: 'shield-alert',
+        subtitle: 'Remove metadata, annotations, scripts, and more.',
+      },
+      {
         id: 'decrypt',
         name: 'Decrypt PDF',
         icon: 'unlock',
