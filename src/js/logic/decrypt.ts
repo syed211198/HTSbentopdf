@@ -1,79 +1,126 @@
 import { showLoader, hideLoader, showAlert } from '../ui.js';
 import { downloadFile, readFileAsArrayBuffer } from '../utils/helpers.js';
 import { state } from '../state.js';
-import PDFDocument from 'pdfkit/js/pdfkit.standalone';
-import blobStream from 'blob-stream';
-import * as pdfjsLib from 'pdfjs-dist';
+import createModule from '@neslinesli93/qpdf-wasm';
+
+let qpdfInstance: any = null;
+
+async function initializeQpdf() {
+  if (qpdfInstance) {
+    return qpdfInstance;
+  }
+  showLoader('Initializing decryption engine...');
+  try {
+    qpdfInstance = await createModule({
+      locateFile: () => '/qpdf.wasm',
+    });
+  } catch (error) {
+    console.error('Failed to initialize qpdf-wasm:', error);
+    showAlert(
+      'Initialization Error',
+      'Could not load the decryption engine. Please refresh the page and try again.'
+    );
+    throw error;
+  } finally {
+    hideLoader();
+  }
+  return qpdfInstance;
+}
 
 export async function decrypt() {
   const file = state.files[0];
-  // @ts-expect-error TS(2339) FIXME: Property 'value' does not exist on type 'HTMLEleme... Remove this comment to see the full error message
-  const password = document.getElementById('password-input').value;
-  if (!password.trim()) {
+  const password = (
+    document.getElementById('password-input') as HTMLInputElement
+  )?.value;
+
+  if (!password?.trim()) {
     showAlert('Input Required', 'Please enter the PDF password.');
     return;
   }
 
+  const inputPath = '/input.pdf';
+  const outputPath = '/output.pdf';
+  let qpdf: any;
+
   try {
-    showLoader('Preparing to process...');
-    const pdfData = (await readFileAsArrayBuffer(file)) as ArrayBuffer;
-    const pdf = await pdfjsLib.getDocument({
-      data: pdfData,
-      password: password,
-    }).promise;
-    const numPages = pdf.numPages;
-    const pageImages = [];
+    showLoader('Initializing decryption...');
+    qpdf = await initializeQpdf();
 
-    for (let i = 1; i <= numPages; i++) {
-      document.getElementById('loader-text').textContent =
-        `Processing page ${i} of ${numPages}...`;
-      const page = await pdf.getPage(i);
-      const viewport = page.getViewport({ scale: 2.0 });
-      const canvas = document.createElement('canvas');
-      const context = canvas.getContext('2d');
-      canvas.height = viewport.height;
-      canvas.width = viewport.width;
-      await page.render({
-        canvasContext: context,
-        viewport: viewport,
-        canvas: canvas,
-      }).promise;
-      pageImages.push({
-        data: canvas.toDataURL('image/jpeg', 0.8),
-        width: viewport.width,
-        height: viewport.height,
-      });
+    showLoader('Reading encrypted PDF...');
+    const fileBuffer = await readFileAsArrayBuffer(file);
+    const uint8Array = new Uint8Array(fileBuffer as ArrayBuffer);
+
+    qpdf.FS.writeFile(inputPath, uint8Array);
+
+    showLoader('Decrypting PDF...');
+
+    const args = [inputPath, '--password=' + password, '--decrypt', outputPath];
+
+    try {
+      qpdf.callMain(args);
+    } catch (qpdfError: any) {
+      console.error('qpdf execution error:', qpdfError);
+
+      if (
+        qpdfError.message?.includes('invalid password') ||
+        qpdfError.message?.includes('password')
+      ) {
+        throw new Error('INVALID_PASSWORD');
+      }
+      throw qpdfError;
     }
 
-    document.getElementById('loader-text').textContent =
-      'Building unlocked PDF...';
-    const doc = new PDFDocument({
-      size: [pageImages[0].width, pageImages[0].height],
-    });
-    const stream = doc.pipe(blobStream());
-    for (let i = 0; i < pageImages.length; i++) {
-      if (i > 0)
-        doc.addPage({ size: [pageImages[i].width, pageImages[i].height] });
-      doc.image(pageImages[i].data, 0, 0, {
-        width: pageImages[i].width,
-        height: pageImages[i].height,
-      });
-    }
-    doc.end();
+    showLoader('Preparing download...');
+    const outputFile = qpdf.FS.readFile(outputPath, { encoding: 'binary' });
 
-    stream.on('finish', function () {
-      const blob = stream.toBlob('application/pdf');
-      downloadFile(blob, `unlocked-${file.name}`);
-      hideLoader();
-      showAlert('Success', 'Decryption complete! Your download has started.');
-    });
-  } catch (error) {
+    if (!outputFile || outputFile.length === 0) {
+      throw new Error('Decryption resulted in an empty file.');
+    }
+
+    const blob = new Blob([outputFile], { type: 'application/pdf' });
+    downloadFile(blob, `unlocked-${file.name}`);
+
+    hideLoader();
+    showAlert(
+      'Success',
+      'PDF decrypted successfully! Your download has started.'
+    );
+  } catch (error: any) {
     console.error('Error during PDF decryption:', error);
     hideLoader();
-    if (error.name === 'PasswordException') {
-      showAlert('Incorrect Password', 'The password you entered is incorrect.');
+
+    if (error.message === 'INVALID_PASSWORD') {
+      showAlert(
+        'Incorrect Password',
+        'The password you entered is incorrect. Please try again.'
+      );
+    } else if (error.message?.includes('password')) {
+      showAlert(
+        'Password Error',
+        'Unable to decrypt the PDF with the provided password.'
+      );
     } else {
-      showAlert('Error', 'An error occurred. The PDF might be corrupted.');
+      showAlert(
+        'Decryption Failed',
+        `An error occurred: ${error.message || 'The password you entered is wrong or the file is corrupted.'}`
+      );
+    }
+  } finally {
+    try {
+      if (qpdf?.FS) {
+        try {
+          qpdf.FS.unlink(inputPath);
+        } catch (e) {
+          console.warn('Failed to unlink input file:', e);
+        }
+        try {
+          qpdf.FS.unlink(outputPath);
+        } catch (e) {
+          console.warn('Failed to unlink output file:', e);
+        }
+      }
+    } catch (cleanupError) {
+      console.warn('Failed to cleanup WASM FS:', cleanupError);
     }
   }
 }
