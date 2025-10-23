@@ -149,6 +149,27 @@ For organizations that want a clean, distraction-free interface focused solely o
 
 For more details, see [SIMPLE_MODE.md](SIMPLE_MODE.md).
 
+### 🔒 Security Features
+
+BentoPDF runs as a non-root user for enhanced security:
+
+- **Non-Root Execution**: Container runs with minimal privileges
+- **Configurable UID/GID**: Customize user/group IDs for your environment
+- **Security Best Practices**: Follows Principle of Least Privilege
+
+#### Custom User Configuration
+
+```bash
+docker build \
+  --build-arg APP_USER_ID=2000 \
+  --build-arg APP_GROUP_ID=2000 \
+  -t bentopdf .
+
+docker run -p 8080:80 bentopdf
+```
+
+For detailed security configuration, see [SECURITY.md](SECURITY.md).
+
 ### 📦 Version Management
 
 BentoPDF supports semantic versioning with multiple Docker tags:

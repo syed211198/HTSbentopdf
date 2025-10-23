@@ -3,6 +3,10 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+      args:
+        APP_USER_ID: 1001 // default value is 1001 can be customized to any other value
+        APP_GROUP_ID: 1001 // default value is 1001 can be customized to any other value
+        SIMPLE_MODE: false // false for default mode, true for simple mode
     container_name: bentopdf
     ports:
       - '3000:80'
