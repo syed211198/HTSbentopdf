@@ -1,38 +1,13 @@
 import { showLoader, hideLoader, showAlert } from '../ui.js';
-import { downloadFile, readFileAsArrayBuffer } from '../utils/helpers.js';
+import { downloadFile, initializeQpdf, readFileAsArrayBuffer } from '../utils/helpers.js';
 import { state } from '../state.js';
-import createModule from '@neslinesli93/qpdf-wasm';
-
-let qpdfInstance: any = null;
-
-async function initializeQpdf() {
-  if (qpdfInstance) {
-    return qpdfInstance;
-  }
-  showLoader('Initializing encryption engine...');
-  try {
-    qpdfInstance = await createModule({
-      locateFile: () => '/qpdf.wasm',
-    });
-  } catch (error) {
-    console.error('Failed to initialize qpdf-wasm:', error);
-    showAlert(
-      'Initialization Error',
-      'Could not load the encryption engine. Please refresh the page and try again.'
-    );
-    throw error;
-  } finally {
-    hideLoader();
-  }
-  return qpdfInstance;
-}
 
 export async function encrypt() {
   const file = state.files[0];
   const userPassword =
     (document.getElementById('user-password-input') as HTMLInputElement)
       ?.value || '';
-  const ownerPassword =
+  const ownerPasswordInput =
     (document.getElementById('owner-password-input') as HTMLInputElement)
       ?.value || '';
 
@@ -40,6 +15,9 @@ export async function encrypt() {
     showAlert('Input Required', 'Please enter a user password.');
     return;
   }
+
+  const ownerPassword = ownerPasswordInput || userPassword;
+  const hasDistinctOwnerPassword = ownerPasswordInput !== '';
 
   const inputPath = '/input.pdf';
   const outputPath = '/output.pdf';
@@ -61,11 +39,12 @@ export async function encrypt() {
       inputPath,
       '--encrypt',
       userPassword,
-      ownerPassword, // Can be empty
+      ownerPassword, 
       '256',
     ];
 
-    if (ownerPassword) {
+    // Only add restrictions if a distinct owner password was provided
+    if (hasDistinctOwnerPassword) {
       args.push(
         '--modify=none',
         '--extract=n', 
@@ -78,11 +57,9 @@ export async function encrypt() {
       );
     }
 
-    if (!ownerPassword) {
-      args.push('--allow-insecure');
-    }
-
     args.push('--', outputPath);
+
+    console.log(args);
 
     try {
       qpdf.callMain(args);
@@ -106,9 +83,9 @@ export async function encrypt() {
     hideLoader();
 
     let successMessage = 'PDF encrypted successfully with 256-bit AES!';
-    if (!ownerPassword) {
+    if (!hasDistinctOwnerPassword) {
       successMessage +=
-        ' Note: Without an owner password, the PDF has no usage restrictions.';
+        ' Note: Without a separate owner password, the PDF has no usage restrictions.';
     }
 
     showAlert('Success', successMessage);

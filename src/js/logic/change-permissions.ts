@@ -1,31 +1,6 @@
 import { showLoader, hideLoader, showAlert } from '../ui.js';
-import { downloadFile, readFileAsArrayBuffer } from '../utils/helpers.js';
+import { downloadFile, initializeQpdf, readFileAsArrayBuffer } from '../utils/helpers.js';
 import { state } from '../state.js';
-import createModule from '@neslinesli93/qpdf-wasm';
-
-let qpdfInstance: any = null;
-
-async function initializeQpdf() {
-  if (qpdfInstance) {
-    return qpdfInstance;
-  }
-  showLoader('Initializing PDF engine...');
-  try {
-    qpdfInstance = await createModule({
-      locateFile: () => '/qpdf.wasm',
-    });
-  } catch (error) {
-    console.error('Failed to initialize qpdf-wasm:', error);
-    showAlert(
-      'Initialization Error',
-      'Could not load the PDF engine. Please refresh the page and try again.'
-    );
-    throw error;
-  } finally {
-    hideLoader();
-  }
-  return qpdfInstance;
-}
 
 export async function changePermissions() {
   const file = state.files[0];
@@ -156,7 +131,7 @@ export async function changePermissions() {
     } else {
       showAlert(
         'Processing Failed',
-        `An error occurred: ${error.message || 'The PDF might be corrupted.'}`
+        `An error occurred: ${error.message || 'The PDF might be corrupted or password protected.'}`
       );
     }
   } finally {
