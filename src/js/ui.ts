@@ -913,7 +913,7 @@ export const toolTemplates = {
         <button id="process-btn" class="btn-gradient w-full mt-6">Convert to PDF</button>
     `,
 
-'change-permissions': () => `
+  'change-permissions': () => `
     <h2 class="text-2xl font-bold text-white mb-4">Change PDF Permissions</h2>
     <p class="mb-6 text-gray-400">Modify passwords and permissions without losing quality.</p>
     ${createFileInputHTML()}
@@ -936,7 +936,7 @@ export const toolTemplates = {
         </div>
 
         <div class="p-4 bg-blue-900/20 border border-blue-500/30 text-blue-200 rounded-lg">
-            <h3 class="font-semibold text-base mb-2">📝 How It Works</h3>
+            <h3 class="font-semibold text-base mb-2">How It Works</h3>
             <ul class="list-disc list-inside text-sm text-gray-300 space-y-1">
                 <li><strong>User Password:</strong> Required to open the PDF</li>
                 <li><strong>Owner Password:</strong> Required to enforce the permissions below</li>
@@ -2048,5 +2048,47 @@ export const toolTemplates = {
 
         <button id="process-btn" class="btn-gradient w-full mt-6">Sanitize PDF & Download</button>
     </div>
+`,
+
+  'remove-restrictions': () => `
+  <h2 class="text-2xl font-bold text-white mb-4">Remove PDF Restrictions</h2>
+  <p class="mb-6 text-gray-400">Remove security restrictions and unlock PDF permissions for editing and printing.</p>
+  ${createFileInputHTML()}
+  <div id="file-display-area" class="mt-4 space-y-2"></div>
+  <div id="remove-restrictions-options" class="hidden space-y-4 mt-6">
+        <div class="p-4 bg-blue-900/20 border border-blue-500/30 text-blue-200 rounded-lg">
+          <h3 class="font-semibold text-base mb-2"> How it Works </h3>
+          <p class="text-sm text-gray-300 mb-2">This operation will:</p>
+          <ul class="text-sm text-gray-300 list-disc list-inside space-y-1 ml-2">
+            <li>Remove all permission restrictions (printing, copying, editing)</li>
+            <li>Remove encryption even if the file is encrypted</li>
+            <li>Remove security restrictions associated with digitally signed PDF files (will make signature invalid)</li>
+            <li>Create a fully editable, unrestricted PDF</li>
+          </ul>
+      </div>
+
+      <div>
+          <label for="owner-password-remove" class="block mb-2 text-sm font-medium text-gray-300">Owner Password (if required)</label>
+          <input type="password" id="owner-password-remove" class="w-full bg-gray-700 border border-gray-600 text-white rounded-lg p-2.5" placeholder="Leave empty if PDF has no password">
+          <p class="text-xs text-gray-500 mt-1">Enter the owner password if the PDF is password-protected</p>
+      </div>
+
+<div class="p-4 bg-red-900/20 border border-red-500/30 text-red-200 rounded-lg">
+  <h3 class="font-semibold text-base mb-2">Notice</h3>
+  <p class="text-sm text-gray-300 mb-2">This tool is intended for legitimate purposes only, such as:</p>
+  <ul class="text-sm text-gray-300 list-disc list-inside space-y-1 ml-2">
+    <li>Removing restrictions from PDFs you own or have permission to modify</li>
+    <li>Recovering access to a PDF when you legitimately forgot the password</li>
+    <li>Accessing content you legally purchased or created</li>
+    <li>Editing documents for authorized business purposes</li>
+    <li>Opening documents for legitimate archival, compliance, or recovery workflows</li>
+    <li class="font-semibold">Limitations: this tool can only remove restrictions from weakly protected PDFs or PDFs that do not have an owner password set. It cannot remove or bypass properly applied AES‑256 (256‑bit) encryption.</li>
+  </ul>
+  <p class="text-sm text-gray-300 mt-3 font-semibold">
+    Using this tool to bypass copyright protections, violate intellectual property rights, or access documents without authorization may be illegal in your jurisdiction. We are not liable for any misuse of this tool — if you're unsure, consult legal counsel or the document owner before proceeding.
+  </p>
+</div>
+      <button id="process-btn" class="btn-gradient w-full mt-6">Remove Restrictions & Download</button>
+  </div>
 `,
 };

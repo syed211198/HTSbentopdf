@@ -1,5 +1,9 @@
 import { showLoader, hideLoader, showAlert } from '../ui.js';
-import { downloadFile, initializeQpdf, readFileAsArrayBuffer } from '../utils/helpers.js';
+import {
+  downloadFile,
+  initializeQpdf,
+  readFileAsArrayBuffer,
+} from '../utils/helpers.js';
 import { state } from '../state.js';
 
 export async function encrypt() {
@@ -35,31 +39,23 @@ export async function encrypt() {
 
     showLoader('Encrypting PDF with 256-bit AES...');
 
-    const args = [
-      inputPath,
-      '--encrypt',
-      userPassword,
-      ownerPassword, 
-      '256',
-    ];
+    const args = [inputPath, '--encrypt', userPassword, ownerPassword, '256'];
 
     // Only add restrictions if a distinct owner password was provided
     if (hasDistinctOwnerPassword) {
       args.push(
         '--modify=none',
-        '--extract=n', 
-        '--print=none', 
-        '--accessibility=n', 
-        '--annotate=n', 
-        '--assemble=n', 
-        '--form=n', 
-        '--modify-other=n', 
+        '--extract=n',
+        '--print=none',
+        '--accessibility=n',
+        '--annotate=n',
+        '--assemble=n',
+        '--form=n',
+        '--modify-other=n'
       );
     }
 
     args.push('--', outputPath);
-
-    console.log(args);
 
     try {
       qpdf.callMain(args);
