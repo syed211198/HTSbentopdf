@@ -12,7 +12,7 @@ export async function decrypt() {
     document.getElementById('password-input') as HTMLInputElement
   )?.value;
 
-  if (!password?.trim()) {
+  if (!password) {
     showAlert('Input Required', 'Please enter the PDF password.');
     return;
   }
@@ -52,7 +52,7 @@ export async function decrypt() {
     showLoader('Preparing download...');
     const outputFile = qpdf.FS.readFile(outputPath, { encoding: 'binary' });
 
-    if (!outputFile || outputFile.length === 0) {
+    if (outputFile.length === 0) {
       throw new Error('Decryption resulted in an empty file.');
     }
 
