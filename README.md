@@ -105,7 +105,7 @@ You can run BentoPDF locally for development or personal use.
 You can run BentoPDF directly from Docker Hub without cloning the repository:
 
 ```bash
-docker run -p 3000:80 bentopdf/bentopdf:latest
+docker run -p 3000:8080 bentopdf/bentopdf:latest
 ```
 
 Open your browser at: http://localhost:3000
@@ -124,7 +124,7 @@ services:
     image: bentopdf/bentopdf:latest
     container_name: bentopdf
     ports:
-      - '3000:80'
+      - '3000:8080'
     restart: unless-stopped
 ```
 
@@ -151,21 +151,17 @@ For more details, see [SIMPLE_MODE.md](SIMPLE_MODE.md).
 
 ### 🔒 Security Features
 
-BentoPDF runs as a non-root user for enhanced security:
+BentoPDF runs as a non-root user using nginx-unprivileged for enhanced security:
 
-- **Non-Root Execution**: Container runs with minimal privileges
-- **Configurable UID/GID**: Customize user/group IDs for your environment
+- **Non-Root Execution**: Container runs with minimal privileges using nginx-unprivileged
+- **Port 8080**: Uses high port number to avoid requiring root privileges
 - **Security Best Practices**: Follows Principle of Least Privilege
 
-#### Custom User Configuration
+#### Basic Usage
 
 ```bash
-docker build \
-  --build-arg APP_USER_ID=2000 \
-  --build-arg APP_GROUP_ID=2000 \
-  -t bentopdf .
-
-docker run -p 8080:80 bentopdf
+docker build -t bentopdf .
+docker run -p 8080:8080 bentopdf
 ```
 
 For detailed security configuration, see [SECURITY.md](SECURITY.md).

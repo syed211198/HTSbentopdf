@@ -2,7 +2,7 @@
 
 ## Non-Root User Support
 
-BentoPDF now supports running as a non-root user for enhanced security. This follows the Principle of Least Privilege and is essential for production environments.
+BentoPDF now uses nginx-unprivileged for enhanced security. This follows the Principle of Least Privilege and is essential for production environments.
 
 ### Security Benefits
 
@@ -13,22 +13,19 @@ BentoPDF now supports running as a non-root user for enhanced security. This fol
 
 ### Usage
 
-#### Default Configuration (UID/GID 1001)
+#### Default Configuration (nginx-unprivileged)
 ```bash
 docker build -t bentopdf .
-docker run -p 8080:80 bentopdf
+docker run -p 8080:8080 bentopdf
 ```
 
-#### Custom UID/GID
+#### Simple Mode
 ```bash
-# Build with custom user/group IDs
-docker build \
-  --build-arg APP_USER_ID=2000 \
-  --build-arg APP_GROUP_ID=2000 \
-  -t bentopdf .
+# Build with simple mode enabled
+docker build --build-arg SIMPLE_MODE=true -t bentopdf-simple .
 
 # Run the container
-docker run -p 8080:80 bentopdf
+docker run -p 8080:8080 bentopdf-simple
 ```
 
 #### Kubernetes Example
@@ -48,7 +45,7 @@ spec:
       - name: bentopdf
         image: bentopdf:latest
         ports:
-        - containerPort: 80
+        - containerPort: 8080
 ```
 
 #### Docker Compose Example
@@ -60,10 +57,9 @@ services:
       context: .
       dockerfile: Dockerfile
       args:
-        APP_USER_ID: 2000
-        APP_GROUP_ID: 2000
+        SIMPLE_MODE: false
     ports:
-      - "8080:80"
+      - "8080:8080"
     security_opt:
       - no-new-privileges:true
 ```
@@ -75,18 +71,18 @@ To verify the container is running as non-root:
 ```bash
 # Check the user inside the container
 docker exec <container_id> whoami
-# Should output: bentopdf
+# Should output: nginx
 
 # Check the user ID
 docker exec <container_id> id
-# Should show UID/GID matching your configuration
+# Should show UID/GID for nginx user (typically 101)
 ```
 
 ### Security Best Practices
 
-1. **Use specific UID/GID**: Don't use 0 (root) or common system UIDs
-2. **Regular Updates**: Keep the base image updated
-3. **Minimal Permissions**: Only grant necessary file permissions
+1. **Use nginx-unprivileged**: Built-in non-root user with minimal privileges
+2. **Regular Updates**: Keep the base image updated (currently using 1.29-alpine)
+3. **Port 8080**: Use high port numbers to avoid requiring root privileges
 4. **Security Scanning**: Regularly scan images for vulnerabilities
 5. **Network Policies**: Implement network segmentation
 
@@ -94,15 +90,17 @@ docker exec <container_id> id
 
 If you encounter permission issues:
 
-1. **Check file ownership**: Ensure all application files are owned by the bentopdf user
-2. **Verify UID/GID**: Make sure the configured IDs don't conflict with host system
-3. **Directory permissions**: Ensure nginx can write to log and cache directories
+1. **Check file ownership**: Ensure all application files are owned by the nginx user
+2. **Verify PID directory**: Ensure `/etc/nginx/tmp/` directory exists and is writable
+3. **Port binding**: Ensure port 8080 is available and not blocked by firewall
 
 ### Migration from Root
 
 If migrating from a root-based setup:
 
-1. Update your Dockerfile to use the new non-root configuration
-2. Rebuild your images with the new security settings
-3. Update your deployment configurations (Kubernetes, Docker Compose, etc.)
-4. Test thoroughly in a staging environment
+1. Update your Dockerfile to use nginx-unprivileged base image
+2. Change port mappings from 80 to 8080 in all configurations
+3. Update nginx.conf to use `/etc/nginx/tmp/nginx.pid` for PID file
+4. Rebuild your images with the new security settings
+5. Update your deployment configurations (Kubernetes, Docker Compose, etc.)
+6. Test thoroughly in a staging environment

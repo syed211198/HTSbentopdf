@@ -15,24 +15,18 @@ ENV SIMPLE_MODE=$SIMPLE_MODE
 RUN npm run build -- --mode production
 
 # Production stage
-FROM nginx:alpine
+FROM nginxinc/nginx-unprivileged:1.29-alpine
 
-ARG APP_USER_ID=1001
-ARG APP_GROUP_ID=1001
-
-RUN addgroup -g $APP_GROUP_ID bentopdf && \
-    adduser -u $APP_USER_ID -G bentopdf -D -s /bin/sh bentopdf
-
+# Copy files as root first, then change ownership
 COPY --from=builder /app/dist /usr/share/nginx/html
 COPY nginx.conf /etc/nginx/nginx.conf
 
-RUN mkdir -p /var/cache/nginx /var/log/nginx /var/run/nginx && \
-    chown -R bentopdf:bentopdf /usr/share/nginx/html /var/cache/nginx /var/log/nginx /var/run/nginx
+# Change ownership while still root, then switch to nginx user
+USER root
+RUN mkdir -p /etc/nginx/tmp && \
+    chown -R nginx:nginx /usr/share/nginx/html /etc/nginx/tmp
+USER nginx
 
-RUN sed -i 's/user nginx;/user bentopdf;/' /etc/nginx/nginx.conf
-
-EXPOSE 80
-
-USER bentopdf
+EXPOSE 8080
 
 CMD ["nginx", "-g", "daemon off;"]
