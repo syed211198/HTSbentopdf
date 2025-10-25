@@ -14,12 +14,14 @@ BentoPDF now uses nginx-unprivileged for enhanced security. This follows the Pri
 ### Usage
 
 #### Default Configuration (nginx-unprivileged)
+
 ```bash
 docker build -t bentopdf .
 docker run -p 8080:8080 bentopdf
 ```
 
 #### Simple Mode
+
 ```bash
 # Build with simple mode enabled
 docker build --build-arg SIMPLE_MODE=true -t bentopdf-simple .
@@ -29,6 +31,7 @@ docker run -p 8080:8080 bentopdf-simple
 ```
 
 #### Kubernetes Example
+
 ```yaml
 apiVersion: apps/v1
 kind: Deployment
@@ -42,13 +45,14 @@ spec:
         runAsUser: 2000
         runAsGroup: 2000
       containers:
-      - name: bentopdf
-        image: bentopdf:latest
-        ports:
-        - containerPort: 8080
+        - name: bentopdf
+          image: bentopdf:latest
+          ports:
+            - containerPort: 8080
 ```
 
 #### Docker Compose Example
+
 ```yaml
 version: '3.8'
 services:
@@ -59,7 +63,7 @@ services:
       args:
         SIMPLE_MODE: false
     ports:
-      - "8080:8080"
+      - '8080:8080'
     security_opt:
       - no-new-privileges:true
 ```
