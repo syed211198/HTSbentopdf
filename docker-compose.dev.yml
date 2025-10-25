@@ -7,5 +7,5 @@ services:
         SIMPLE_MODE: false # false for default mode, true for simple mode
     container_name: bentopdf
     ports:
-      - '3000:8080'
+      - '8080:8080'
     restart: unless-stopped
