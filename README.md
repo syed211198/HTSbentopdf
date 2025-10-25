@@ -279,4 +279,4 @@ Your work inspires and empowers developers everywhere. Thank you for making open
 
 ## 📜 License
 
-This project is licensed under the **Apache 2.0**. See the [LICENSE](https://github.com/alam00000/bentopdf/blob/main/LICENSE) file for details.
+This project is licensed under the **GNU AGPLv3**. See the [LICENSE](https://github.com/alam00000/bentopdf/blob/main/LICENSE) file for details.
