@@ -104,6 +104,9 @@ You can run BentoPDF locally for development or personal use.
 
 You can run BentoPDF directly from Docker Hub without cloning the repository:
 
+You can also watch the video on how to set it up 👉
+[BentoPDF Docker Setup](https://drive.google.com/file/d/1C4eJ2nqeaH__1Tlad-xuBHaF2Ha4fSBf/view?usp=drive_link)
+
 ```bash
 docker run -p 3000:8080 bentopdf/bentopdf:latest
 ```
