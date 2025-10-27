@@ -1547,15 +1547,103 @@ async function extractExistingBookmarks(doc) {
 
     const pages = doc.getPages();
 
+    // Helper to resolve references
+    function resolveRef(obj) {
+      if (!obj) return null;
+      if (obj.lookup) return obj;
+      if (obj.objectNumber !== undefined && doc.context) {
+        return doc.context.lookup(obj);
+      }
+      return obj;
+    }
+
+    // Build named destinations map
+    const namedDests = new Map();
+    try {
+      const names = doc.catalog.lookup(PDFName.of('Names'));
+      if (names) {
+        const dests = names.lookup(PDFName.of('Dests'));
+        if (dests) {
+          const namesArray = dests.lookup(PDFName.of('Names'));
+          if (namesArray && namesArray.array) {
+            for (let i = 0; i < namesArray.array.length; i += 2) {
+              const name = namesArray.array[i];
+              const dest = namesArray.array[i + 1];
+              namedDests.set(name.decodeText(), resolveRef(dest));
+            }
+          }
+        }
+      }
+    } catch (e) {
+      console.error('Error building named destinations:', e);
+    }
+
+    function findPageIndex(pageRef) {
+      if (!pageRef) return 0;
+      
+      try {
+        const resolved = resolveRef(pageRef);
+        
+        // Try to match by object number
+        if (pageRef.objectNumber !== undefined) {
+          const idx = pages.findIndex(p => p.ref.objectNumber === pageRef.objectNumber);
+          if (idx !== -1) return idx;
+        }
+
+        // Try to match by reference string
+        if (pageRef.toString) {
+          const idx = pages.findIndex(p => p.ref.toString() === pageRef.toString());
+          if (idx !== -1) return idx;
+        }
+
+        // Try to match by page dictionary
+        if (resolved && resolved.get) {
+          const idx = pages.findIndex(p => {
+            const pageDict = doc.context.lookup(p.ref);
+            return pageDict === resolved;
+          });
+          if (idx !== -1) return idx;
+        }
+      } catch (e) {
+        console.error('Error finding page:', e);
+      }
+
+      return 0;
+    }
+
+    function getDestination(item) {
+      if (!item) return null;
+
+      // Try Dest entry first
+      let dest = item.lookup(PDFName.of('Dest'));
+      
+      // If no Dest, try Action/D
+      if (!dest) {
+        const action = resolveRef(item.lookup(PDFName.of('A')));
+        if (action) {
+          dest = action.lookup(PDFName.of('D'));
+        }
+      }
+
+      // Handle named destinations
+      if (dest && !dest.array) {
+        const name = dest.decodeText ? dest.decodeText() : dest.toString();
+        dest = namedDests.get(name);
+      }
+
+      return resolveRef(dest);
+    }
+
     function traverse(item) {
+      if (!item) return null;
+      item = resolveRef(item);
       if (!item) return null;
 
       const title = item.lookup(PDFName.of('Title'));
-      const dest = item.lookup(PDFName.of('Dest'));
+      const dest = getDestination(item);
       const colorObj = item.lookup(PDFName.of('C'));
       const flagsObj = item.lookup(PDFName.of('F'));
 
-      // let page = 0;
       let pageIndex = 0;
       let destX = null;
       let destY = null;
@@ -1563,35 +1651,25 @@ async function extractExistingBookmarks(doc) {
 
       if (dest && dest.array) {
         const pageRef = dest.array[0];
-        pageIndex = pages.findIndex(
-          (p) => p.ref.toString() === pageRef.toString()
-        ); // This is 0-indexed
-        if (pageIndex === -1) pageIndex = 0;
+        pageIndex = findPageIndex(pageRef);
 
-        // Extract destination coordinates
         if (dest.array.length > 2) {
-          const xObj = dest.array[2];
-          const yObj = dest.array[3];
-          const zoomObj = dest.array[4];
+          const xObj = resolveRef(dest.array[2]);
+          const yObj = resolveRef(dest.array[3]);
+          const zoomObj = resolveRef(dest.array[4]);
 
-          if (xObj && xObj.numberValue !== undefined) {
-            destX = xObj.numberValue;
-          }
-          if (yObj && yObj.numberValue !== undefined) {
-            destY = yObj.numberValue;
-          }
+          if (xObj && xObj.numberValue !== undefined) destX = xObj.numberValue;
+          if (yObj && yObj.numberValue !== undefined) destY = yObj.numberValue;
           if (zoomObj && zoomObj.numberValue !== undefined) {
             zoom = String(Math.round(zoomObj.numberValue * 100));
           }
         }
       }
 
+      // Rest of the color and style processing remains the same
       let color = null;
       if (colorObj && colorObj.array) {
-        const r = colorObj.array[0];
-        const g = colorObj.array[1];
-        const b = colorObj.array[2];
-
+        const [r, g, b] = colorObj.array;
         if (r > 0.8 && g < 0.3 && b < 0.3) color = 'red';
         else if (r < 0.3 && g < 0.3 && b > 0.8) color = 'blue';
         else if (r < 0.3 && g > 0.8 && b < 0.3) color = 'green';
@@ -1604,7 +1682,6 @@ async function extractExistingBookmarks(doc) {
         const flags = flagsObj.numberValue || 0;
         const isBold = (flags & 2) !== 0;
         const isItalic = (flags & 1) !== 0;
-
         if (isBold && isItalic) style = 'bold-italic';
         else if (isBold) style = 'bold';
         else if (isItalic) style = 'italic';
@@ -1615,32 +1692,30 @@ async function extractExistingBookmarks(doc) {
         title: title ? title.decodeText() : 'Untitled',
         page: pageIndex + 1,
         children: [],
-        color: color,
-        style: style,
-        destX: destX,
-        destY: destY,
-        zoom: zoom,
+        color,
+        style,
+        destX,
+        destY,
+        zoom
       };
 
-      const first = item.lookup(PDFName.of('First'));
-      if (first) {
-        let child = first;
-        while (child) {
-          const childBookmark = traverse(child);
-          if (childBookmark) bookmark.children.push(childBookmark);
-          child = child.lookup(PDFName.of('Next'));
-        }
+      // Process children (make sure to resolve refs)
+      let child = resolveRef(item.lookup(PDFName.of('First')));
+      while (child) {
+        const childBookmark = traverse(child);
+        if (childBookmark) bookmark.children.push(childBookmark);
+        child = resolveRef(child.lookup(PDFName.of('Next')));
       }
 
       return bookmark;
     }
 
     const result = [];
-    let first = outlines.lookup(PDFName.of('First'));
+    let first = resolveRef(outlines.lookup(PDFName.of('First')));
     while (first) {
       const bookmark = traverse(first);
       if (bookmark) result.push(bookmark);
-      first = first.lookup(PDFName.of('Next'));
+      first = resolveRef(first.lookup(PDFName.of('Next')));
     }
 
     return result;
