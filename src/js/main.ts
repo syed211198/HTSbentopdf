@@ -137,7 +137,7 @@ const init = () => {
       'grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-6';
 
     category.tools.forEach((tool) => {
-      let toolCard: HTMLDivElement | HTMLAnchorElement; 
+      let toolCard: HTMLDivElement | HTMLAnchorElement;
 
       if (tool.href) {
         toolCard = document.createElement('a');
@@ -262,5 +262,3 @@ const init = () => {
 };
 
 document.addEventListener('DOMContentLoaded', init);
-
-

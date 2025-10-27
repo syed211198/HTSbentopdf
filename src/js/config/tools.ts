@@ -78,11 +78,10 @@ export const categories = [
       },
       {
         // id: 'bookmark-pdf',
-        href: '/src/pages/bookmark.html', 
+        href: '/src/pages/bookmark.html',
         name: 'Edit Bookmarks',
         icon: 'bookmark',
-        subtitle:
-          'Add, edit, import, delete and extract PDF bookmarks.',
+        subtitle: 'Add, edit, import, delete and extract PDF bookmarks.',
       },
       {
         id: 'add-page-numbers',

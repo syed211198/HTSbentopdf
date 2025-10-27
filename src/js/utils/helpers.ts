@@ -179,12 +179,11 @@ export async function initializeQpdf() {
   return qpdfInstance;
 }
 
-
 export function initializeIcons(): void {
-    createIcons({
-        attrs: {
-            class: 'bento-icon',
-            'stroke-width': '1.5',
-        },
-    });
+  createIcons({
+    attrs: {
+      class: 'bento-icon',
+      'stroke-width': '1.5',
+    },
+  });
 }

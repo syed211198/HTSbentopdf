@@ -1,4 +1,6 @@
 // @ts-nocheck
+// TODO: @ALAM - remove ts-nocheck and fix types later, possibly convert this into an npm package
+
 import { PDFDocument, PDFName, PDFString, PDFNumber, PDFArray } from 'pdf-lib';
 import * as pdfjsLib from 'pdfjs-dist';
 import Sortable from 'sortablejs';
