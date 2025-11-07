@@ -1349,7 +1349,7 @@ function createNodeElement(node, level = 0) {
   const textColorClass = getTextColor(node.color);
 
   const div = document.createElement('div');
-  div.className = `flex items-center gap-2 p-2 rounded border border-grey-200 ${colorClass} ${highlight} ${isSelected ? 'ring-2 ring-blue-500' : ''} hover:bg-gray-50`;
+  div.className = `flex items-center gap-2 p-2 rounded border border-gray-200 ${colorClass} ${highlight} ${isSelected ? 'ring-2 ring-blue-500' : ''} hover:bg-gray-50`;
 
   if (batchMode) {
     const checkbox = document.createElement('input');
