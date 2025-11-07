@@ -17,6 +17,10 @@ const modalContainer = document.getElementById('modal-container');
 let isPickingDestination = false;
 let currentPickingCallback = null;
 let destinationMarker = null;
+let savedModalOverlay = null;
+let savedModal = null;
+let currentViewport = null;
+let currentZoom = 1.0;
 
 function showInputModal(title, fields = [], defaultValues = {}) {
   return new Promise((resolve) => {
@@ -75,7 +79,7 @@ function showInputModal(title, fields = [], defaultValues = {}) {
                                             <div>
                                                 <label class="text-xs text-gray-600">Page</label>
                                                 <input type="number" id="modal-dest-page" min="1" max="${field.maxPages || 1}" value="${defaultValues.destPage || field.page || 1}" 
-                                                    class="w-full px-2 py-1 border border-gray-300 rounded text-sm" />
+                                                    class="w-full px-2 py-1 border border-gray-300 rounded text-sm" step="1" />
                                             </div>
                                             <div>
                                                 <label class="text-xs text-gray-600">Zoom (%)</label>
@@ -238,26 +242,96 @@ function showInputModal(title, fields = [], defaultValues = {}) {
     // Visual destination picker
     if (pickDestBtn) {
       pickDestBtn.addEventListener('click', () => {
-        startDestinationPicking((page, x, y) => {
+        // Store modal references
+        savedModalOverlay = overlay;
+        savedModal = modal;
+        
+        // Hide modal completely
+        overlay.style.display = 'none';
+        
+        startDestinationPicking((page, pdfX, pdfY) => {
           const destPageInput = modal.querySelector('#modal-dest-page');
           const destXInput = modal.querySelector('#modal-dest-x');
           const destYInput = modal.querySelector('#modal-dest-y');
 
           if (destPageInput) destPageInput.value = page;
-          if (destXInput) destXInput.value = Math.round(x);
-          if (destYInput) destYInput.value = Math.round(y);
-
-          // Minimize modal to corner
-          const modalOverlay = document.getElementById('active-modal-overlay');
-          const activeModal = document.getElementById('active-modal');
-          if (modalOverlay && activeModal) {
-            modalOverlay.style.background = 'transparent';
-            modalOverlay.style.pointerEvents = 'none';
-            activeModal.classList.add('modal-minimized');
-            activeModal.style.pointerEvents = 'auto';
-          }
+          if (destXInput) destXInput.value = Math.round(pdfX);
+          if (destYInput) destYInput.value = Math.round(pdfY);
+          
+          // Restore modal
+          overlay.style.display = '';
+          
+          // Update preview to show the destination after a short delay to ensure modal is visible
+          setTimeout(() => {
+            updateDestinationPreview();
+          }, 100);
         });
       });
+    }
+    
+    // Add validation for page input
+    const destPageInput = modal.querySelector('#modal-dest-page');
+    if (destPageInput) {
+      destPageInput.addEventListener('input', (e) => {
+        const value = parseInt(e.target.value);
+        const maxPages = parseInt(e.target.max) || 1;
+        if (isNaN(value) || value < 1) {
+          e.target.value = 1;
+        } else if (value > maxPages) {
+          e.target.value = maxPages;
+        } else {
+          e.target.value = Math.floor(value);
+        }
+        updateDestinationPreview();
+      });
+      
+      destPageInput.addEventListener('blur', (e) => {
+        const value = parseInt(e.target.value);
+        const maxPages = parseInt(e.target.max) || 1;
+        if (isNaN(value) || value < 1) {
+          e.target.value = 1;
+        } else if (value > maxPages) {
+          e.target.value = maxPages;
+        } else {
+          e.target.value = Math.floor(value);
+        }
+        updateDestinationPreview();
+      });
+    }
+    
+    // Function to update destination preview
+    function updateDestinationPreview() {
+      if (!pdfJsDoc) return;
+      
+      const destPageInput = modal.querySelector('#modal-dest-page');
+      const destXInput = modal.querySelector('#modal-dest-x');
+      const destYInput = modal.querySelector('#modal-dest-y');
+      const destZoomSelect = modal.querySelector('#modal-dest-zoom');
+      
+      const pageNum = destPageInput ? parseInt(destPageInput.value) : currentPage;
+      const x = destXInput ? parseFloat(destXInput.value) : null;
+      const y = destYInput ? parseFloat(destYInput.value) : null;
+      const zoom = destZoomSelect ? destZoomSelect.value : null;
+      
+      if (pageNum >= 1 && pageNum <= pdfJsDoc.numPages) {
+        // Render the page with zoom if specified
+        renderPageWithDestination(pageNum, x, y, zoom);
+      }
+    }
+    
+    // Add listeners for X, Y, and zoom changes
+    const destXInput = modal.querySelector('#modal-dest-x');
+    const destYInput = modal.querySelector('#modal-dest-y');
+    const destZoomSelect = modal.querySelector('#modal-dest-zoom');
+    
+    if (destXInput) {
+      destXInput.addEventListener('input', updateDestinationPreview);
+    }
+    if (destYInput) {
+      destYInput.addEventListener('input', updateDestinationPreview);
+    }
+    if (destZoomSelect) {
+      destZoomSelect.addEventListener('change', updateDestinationPreview);
     }
 
     updatePreview();
@@ -359,14 +433,18 @@ function cancelDestinationPicking() {
     destinationMarker.remove();
     destinationMarker = null;
   }
+  
+  // Remove coordinate display
+  const coordDisplay = document.getElementById('destination-coord-display');
+  if (coordDisplay) {
+    coordDisplay.remove();
+  }
 
-  // Restore modal if minimized
-  const modalOverlay = document.getElementById('active-modal-overlay');
-  const activeModal = document.getElementById('active-modal');
-  if (modalOverlay && activeModal) {
-    modalOverlay.style.background = 'rgba(0, 0, 0, 0.5)';
-    modalOverlay.style.pointerEvents = 'auto';
-    activeModal.classList.remove('modal-minimized');
+  // Restore modal if it was hidden
+  if (savedModalOverlay) {
+    savedModalOverlay.style.display = '';
+    savedModalOverlay = null;
+    savedModal = null;
   }
 }
 
@@ -405,16 +483,35 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  canvas.addEventListener('click', (e) => {
+  canvas.addEventListener('click', async (e) => {
     if (!isPickingDestination || !currentPickingCallback) return;
 
     const rect = canvas.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
+    const canvasX = e.clientX - rect.left;
+    const canvasY = e.clientY - rect.top;
 
-    // Remove old marker
+    // Get viewport for coordinate conversion
+    let viewport = currentViewport;
+    if (!viewport) {
+      const page = await pdfJsDoc.getPage(currentPage);
+      viewport = page.getViewport({ scale: currentZoom });
+    }
+    
+    // Convert canvas pixel coordinates to PDF coordinates
+    // The canvas CSS size matches viewport dimensions, so coordinates map directly
+    // PDF uses bottom-left origin, canvas uses top-left
+    const scaleX = viewport.width / rect.width;
+    const scaleY = viewport.height / rect.height;
+    const pdfX = canvasX * scaleX;
+    const pdfY = viewport.height - (canvasY * scaleY);
+
+    // Remove old marker and coordinate display
     if (destinationMarker) {
       destinationMarker.remove();
+    }
+    const oldCoordDisplay = document.getElementById('destination-coord-display');
+    if (oldCoordDisplay) {
+      oldCoordDisplay.remove();
     }
 
     // Create visual marker
@@ -427,13 +524,24 @@ document.addEventListener('DOMContentLoaded', () => {
                         <circle cx="12" cy="12" r="2" fill="#3b82f6"/>
                     </svg>
                 `;
-    destinationMarker.style.left =
-      x + rect.left - canvasWrapper.offsetLeft + 'px';
-    destinationMarker.style.top = y + rect.top - canvasWrapper.offsetTop + 'px';
+    const canvasRect = canvas.getBoundingClientRect();
+    const wrapperRect = canvasWrapper.getBoundingClientRect();
+    destinationMarker.style.position = 'absolute';
+    destinationMarker.style.left = (canvasX + canvasRect.left - wrapperRect.left) + 'px';
+    destinationMarker.style.top = (canvasY + canvasRect.top - wrapperRect.top) + 'px';
     canvasWrapper.appendChild(destinationMarker);
+    
+    // Create persistent coordinate display
+    const coordDisplay = document.createElement('div');
+    coordDisplay.id = 'destination-coord-display';
+    coordDisplay.className = 'absolute bg-blue-500 text-white px-2 py-1 rounded text-xs font-mono z-50 pointer-events-none';
+    coordDisplay.style.left = (canvasX + canvasRect.left - wrapperRect.left + 20) + 'px';
+    coordDisplay.style.top = (canvasY + canvasRect.top - wrapperRect.top - 30) + 'px';
+    coordDisplay.textContent = `X: ${Math.round(pdfX)}, Y: ${Math.round(pdfY)}`;
+    canvasWrapper.appendChild(coordDisplay);
 
-    // Call callback with coordinates
-    currentPickingCallback(currentPage, x, y);
+    // Call callback with PDF coordinates
+    currentPickingCallback(currentPage, pdfX, pdfY);
 
     // End picking mode
     setTimeout(() => {
@@ -537,6 +645,10 @@ const prevPageBtn = document.getElementById('prev-page');
 const nextPageBtn = document.getElementById('next-page');
 const gotoPageInput = document.getElementById('goto-page');
 const gotoBtn = document.getElementById('goto-btn');
+const zoomInBtn = document.getElementById('zoom-in-btn');
+const zoomOutBtn = document.getElementById('zoom-out-btn');
+const zoomFitBtn = document.getElementById('zoom-fit-btn');
+const zoomIndicator = document.getElementById('zoom-indicator');
 const addTopLevelBtn = document.getElementById('add-top-level-btn');
 const titleInput = document.getElementById('bookmark-title');
 const treeList = document.getElementById('bookmark-tree-list');
@@ -940,21 +1052,89 @@ jsonInput.addEventListener('change', async (e) => {
   }
 });
 
-async function renderPage(num) {
+async function renderPage(num, zoom = null, destX = null, destY = null) {
   if (!pdfJsDoc) return;
 
   const page = await pdfJsDoc.getPage(num);
-  const viewport = page.getViewport({ scale: 1.5 });
+  
+  let zoomScale = currentZoom;
+  if (zoom !== null && zoom !== '' && zoom !== '0') {
+    zoomScale = parseFloat(zoom) / 100;
+  }
+  
+  const dpr = window.devicePixelRatio || 1;
+  
+  let viewport = page.getViewport({ scale: zoomScale });
+  currentViewport = viewport;
 
-  canvas.height = viewport.height;
-  canvas.width = viewport.width;
+  canvas.height = viewport.height * dpr;
+  canvas.width = viewport.width * dpr;
+  
+  // Set CSS size to maintain aspect ratio (this is what the browser displays)
+  canvas.style.width = viewport.width + 'px';
+  canvas.style.height = viewport.height + 'px';
+  
+  // Scale the canvas context to match device pixel ratio
+  ctx.scale(dpr, dpr);
 
   await page.render({ canvasContext: ctx, viewport: viewport }).promise;
+  
+  // Draw destination marker if coordinates are provided
+  if (destX !== null && destY !== null) {
+    const canvasX = destX;
+    const canvasY = viewport.height - destY; // Flip Y axis (PDF bottom-left, canvas top-left)
+    
+    // Draw marker on canvas with animation effect
+    ctx.save();
+    ctx.strokeStyle = '#3b82f6';
+    ctx.fillStyle = '#3b82f6';
+    ctx.lineWidth = 3;
+    
+    ctx.shadowBlur = 10;
+    ctx.shadowColor = 'rgba(59, 130, 246, 0.5)';
+    ctx.beginPath();
+    ctx.arc(canvasX, canvasY, 12, 0, 2 * Math.PI);
+    ctx.fill();
+    ctx.shadowBlur = 0;
+    
+    // Draw crosshair
+    ctx.beginPath();
+    ctx.moveTo(canvasX - 15, canvasY);
+    ctx.lineTo(canvasX + 15, canvasY);
+    ctx.moveTo(canvasX, canvasY - 15);
+    ctx.lineTo(canvasX, canvasY + 15);
+    ctx.stroke();
+    
+    // Draw inner circle
+    ctx.beginPath();
+    ctx.arc(canvasX, canvasY, 6, 0, 2 * Math.PI);
+    ctx.fill();
+    ctx.stroke();
+    
+    // Draw coordinate text background
+    const text = `X: ${Math.round(destX)}, Y: ${Math.round(destY)}`;
+    ctx.font = 'bold 12px monospace';
+    const textMetrics = ctx.measureText(text);
+    const textWidth = textMetrics.width;
+    const textHeight = 18;
+    
+    ctx.fillStyle = 'rgba(59, 130, 246, 0.95)';
+    ctx.fillRect(canvasX + 18, canvasY - 25, textWidth + 10, textHeight);
+    
+    ctx.fillStyle = 'white';
+    ctx.fillText(text, canvasX + 23, canvasY - 10);
+    
+    ctx.restore();
+  }
 
   pageIndicator.textContent = `Page ${num} / ${pdfJsDoc.numPages}`;
   gotoPageInput.value = num;
   currentPage = num;
   currentPageDisplay.textContent = num;
+}
+
+async function renderPageWithDestination(pageNum, x, y, zoom) {
+  await renderPage(pageNum, zoom, x, y);
 }
 
 prevPageBtn.addEventListener('click', () => {
@@ -975,6 +1155,35 @@ gotoBtn.addEventListener('click', () => {
 gotoPageInput.addEventListener('keypress', (e) => {
   if (e.key === 'Enter') gotoBtn.click();
 });
+
+// Zoom controls
+function updateZoomIndicator() {
+  if (zoomIndicator) {
+    zoomIndicator.textContent = `${Math.round(currentZoom * 100)}%`;
+  }
+}
+
+zoomInBtn.addEventListener('click', () => {
+  currentZoom = Math.min(currentZoom + 0.05, 2.0); // Max 200%, increment by 5%
+  updateZoomIndicator();
+  renderPage(currentPage);
+});
+
+zoomOutBtn.addEventListener('click', () => {
+  currentZoom = Math.max(currentZoom - 0.05, 0.25); // Min 25%, decrement by 5%
+  updateZoomIndicator();
+  renderPage(currentPage);
+});
+
+zoomFitBtn.addEventListener('click', async () => {
+  if (!pdfJsDoc) return;
+  currentZoom = 1.0;
+  updateZoomIndicator();
+  renderPage(currentPage);
+});
+
+// Initialize zoom indicator
+updateZoomIndicator();
 
 searchInput.addEventListener('input', (e) => {
   searchQuery = e.target.value.toLowerCase();
@@ -1210,8 +1419,27 @@ function createNodeElement(node, level = 0) {
                 <span class="text-xs text-gray-500">Page ${node.page}</span>
             `;
 
-  titleDiv.addEventListener('click', () => {
-    renderPage(node.page);
+  titleDiv.addEventListener('click', async () => {
+    // Check if bookmark has a custom destination
+    if (node.destX !== null || node.destY !== null || node.zoom !== null) {
+      // Render page with destination highlighted and zoom applied
+      await renderPageWithDestination(node.page, node.destX, node.destY, node.zoom);
+      
+      // Highlight the destination briefly (2 seconds)
+      setTimeout(() => {
+        // Re-render without highlight but keep the zoom if it was set
+        if (node.zoom !== null && node.zoom !== '' && node.zoom !== '0') {
+          // Keep the bookmark's zoom for a moment, then restore current zoom
+          setTimeout(() => {
+            renderPage(node.page);
+          }, 1000);
+        } else {
+          renderPage(node.page);
+        }
+      }, 2000);
+    } else {
+      renderPage(node.page);
+    }
     if (window.innerWidth < 1024) {
       showViewerBtn.click();
     }

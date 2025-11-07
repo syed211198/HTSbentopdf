@@ -6,7 +6,6 @@
     <title>Advanced PDF Bookmark Tool</title>
 
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- <link href="../../src/css/styles.css" rel="stylesheet" /> -->
     <style>
       .sortable-ghost {
         opacity: 0.4;
@@ -432,6 +431,34 @@
                     Go
                   </button>
                 </div>
+                <div class="flex items-center gap-2">
+                  <button
+                    id="zoom-out-btn"
+                    class="px-3 py-2 bg-gray-100 hover:bg-gray-200 rounded text-sm"
+                    title="Zoom Out"
+                  >
+                    −
+                  </button>
+                  <span
+                    id="zoom-indicator"
+                    class="text-sm font-medium text-gray-700 whitespace-nowrap min-w-[60px] text-center"
+                    >100%</span
+                  >
+                  <button
+                    id="zoom-in-btn"
+                    class="px-3 py-2 bg-gray-100 hover:bg-gray-200 rounded text-sm"
+                    title="Zoom In"
+                  >
+                    +
+                  </button>
+                  <button
+                    id="zoom-fit-btn"
+                    class="px-3 py-1 bg-gray-100 hover:bg-gray-200 rounded text-sm"
+                    title="Fit to Width"
+                  >
+                    Fit
+                  </button>
+                </div>
               </div>
 
               <div
@@ -831,5 +858,6 @@
     </footer>
     <script type="module" src="../js/utils/lucide-init.ts"></script>
     <script type="module" src="../js/logic/bookmark-pdf.ts"></script>
+    <script type="module" src="src/js/mobileMenu.ts"></script>
   </body>
 </html>
