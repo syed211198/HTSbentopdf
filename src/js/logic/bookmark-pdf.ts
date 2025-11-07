@@ -1540,6 +1540,7 @@ extractExistingBtn.addEventListener('click', async () => {
   }
 });
 
+
 async function extractExistingBookmarks(doc) {
   try {
     const outlines = doc.catalog.lookup(PDFName.of('Outlines'));
@@ -1557,21 +1558,53 @@ async function extractExistingBookmarks(doc) {
       return obj;
     }
 
-    // Build named destinations map
+    // Build named destinations map (support full name-tree with Kids and Catalog-level Dests)
     const namedDests = new Map();
     try {
+      function addNamePair(nameObj, destObj) {
+        try {
+          const key = nameObj.decodeText ? nameObj.decodeText() : String(nameObj);
+          namedDests.set(key, resolveRef(destObj));
+        } catch (_) {
+          // ignore malformed entry
+        }
+      }
+
+      function traverseNamesNode(node) {
+        if (!node) return;
+        node = resolveRef(node);
+        if (!node) return;
+
+        const namesArray = node.lookup ? node.lookup(PDFName.of('Names')) : null;
+        if (namesArray && namesArray.array) {
+          for (let i = 0; i < namesArray.array.length; i += 2) {
+            const n = namesArray.array[i];
+            const d = namesArray.array[i + 1];
+            addNamePair(n, d);
+          }
+        }
+
+        const kidsArray = node.lookup ? node.lookup(PDFName.of('Kids')) : null;
+        if (kidsArray && kidsArray.array) {
+          for (const kid of kidsArray.array) traverseNamesNode(kid);
+        }
+      }
+
+      // Names tree under Catalog/Names/Dests
       const names = doc.catalog.lookup(PDFName.of('Names'));
       if (names) {
-        const dests = names.lookup(PDFName.of('Dests'));
-        if (dests) {
-          const namesArray = dests.lookup(PDFName.of('Names'));
-          if (namesArray && namesArray.array) {
-            for (let i = 0; i < namesArray.array.length; i += 2) {
-              const name = namesArray.array[i];
-              const dest = namesArray.array[i + 1];
-              namedDests.set(name.decodeText(), resolveRef(dest));
-            }
-          }
+        const destsTree = names.lookup(PDFName.of('Dests'));
+        if (destsTree) traverseNamesNode(destsTree);
+      }
+
+      // Some PDFs store Dests directly under the Catalog's Dests as a dictionary
+      const catalogDests = doc.catalog.lookup(PDFName.of('Dests'));
+      if (catalogDests && catalogDests.dict) {
+        const entries = catalogDests.dict.entries();
+        for (const [key, value] of entries) {
+          // keys are PDFName; convert to string
+          const keyStr = key.decodeText ? key.decodeText() : key.toString();
+          namedDests.set(keyStr, resolveRef(value));
         }
       }
     } catch (e) {
@@ -1580,34 +1613,40 @@ async function extractExistingBookmarks(doc) {
 
     function findPageIndex(pageRef) {
       if (!pageRef) return 0;
-      
+
       try {
         const resolved = resolveRef(pageRef);
-        
-        // Try to match by object number
+
+        if (pageRef.numberValue !== undefined) {
+          const numericIndex = pageRef.numberValue | 0;
+          if (numericIndex >= 0 && numericIndex < pages.length) return numericIndex;
+        }
+
         if (pageRef.objectNumber !== undefined) {
-          const idx = pages.findIndex(p => p.ref.objectNumber === pageRef.objectNumber);
-          if (idx !== -1) return idx;
+          const idxByObjNum = pages.findIndex(
+            (p) => p.ref.objectNumber === pageRef.objectNumber
+          );
+          if (idxByObjNum !== -1) return idxByObjNum;
         }
 
-        // Try to match by reference string
         if (pageRef.toString) {
-          const idx = pages.findIndex(p => p.ref.toString() === pageRef.toString());
-          if (idx !== -1) return idx;
+          const target = pageRef.toString();
+          const idxByString = pages.findIndex((p) => p.ref.toString() === target);
+          if (idxByString !== -1) return idxByString;
         }
 
-        // Try to match by page dictionary
         if (resolved && resolved.get) {
-          const idx = pages.findIndex(p => {
-            const pageDict = doc.context.lookup(p.ref);
-            return pageDict === resolved;
-          });
-          if (idx !== -1) return idx;
+          for (let i = 0; i < pages.length; i++) {
+            const pageDict = doc.context.lookup(pages[i].ref);
+            if (pageDict === resolved) return i;
+          }
         }
       } catch (e) {
         console.error('Error finding page:', e);
       }
 
+      // Fallback: keep current behavior but log for diagnostics
+      console.warn('Falling back to page 0 for destination');
       return 0;
     }
 
@@ -1627,8 +1666,19 @@ async function extractExistingBookmarks(doc) {
 
       // Handle named destinations
       if (dest && !dest.array) {
-        const name = dest.decodeText ? dest.decodeText() : dest.toString();
-        dest = namedDests.get(name);
+        try {
+          const name = dest.decodeText ? dest.decodeText() : dest.toString();
+          if (namedDests.has(name)) {
+            dest = namedDests.get(name);
+          } else if (dest.lookup) {
+            // Some named destinations resolve to a dictionary with 'D' entry
+            const maybeDict = resolveRef(dest);
+            const dictD = maybeDict && maybeDict.lookup ? maybeDict.lookup(PDFName.of('D')) : null;
+            if (dictD) dest = resolveRef(dictD);
+          }
+        } catch (_) {
+          // leave dest as-is if it can't be decoded
+        }
       }
 
       return resolveRef(dest);
@@ -1707,6 +1757,17 @@ async function extractExistingBookmarks(doc) {
         child = resolveRef(child.lookup(PDFName.of('Next')));
       }
 
+
+      if (pageIndex === 0 && bookmark.children.length > 0) {
+        const firstChild = bookmark.children[0];
+        if (firstChild) {
+          bookmark.page = firstChild.page;
+          bookmark.destX = firstChild.destX;
+          bookmark.destY = firstChild.destY;
+          bookmark.zoom = firstChild.zoom;
+        }
+      }
+
       return bookmark;
     }
 
@@ -1741,11 +1802,8 @@ downloadBtn.addEventListener('click', async () => {
       itemDict.set(PDFName.of('Title'), PDFString.of(node.title));
       itemDict.set(PDFName.of('Parent'), parentRef);
 
-      // const pageIndex = Math.max(0, Math.min(node.page - 2, pages.length - 1));
-      const pageIndex =
-        node.destX !== null && node.destY !== null
-          ? Math.max(0, Math.min(node.page - 2, pages.length - 1))
-          : Math.max(0, Math.min(node.page - 1, pages.length - 1));
+      // Always map bookmark page to zero-based index consistently
+      const pageIndex = Math.max(0, Math.min(node.page - 1, pages.length - 1));
       const pageRef = pages[pageIndex].ref;
 
       // Handle custom destination with zoom and position
