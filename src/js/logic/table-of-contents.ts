@@ -107,7 +107,7 @@ function handleFileSelect(file: File) {
   pdfFile = file;
   generateBtn.disabled = false;
   renderFileDisplay(file);
-  showStatus(`File selected: ${file.name}`, 'success');
+  // showStatus(`File selected: ${file.name}`, 'success');
 }
 
 // Drag and drop handlers
