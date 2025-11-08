@@ -48,6 +48,8 @@ export default defineConfig(({ mode }) => ({
           __dirname,
           'src/pages/table-of-contents.html'
         ),
+        'pdf-to-json': resolve(__dirname, 'src/pages/pdf-to-json.html'),
+        'json-to-pdf': resolve(__dirname, 'src/pages/json-to-pdf.html'),
       },
     },
   },

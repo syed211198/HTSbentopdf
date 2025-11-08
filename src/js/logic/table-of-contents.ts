@@ -1,3 +1,5 @@
+import { downloadFile, formatBytes } from "../utils/helpers";
+
 const worker = new Worker('/workers/table-of-contents.worker.js');
 
 let pdfFile: File | null = null;
@@ -46,7 +48,6 @@ interface TOCErrorResponse {
 
 type TOCWorkerResponse = TOCSuccessResponse | TOCErrorResponse;
 
-// Show status message
 function showStatus(
   message: string,
   type: 'success' | 'error' | 'info' = 'info'
@@ -62,21 +63,10 @@ function showStatus(
   statusMessage.classList.remove('hidden');
 }
 
-// Hide status message
 function hideStatus() {
   statusMessage.classList.add('hidden');
 }
 
-// Format bytes helper
-function formatBytes(bytes: number): string {
-  if (bytes === 0) return '0 Bytes';
-  const k = 1024;
-  const sizes = ['Bytes', 'KB', 'MB', 'GB'];
-  const i = Math.floor(Math.log(bytes) / Math.log(k));
-  return Math.round((bytes / Math.pow(k, i)) * 100) / 100 + ' ' + sizes[i];
-}
-
-// Render file display
 function renderFileDisplay(file: File) {
   fileDisplayArea.innerHTML = '';
   fileDisplayArea.classList.remove('hidden');
@@ -97,7 +87,6 @@ function renderFileDisplay(file: File) {
   fileDisplayArea.appendChild(fileDiv);
 }
 
-// Handle file selection
 function handleFileSelect(file: File) {
   if (file.type !== 'application/pdf') {
     showStatus('Please select a PDF file.', 'error');
@@ -107,10 +96,8 @@ function handleFileSelect(file: File) {
   pdfFile = file;
   generateBtn.disabled = false;
   renderFileDisplay(file);
-  // showStatus(`File selected: ${file.name}`, 'success');
 }
 
-// Drag and drop handlers
 dropZone.addEventListener('dragover', (e) => {
   e.preventDefault();
   dropZone.classList.add('border-blue-500');
@@ -136,7 +123,6 @@ fileInput.addEventListener('change', (e) => {
   }
 });
 
-// Generate table of contents
 async function generateTableOfContents() {
   if (!pdfFile) {
     showStatus('Please select a PDF file first.', 'error');
@@ -176,7 +162,6 @@ async function generateTableOfContents() {
   }
 }
 
-// Handle messages from worker
 worker.onmessage = (e: MessageEvent<TOCWorkerResponse>) => {
   generateBtn.disabled = false;
 
@@ -185,15 +170,7 @@ worker.onmessage = (e: MessageEvent<TOCWorkerResponse>) => {
     const pdfBytes = new Uint8Array(pdfBytesBuffer);
 
     const blob = new Blob([pdfBytes], { type: 'application/pdf' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download =
-      pdfFile?.name.replace('.pdf', '_with_toc.pdf') || 'output_with_toc.pdf';
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
+    downloadFile(blob, pdfFile?.name.replace('.pdf', '_with_toc.pdf') || 'output_with_toc.pdf');
 
     showStatus(
       'Table of contents generated successfully! Download started.',
@@ -219,7 +196,6 @@ worker.onerror = (error) => {
   generateBtn.disabled = false;
 };
 
-// Back to tools button
 if (backToToolsBtn) {
   backToToolsBtn.addEventListener('click', () => {
     window.location.href = '../../index.html#tools-header';
