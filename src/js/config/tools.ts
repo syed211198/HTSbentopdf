@@ -84,6 +84,12 @@ export const categories = [
         subtitle: 'Add, edit, import, delete and extract PDF bookmarks.',
       },
       {
+        href: '/src/pages/table-of-contents.html',
+        name: 'Table of Contents',
+        icon: 'list',
+        subtitle: 'Generate a table of contents page from PDF bookmarks.',
+      },
+      {
         id: 'add-page-numbers',
         name: 'Page Numbers',
         icon: 'list-ordered',
