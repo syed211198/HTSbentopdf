@@ -44,7 +44,10 @@ export default defineConfig(({ mode }) => ({
         privacy: resolve(__dirname, 'privacy.html'),
         terms: resolve(__dirname, 'terms.html'),
         bookmark: resolve(__dirname, 'src/pages/bookmark.html'),
-        'table-of-contents': resolve(__dirname, 'src/pages/table-of-contents.html'),
+        'table-of-contents': resolve(
+          __dirname,
+          'src/pages/table-of-contents.html'
+        ),
       },
     },
   },

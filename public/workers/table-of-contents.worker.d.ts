@@ -1,4 +1,4 @@
-declare const coherentpdf: typeof import("../../src/types/coherentpdf.global").coherentpdf;
+declare const coherentpdf: typeof import('../../src/types/coherentpdf.global').coherentpdf;
 
 interface GenerateTOCMessage {
   command: 'generate-toc';

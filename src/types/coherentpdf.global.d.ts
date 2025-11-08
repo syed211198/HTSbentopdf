@@ -19,8 +19,37 @@ declare global {
   // --- Type Aliases from Constants ---
   type CpdfPermission = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7;
   type CpdfEncryptionMethod = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7;
-  type CpdfPaperSize = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15;
-  type CpdfPositionAnchor = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12;
+  type CpdfPaperSize =
+    | 0
+    | 1
+    | 2
+    | 3
+    | 4
+    | 5
+    | 6
+    | 7
+    | 8
+    | 9
+    | 10
+    | 11
+    | 12
+    | 13
+    | 14
+    | 15;
+  type CpdfPositionAnchor =
+    | 0
+    | 1
+    | 2
+    | 3
+    | 4
+    | 5
+    | 6
+    | 7
+    | 8
+    | 9
+    | 10
+    | 11
+    | 12;
   type CpdfFont = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11;
   type CpdfJustification = 0 | 1 | 2;
   type CpdfLayout = 0 | 1 | 2 | 3 | 4 | 5;
@@ -36,25 +65,25 @@ declare const coherentpdf: {
    * @returns The version number.
    */
   version(): string;
-  
+
   /**
    * Sets the global operation mode to 'fast'. The default is 'slow' mode, which works
    * even on old-fashioned files.
    */
   setFast(): void;
-  
+
   /**
    * Sets the global operation mode to 'slow'. The default is 'slow' mode, which works
    * even on old-fashioned files.
    */
   setSlow(): void;
-  
+
   /**
    * Delete a PDF so the memory representing it may be recovered. Must be called for every loaded PDF.
    * @param pdf PDF document to delete.
    */
   deletePdf(pdf: CoherentPdf): void;
-  
+
   /**
    * A debug function which prints some information about resource usage.
    * Can be used to detect if PDFs or ranges are being deallocated properly.
@@ -69,7 +98,7 @@ declare const coherentpdf: {
    * @returns The loaded PDF document instance.
    */
   fromFile(filename: string, userpw: string): CoherentPdf;
-  
+
   /**
    * Loads a PDF from a file, doing only minimal parsing (lazily).
    * @param filename File name.
@@ -77,7 +106,7 @@ declare const coherentpdf: {
    * @returns The loaded PDF document instance.
    */
   fromFileLazy(filename: string, userpw: string): CoherentPdf;
-  
+
   /**
    * Loads a file from memory given any user password.
    * @param data PDF document as an array of bytes.
@@ -85,7 +114,7 @@ declare const coherentpdf: {
    * @returns The loaded PDF document instance.
    */
   fromMemory(data: Uint8Array, userpw: string): CoherentPdf;
-  
+
   /**
    * Loads a file from memory, but lazily (minimal parsing).
    * @param data PDF document as an array of bytes.
@@ -93,7 +122,7 @@ declare const coherentpdf: {
    * @returns The loaded PDF document instance.
    */
   fromMemoryLazy(data: Uint8Array, userpw: string): CoherentPdf;
-  
+
   /**
    * Writes the PDF document to memory as a byte array.
    * @param pdf The PDF document.
@@ -102,7 +131,7 @@ declare const coherentpdf: {
    * @returns The PDF document as a byte array.
    */
   toMemory(pdf: CoherentPdf, linearize: boolean, make_id: boolean): Uint8Array;
-  
+
   /**
    * Returns the total number of pages in the PDF document.
    * @param pdf The PDF document.
@@ -116,20 +145,20 @@ declare const coherentpdf: {
    * @param pdf The PDF document.
    */
   startGetBookmarkInfo(pdf: CoherentPdf): void;
-  
+
   /**
    * Gets the total number of bookmarks available after calling `startGetBookmarkInfo`.
    * @returns The number of bookmarks.
    */
   numberBookmarks(): number;
-  
+
   /**
    * Gets the nesting level (0-based) for the bookmark at index `n`.
    * @param n The bookmark index (0-based).
    * @returns The bookmark level.
    */
   getBookmarkLevel(n: number): number;
-  
+
   /**
    * Gets the target page number (1-based) for the bookmark at index `n`.
    * @param pdf The PDF document.
@@ -137,21 +166,21 @@ declare const coherentpdf: {
    * @returns The target page number.
    */
   getBookmarkPage(pdf: CoherentPdf, n: number): number;
-  
+
   /**
    * Returns the text title of the bookmark at index `n`.
    * @param n The bookmark index (0-based).
    * @returns The bookmark text.
    */
   getBookmarkText(n: number): string;
-  
+
   /**
    * Returns the open/closed status for the bookmark at index `n`.
    * @param n The bookmark index (0-based).
    * @returns True if the bookmark is open.
    */
   getBookmarkOpenStatus(n: number): boolean;
-  
+
   /**
    * Ends the bookmark retrieval process and cleans up resources.
    */
@@ -165,7 +194,13 @@ declare const coherentpdf: {
    * @param title The title for the TOC page.
    * @param bookmark If true, the TOC page itself gets a bookmark.
    */
-  tableOfContents(pdf: CoherentPdf, font: CpdfFont, fontsize: number, title: string, bookmark: boolean): void;
+  tableOfContents(
+    pdf: CoherentPdf,
+    font: CpdfFont,
+    fontsize: number,
+    title: string,
+    bookmark: boolean
+  ): void;
 
   /** Times Roman font constant (0) */
   readonly timesRoman: CpdfFont;
@@ -194,4 +229,3 @@ declare const coherentpdf: {
 };
 
 export { coherentpdf };
-

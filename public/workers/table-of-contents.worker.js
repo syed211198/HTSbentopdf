@@ -19,7 +19,8 @@ function generateTableOfContentsInWorker(
       coherentpdf.deletePdf(pdf);
       self.postMessage({
         status: 'error',
-        message: 'This PDF does not have any bookmarks. Please add bookmarks first using the Bookmark tool.',
+        message:
+          'This PDF does not have any bookmarks. Please add bookmarks first using the Bookmark tool.',
       });
       return;
     }
@@ -39,7 +40,10 @@ function generateTableOfContentsInWorker(
   } catch (error) {
     self.postMessage({
       status: 'error',
-      message: error instanceof Error ? error.message : 'Unknown error occurred during table of contents generation.',
+      message:
+        error instanceof Error
+          ? error.message
+          : 'Unknown error occurred during table of contents generation.',
     });
   }
 }

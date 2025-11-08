@@ -2,17 +2,29 @@ const worker = new Worker('/workers/table-of-contents.worker.js');
 
 let pdfFile: File | null = null;
 
-// Get DOM elements
 const dropZone = document.getElementById('drop-zone') as HTMLElement;
 const fileInput = document.getElementById('file-input') as HTMLInputElement;
-const generateBtn = document.getElementById('generate-btn') as HTMLButtonElement;
+const generateBtn = document.getElementById(
+  'generate-btn'
+) as HTMLButtonElement;
 const tocTitleInput = document.getElementById('toc-title') as HTMLInputElement;
-const fontSizeSelect = document.getElementById('font-size') as HTMLSelectElement;
-const fontFamilySelect = document.getElementById('font-family') as HTMLSelectElement;
-const addBookmarkCheckbox = document.getElementById('add-bookmark') as HTMLInputElement;
+const fontSizeSelect = document.getElementById(
+  'font-size'
+) as HTMLSelectElement;
+const fontFamilySelect = document.getElementById(
+  'font-family'
+) as HTMLSelectElement;
+const addBookmarkCheckbox = document.getElementById(
+  'add-bookmark'
+) as HTMLInputElement;
 const statusMessage = document.getElementById('status-message') as HTMLElement;
+const fileDisplayArea = document.getElementById(
+  'file-display-area'
+) as HTMLElement;
+const backToToolsBtn = document.getElementById(
+  'back-to-tools'
+) as HTMLButtonElement;
 
-// Type definitions for the worker messages
 interface GenerateTOCMessage {
   command: 'generate-toc';
   pdfData: ArrayBuffer;
@@ -35,14 +47,17 @@ interface TOCErrorResponse {
 type TOCWorkerResponse = TOCSuccessResponse | TOCErrorResponse;
 
 // Show status message
-function showStatus(message: string, type: 'success' | 'error' | 'info' = 'info') {
+function showStatus(
+  message: string,
+  type: 'success' | 'error' | 'info' = 'info'
+) {
   statusMessage.textContent = message;
   statusMessage.className = `mt-4 p-3 rounded-lg text-sm ${
     type === 'success'
       ? 'bg-green-900 text-green-200'
       : type === 'error'
-      ? 'bg-red-900 text-red-200'
-      : 'bg-blue-900 text-blue-200'
+        ? 'bg-red-900 text-red-200'
+        : 'bg-blue-900 text-blue-200'
   }`;
   statusMessage.classList.remove('hidden');
 }
@@ -50,6 +65,36 @@ function showStatus(message: string, type: 'success' | 'error' | 'info' = 'info'
 // Hide status message
 function hideStatus() {
   statusMessage.classList.add('hidden');
+}
+
+// Format bytes helper
+function formatBytes(bytes: number): string {
+  if (bytes === 0) return '0 Bytes';
+  const k = 1024;
+  const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+  const i = Math.floor(Math.log(bytes) / Math.log(k));
+  return Math.round((bytes / Math.pow(k, i)) * 100) / 100 + ' ' + sizes[i];
+}
+
+// Render file display
+function renderFileDisplay(file: File) {
+  fileDisplayArea.innerHTML = '';
+  fileDisplayArea.classList.remove('hidden');
+
+  const fileDiv = document.createElement('div');
+  fileDiv.className =
+    'flex items-center justify-between bg-gray-700 p-3 rounded-lg text-sm';
+
+  const nameSpan = document.createElement('span');
+  nameSpan.className = 'truncate font-medium text-gray-200';
+  nameSpan.textContent = file.name;
+
+  const sizeSpan = document.createElement('span');
+  sizeSpan.className = 'flex-shrink-0 ml-4 text-gray-400';
+  sizeSpan.textContent = formatBytes(file.size);
+
+  fileDiv.append(nameSpan, sizeSpan);
+  fileDisplayArea.appendChild(fileDiv);
 }
 
 // Handle file selection
@@ -61,6 +106,7 @@ function handleFileSelect(file: File) {
 
   pdfFile = file;
   generateBtn.disabled = false;
+  renderFileDisplay(file);
   showStatus(`File selected: ${file.name}`, 'success');
 }
 
@@ -103,7 +149,7 @@ async function generateTableOfContents() {
 
     const arrayBuffer = await pdfFile.arrayBuffer();
 
-    showStatus('Offloading table of contents generation to background Worker...', 'info');
+    showStatus('Generating table of contents...', 'info');
 
     const title = tocTitleInput.value || 'Table of Contents';
     const fontSize = parseInt(fontSizeSelect.value, 10);
@@ -142,20 +188,24 @@ worker.onmessage = (e: MessageEvent<TOCWorkerResponse>) => {
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = pdfFile?.name.replace('.pdf', '_with_toc.pdf') || 'output_with_toc.pdf';
+    a.download =
+      pdfFile?.name.replace('.pdf', '_with_toc.pdf') || 'output_with_toc.pdf';
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
 
-    showStatus('Table of contents generated successfully! Download started.', 'success');
+    showStatus(
+      'Table of contents generated successfully! Download started.',
+      'success'
+    );
 
-    setTimeout(() => {
-      hideStatus();
-      pdfFile = null;
-      fileInput.value = '';
-      generateBtn.disabled = true;
-    }, 3000);
+    hideStatus();
+    pdfFile = null;
+    fileInput.value = '';
+    fileDisplayArea.innerHTML = '';
+    fileDisplayArea.classList.add('hidden');
+    generateBtn.disabled = true;
   } else if (e.data.status === 'error') {
     const errorMessage = e.data.message || 'Unknown error occurred in worker.';
     console.error('Worker Error:', errorMessage);
@@ -168,5 +218,12 @@ worker.onerror = (error) => {
   showStatus('Worker error occurred. Check console for details.', 'error');
   generateBtn.disabled = false;
 };
+
+// Back to tools button
+if (backToToolsBtn) {
+  backToToolsBtn.addEventListener('click', () => {
+    window.location.href = '../../index.html#tools-header';
+  });
+}
 
 generateBtn.addEventListener('click', generateTableOfContents);
