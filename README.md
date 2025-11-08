@@ -55,6 +55,7 @@ BentoPDF offers a comprehensive suite of tools to handle all your PDF needs.
 | **Flatten PDF**        | Flatten form fields and annotations into static content.    |
 | **Remove Annotations** | Remove comments, highlights, and other annotations.         |
 | **Remove Blank Pages** | Auto detect and remove blank pages in a PDF.                |
+| **Edit Bookmarks** | Add, Edit, Create, Import and Export PDF Bookmarks.                |
 
 ### Convert to PDF
 
@@ -63,6 +64,7 @@ BentoPDF offers a comprehensive suite of tools to handle all your PDF needs.
 | **Image to PDF**    | Convert JPG, PNG, WebP, SVG, BMP, HEIC, and TIFF images to PDF. |
 | **Markdown to PDF** | Convert `.md` files into professional PDF documents.            |
 | **Text to PDF**     | Convert plain text files into a PDF.                            |
+| **JSON to PDF**     | Convert JSON to PDF.                            |
 
 ### Convert from PDF
 
@@ -71,6 +73,7 @@ BentoPDF offers a comprehensive suite of tools to handle all your PDF needs.
 | **PDF to Image**     | Convert PDF pages to JPG, PNG, WebP, BMP, or TIFF formats.                     |
 | **PDF to Greyscale** | Convert a color PDF into a black-and-white version.                            |
 | **OCR PDF**          | Make scanned PDFs searchable and copyable using Optical Character Recognition. |
+| **PDF to JSON**          | Convert JSON to PDFs. |
 
 ### Secure & Optimize PDFs
 
@@ -312,6 +315,7 @@ BentoPDF wouldn't be possible without the amazing open-source tools and librarie
 - **[Vite](https://vitejs.dev/)** – For lightning-fast development and build tooling.
 - **[Tailwind CSS](https://tailwindcss.com/)** – For rapid, flexible, and beautiful UI styling.
 - **[qpdf](https://github.com/qpdf/qpdf)** and **[qpdf-wasm](https://github.com/neslinesli93/qpdf-wasm)**– A powerful command-line tool and library for inspecting, repairing, and transforming PDF file ported to wasm
+- **[cpdf](https://www.coherentpdf.com/)** – For content preserving pdf operations.
 
 Your work inspires and empowers developers everywhere. Thank you for making open-source amazing!
 
