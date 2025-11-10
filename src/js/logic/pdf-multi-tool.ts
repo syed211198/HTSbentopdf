@@ -1,8 +1,12 @@
+// @TODO:@ALAM-  sometimes I think... and then I forget...
+// 
+
 import { createIcons, icons } from 'lucide';
 import { degrees, PDFDocument as PDFLibDocument } from 'pdf-lib';
 import * as pdfjsLib from 'pdfjs-dist';
 import JSZip from 'jszip';
 import Sortable from 'sortablejs';
+import { downloadFile } from '../utils/helpers';
 
 pdfjsLib.GlobalWorkerOptions.workerSrc = new URL(
   'pdfjs-dist/build/pdf.worker.min.mjs',
@@ -34,7 +38,7 @@ const redoStack: Snapshot[] = [];
 
 function snapshot() {
   const snap: Snapshot = {
-    allPages: allPages.map(p => ({ ...p })),
+    allPages: allPages.map(p => ({ ...p, canvas: p.canvas })),
     selectedPages: Array.from(selectedPages),
     splitMarkers: Array.from(splitMarkers),
   };
@@ -43,7 +47,10 @@ function snapshot() {
 }
 
 function restore(snap: Snapshot) {
-  allPages = snap.allPages.map(p => ({ ...p }));
+  allPages = snap.allPages.map(p => ({
+    ...p,
+    canvas: p.canvas
+  }));
   selectedPages = new Set(snap.selectedPages);
   splitMarkers = new Set(snap.splitMarkers);
   updatePageDisplay();
@@ -202,7 +209,6 @@ function initializeTool() {
     }
   });
 
-  // Modal close button
   document.getElementById('modal-close-btn')?.addEventListener('click', hideModal);
   document.getElementById('modal')?.addEventListener('click', (e) => {
     if (e.target === document.getElementById('modal')) {
@@ -210,7 +216,6 @@ function initializeTool() {
     }
   });
 
-  // Drag and drop
   const uploadArea = document.getElementById('upload-area');
   if (uploadArea) {
     uploadArea.addEventListener('dragover', (e) => {
@@ -230,7 +235,6 @@ function initializeTool() {
     });
   }
 
-  // Show upload area initially
   document.getElementById('upload-area')?.classList.remove('hidden');
 }
 
@@ -315,7 +319,6 @@ async function loadPdfs(files: File[]) {
 }
 
 function getCacheKey(pdfIndex: number, pageIndex: number): string {
-  // Removed rotation from cache key - canvas is always rendered at 0 degrees
   return `${pdfIndex}-${pageIndex}`;
 }
 
@@ -330,12 +333,10 @@ async function renderPage(pdfDoc: PDFLibDocument, pageIndex: number, pdfIndex: n
   if (pageCanvasCache.has(cacheKey)) {
     canvas = pageCanvasCache.get(cacheKey)!;
   } else {
-    // Render page preview at 0 degrees rotation using pdfjs
     const pdfBytes = await pdfDoc.save();
     const pdf = await pdfjsLib.getDocument({ data: new Uint8Array(pdfBytes) }).promise;
     const page = await pdf.getPage(pageIndex + 1);
 
-    // Always render at 0 rotation - visual rotation is applied via CSS
     const viewport = page.getViewport({ scale: 0.5, rotation: 0 });
 
     canvas = document.createElement('canvas');
@@ -384,20 +385,14 @@ function createPageCard(pageData: PageData, index: number) {
   const preview = document.createElement('div');
   preview.className = 'bg-white rounded mb-2 overflow-hidden w-full flex items-center justify-center relative';
   preview.style.minHeight = '160px';
-  preview.style.maxHeight = '256px';
+  preview.style.height = '250px';
 
   const previewCanvas = pageData.canvas;
   previewCanvas.className = 'max-w-full max-h-full object-contain';
 
   // Apply visual rotation using CSS transform
   previewCanvas.style.transform = `rotate(${pageData.visualRotation}deg)`;
-
-  // Adjust container dimensions based on rotation
-  if (pageData.visualRotation === 90 || pageData.visualRotation === 270) {
-    preview.style.aspectRatio = `${previewCanvas.height} / ${previewCanvas.width}`;
-  } else {
-    preview.style.aspectRatio = `${previewCanvas.width} / ${previewCanvas.height}`;
-  }
+  previewCanvas.style.transition = 'transform 0.2s ease';
 
   preview.appendChild(previewCanvas);
 
@@ -408,7 +403,11 @@ function createPageCard(pageData: PageData, index: number) {
 
   // Actions toolbar
   const actions = document.createElement('div');
-  actions.className = 'flex items-center justify-center gap-1 sm:opacity-0 group-hover:opacity-100 transition-opacity';
+  actions.className = 'flex items-center justify-center gap-1 sm:opacity-0 group-hover:opacity-100 transition-opacity absolute bottom-2 left-0 right-0';
+
+  const actionsInner = document.createElement('div');
+  actionsInner.className = 'flex items-center gap-1 bg-gray-900/90 rounded px-2 py-1';
+  actions.appendChild(actionsInner);
 
   // Select checkbox
   const selectBtn = document.createElement('button');
@@ -441,6 +440,7 @@ function createPageCard(pageData: PageData, index: number) {
   const duplicateBtn = document.createElement('button');
   duplicateBtn.className = 'p-1 rounded hover:bg-gray-700';
   duplicateBtn.innerHTML = '<i data-lucide="copy" class="w-4 h-4 text-gray-300"></i>';
+  duplicateBtn.title = 'Duplicate this page';
   duplicateBtn.onclick = (e) => {
     e.stopPropagation();
     snapshot();
@@ -451,6 +451,7 @@ function createPageCard(pageData: PageData, index: number) {
   const deleteBtn = document.createElement('button');
   deleteBtn.className = 'p-1 rounded hover:bg-gray-700';
   deleteBtn.innerHTML = '<i data-lucide="trash-2" class="w-4 h-4 text-red-400"></i>';
+  deleteBtn.title = 'Delete this page';
   deleteBtn.onclick = (e) => {
     e.stopPropagation();
     snapshot();
@@ -480,7 +481,7 @@ function createPageCard(pageData: PageData, index: number) {
     renderSplitMarkers();
   };
 
-  actions.append(rotateLeftBtn, rotateBtn, duplicateBtn, insertBtn, splitBtn, deleteBtn);
+  actionsInner.append(rotateLeftBtn, rotateBtn, duplicateBtn, insertBtn, splitBtn, deleteBtn);
   card.append(preview, info, actions, selectBtn);
   pagesContainer.appendChild(card);
 
@@ -506,7 +507,6 @@ function setupSortable() {
   });
 }
 
-// Optimized selection that only updates the specific card
 function toggleSelectOptimized(index: number) {
   if (selectedPages.has(index)) {
     selectedPages.delete(index);
@@ -546,7 +546,6 @@ function deselectAll() {
   updatePageDisplay();
 }
 
-// Instant rotation - just update visual rotation, no re-rendering
 function rotatePage(index: number, delta: number) {
   snapshot();
 
@@ -554,7 +553,6 @@ function rotatePage(index: number, delta: number) {
   pageData.visualRotation = (pageData.visualRotation + delta + 360) % 360;
   pageData.rotation = (pageData.rotation + delta + 360) % 360;
 
-  // Just update the specific card's transform
   const pagesContainer = document.getElementById('pages-container');
   if (!pagesContainer) return;
 
@@ -566,13 +564,7 @@ function rotatePage(index: number, delta: number) {
 
   if (canvas && preview) {
     canvas.style.transform = `rotate(${pageData.visualRotation}deg)`;
-
-    // Adjust container aspect ratio
-    if (pageData.visualRotation === 90 || pageData.visualRotation === 270) {
-      (preview as HTMLElement).style.aspectRatio = `${canvas.height} / ${canvas.width}`;
-    } else {
-      (preview as HTMLElement).style.aspectRatio = `${canvas.width} / ${canvas.height}`;
-    }
+    canvas.style.transition = 'transform 0.2s ease';
   }
 }
 
@@ -580,7 +572,6 @@ function duplicatePage(index: number) {
   const originalPageData = allPages[index];
   const originalCanvas = originalPageData.canvas;
 
-  // Create a new canvas and copy content
   const newCanvas = document.createElement('canvas');
   newCanvas.width = originalCanvas.width;
   newCanvas.height = originalCanvas.height;
@@ -603,13 +594,18 @@ function duplicatePage(index: number) {
 function deletePage(index: number) {
   allPages.splice(index, 1);
   selectedPages.delete(index);
-  // Update selected indices
   const newSelected = new Set<number>();
   selectedPages.forEach(i => {
     if (i > index) newSelected.add(i - 1);
     else if (i < index) newSelected.add(i);
   });
   selectedPages = newSelected;
+
+  if (allPages.length === 0) {
+    resetAll();
+    return;
+  }
+
   updatePageDisplay();
 }
 
@@ -640,7 +636,6 @@ async function handleInsertPdf(e: Event) {
       newPages.push(allPages.pop()!);
     }
 
-    // Insert pages after the specified index
     allPages.splice(insertAfterIndex + 1, 0, ...newPages);
     updatePageDisplay();
   } catch (e) {
@@ -660,10 +655,8 @@ function renderSplitMarkers() {
   const pagesContainer = document.getElementById('pages-container');
   if (!pagesContainer) return;
 
-  // Remove all existing split markers
   pagesContainer.querySelectorAll('.split-marker').forEach(m => m.remove());
 
-  // Add split markers between cards
   Array.from(pagesContainer.children).forEach((cardEl, i) => {
     if (splitMarkers.has(i)) {
       const marker = document.createElement('div');
@@ -675,7 +668,6 @@ function renderSplitMarkers() {
 }
 
 function addBlankPage() {
-  // Create a blank page
   const canvas = document.createElement('canvas');
   canvas.width = 595;
   canvas.height = 842;
@@ -699,7 +691,6 @@ function addBlankPage() {
   updatePageDisplay();
 }
 
-// Instant bulk rotation - just update visual rotation
 function bulkRotate(delta: number) {
   if (selectedPages.size === 0) {
     showModal('No Selection', 'Please select pages to rotate.', 'info');
@@ -712,7 +703,6 @@ function bulkRotate(delta: number) {
     pageData.rotation = (pageData.rotation + delta + 360) % 360;
   });
 
-  // Update display for all rotated pages
   updatePageDisplay();
 }
 
@@ -724,6 +714,12 @@ function bulkDelete() {
   const indices = Array.from(selectedPages).sort((a, b) => b - a);
   indices.forEach(index => allPages.splice(index, 1));
   selectedPages.clear();
+
+  if (allPages.length === 0) {
+    resetAll();
+    return;
+  }
+
   updatePageDisplay();
 }
 
@@ -742,11 +738,18 @@ function bulkDuplicate() {
 
 function bulkSplit() {
   if (selectedPages.size === 0) {
-    showModal('No Selection', 'Please select pages to split.', 'info');
+    showModal('No Selection', 'Please select pages to mark for splitting.', 'info');
     return;
   }
   const indices = Array.from(selectedPages);
-  downloadPagesAsPdf(indices, 'selected-pages.pdf');
+  indices.forEach(index => {
+    if (!splitMarkers.has(index)) {
+      splitMarkers.add(index);
+    }
+  });
+  renderSplitMarkers();
+  selectedPages.clear();
+  updatePageDisplay();
 }
 
 async function bulkDownload() {
@@ -759,8 +762,79 @@ async function bulkDownload() {
 }
 
 async function downloadAll() {
-  const indices = Array.from({ length: allPages.length }, (_, i) => i);
-  await downloadPagesAsPdf(indices, 'all-pages.pdf');
+  if (allPages.length === 0) {
+    showModal('No Pages', 'Please upload PDFs first.', 'info');
+    return;
+  }
+
+  // Check if there are split markers
+  if (splitMarkers.size > 0) {
+    // Split into multiple PDFs and download as ZIP
+    await downloadSplitPdfs();
+  } else {
+    // Download as single PDF
+    const indices = Array.from({ length: allPages.length }, (_, i) => i);
+    await downloadPagesAsPdf(indices, 'all-pages.pdf');
+  }
+}
+
+async function downloadSplitPdfs() {
+  try {
+    const zip = new JSZip();
+    const sortedMarkers = Array.from(splitMarkers).sort((a, b) => a - b);
+
+    // Create segments based on split markers
+    const segments: number[][] = [];
+    let currentSegment: number[] = [];
+
+    for (let i = 0; i < allPages.length; i++) {
+      currentSegment.push(i);
+
+      // If this page has a split marker after it, start a new segment
+      if (splitMarkers.has(i)) {
+        segments.push(currentSegment);
+        currentSegment = [];
+      }
+    }
+
+    // Add the last segment if it has pages
+    if (currentSegment.length > 0) {
+      segments.push(currentSegment);
+    }
+
+    // Create PDFs for each segment
+    for (let segIndex = 0; segIndex < segments.length; segIndex++) {
+      const segment = segments[segIndex];
+      const newPdf = await PDFLibDocument.create();
+
+      for (const index of segment) {
+        const pageData = allPages[index];
+        if (pageData.pdfDoc && pageData.originalPageIndex >= 0) {
+          const [copiedPage] = await newPdf.copyPages(pageData.pdfDoc, [pageData.originalPageIndex]);
+          const page = newPdf.addPage(copiedPage);
+
+          if (pageData.rotation !== 0) {
+            const currentRotation = page.getRotation().angle;
+            page.setRotation(degrees(currentRotation + pageData.rotation));
+          }
+        } else {
+          newPdf.addPage([595, 842]);
+        }
+      }
+
+      const pdfBytes = await newPdf.save();
+      zip.file(`document-${segIndex + 1}.pdf`, pdfBytes);
+    }
+
+    // Generate and download ZIP
+    const zipBlob = await zip.generateAsync({ type: 'blob' });
+    downloadFile(zipBlob, 'split-documents.zip');
+
+    showModal('Success', `Downloaded ${segments.length} PDF files in a ZIP archive.`, 'success');
+  } catch (e) {
+    console.error('Failed to create split PDFs:', e);
+    showModal('Error', 'Failed to create split PDFs.', 'error');
+  }
 }
 
 async function downloadPagesAsPdf(indices: number[], filename: string) {
@@ -785,12 +859,8 @@ async function downloadPagesAsPdf(indices: number[], filename: string) {
 
     const pdfBytes = await newPdf.save();
     const blob = new Blob([new Uint8Array(pdfBytes)], { type: 'application/pdf' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = filename;
-    a.click();
-    URL.revokeObjectURL(url);
+
+    downloadFile(blob, filename);
   } catch (e) {
     console.error('Failed to create PDF:', e);
     showModal('Error', 'Failed to create PDF.', 'error');

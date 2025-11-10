@@ -4,6 +4,7 @@ import { setupToolInterface } from './handlers/toolSelectionHandler.js';
 import { createIcons, icons } from 'lucide';
 import * as pdfjsLib from 'pdfjs-dist';
 import '../css/styles.css';
+import { formatStars } from './utils/helpers.js';
 
 const init = () => {
   pdfjsLib.GlobalWorkerOptions.workerSrc = new URL(
@@ -274,7 +275,7 @@ const init = () => {
       .then((response) => response.json())
       .then((data) => {
         if (data.stargazers_count !== undefined) {
-          githubStarsElement.textContent = data.stargazers_count.toLocaleString();
+          githubStarsElement.textContent = formatStars(data.stargazers_count);
         }
       })
       .catch(() => {
