@@ -313,6 +313,24 @@ export const categories = [
         subtitle: 'Embed one or more files into your PDF.',
       },
       {
+        id: 'extract-attachments',
+        name: 'Extract Attachments',
+        icon: 'download',
+        subtitle: 'Extract all embedded files from PDF(s) as a ZIP.',
+      },
+      {
+        id: 'edit-attachments',
+        name: 'Edit Attachments',
+        icon: 'file-edit',
+        subtitle: 'View, remove, or replace attachments in your PDF.',
+      },
+      {
+        href: '/src/pages/pdf-multi-tool.html',
+        name: 'PDF Multi Tool',
+        icon: 'layers',
+        subtitle: 'Full-featured PDF editor with page management.',
+      },
+      {
         id: 'split',
         name: 'Split PDF',
         icon: 'scissors',

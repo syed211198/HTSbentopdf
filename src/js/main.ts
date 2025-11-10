@@ -42,6 +42,11 @@ const init = () => {
         heroSection.style.display = 'none';
       }
 
+      const githubLink = document.querySelector('a[href*="github.com/alam00000/bentopdf"]');
+      if (githubLink) {
+        (githubLink as HTMLElement).style.display = 'none';
+      }
+
       const featuresSection = document.getElementById('features-section');
       if (featuresSection) {
         featuresSection.style.display = 'none';
@@ -86,6 +91,9 @@ const init = () => {
             </div>
             <p class="text-gray-400 text-sm">
               &copy; 2025 BentoPDF. All rights reserved.
+            </p>
+            <p class="text-gray-500 text-xs mt-2">
+              Version <span id="app-version-simple">1.4.0</span>
             </p>
           </div>
         `;
@@ -259,6 +267,20 @@ const init = () => {
 
   createIcons({ icons });
   console.log('Please share our tool and share the love!');
+
+  const githubStarsElement = document.getElementById('github-stars');
+  if (githubStarsElement && !__SIMPLE_MODE__) {
+    fetch('https://api.github.com/repos/alam00000/bentopdf')
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.stargazers_count !== undefined) {
+          githubStarsElement.textContent = data.stargazers_count.toLocaleString();
+        }
+      })
+      .catch(() => {
+        githubStarsElement.textContent = '-';
+      });
+  }
 };
 
 document.addEventListener('DOMContentLoaded', init);
