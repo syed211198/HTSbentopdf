@@ -324,12 +324,12 @@ export const categories = [
         icon: 'download',
         subtitle: 'Extract all embedded files from PDF(s) as a ZIP.',
       },
-      // {
-      //   id: 'edit-attachments',
-      //   name: 'Edit Attachments',
-      //   icon: 'file-edit',
-      //   subtitle: 'View, remove, or replace attachments in your PDF.',
-      // },
+      {
+        id: 'edit-attachments',
+        name: 'Edit Attachments',
+        icon: 'file-edit',
+        subtitle: 'View or remove attachments in your PDF.',
+      },
       {
         href: '/src/pages/pdf-multi-tool.html',
         name: 'PDF Multi Tool',
