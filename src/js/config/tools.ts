@@ -318,13 +318,12 @@ export const categories = [
         icon: 'paperclip',
         subtitle: 'Embed one or more files into your PDF.',
       },
-      // TODO@ALAM - MAKE THIS LATER, ONCE INTEGERATED WITH CPDF
-      // {
-      //   id: 'extract-attachments',
-      //   name: 'Extract Attachments',
-      //   icon: 'download',
-      //   subtitle: 'Extract all embedded files from PDF(s) as a ZIP.',
-      // },
+      {
+        id: 'extract-attachments',
+        name: 'Extract Attachments',
+        icon: 'download',
+        subtitle: 'Extract all embedded files from PDF(s) as a ZIP.',
+      },
       // {
       //   id: 'edit-attachments',
       //   name: 'Edit Attachments',
