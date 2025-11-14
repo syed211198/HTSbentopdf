@@ -1793,13 +1793,14 @@ export const toolTemplates = {
 
   'form-filler': () => `
     <h2 class="text-2xl font-bold text-white mb-4">PDF Form Filler</h2>
-    <p class="mb-6 text-gray-400">Upload a PDF with form fields. Fill them directly in the viewer below and click the Save button in the toolbar to download.</p>
+    <p class="mb-6 text-gray-400">Upload a PDF with form fields. Fill them directly in the viewer below, then click the button to save and download the filled form. Also supports XFA forms.</p>
     ${createFileInputHTML()}
     <div id="file-display-area" class="mt-4 space-y-2"></div>
     <div id="form-filler-options" class="hidden mt-6">
         <div id="pdf-viewer-container" class="relative w-full overflow-auto bg-gray-900 rounded-lg border border-gray-600" style="height: 80vh;">
             <!-- PDF.js viewer iframe will be loaded here -->
         </div>
+        <button id="process-btn" class="btn-gradient w-full mt-4">Save & Download Filled Form</button>
     </div>
 `,
 

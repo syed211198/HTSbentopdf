@@ -1,5 +1,5 @@
 import { showLoader, hideLoader, showAlert } from '../ui.js';
-import { downloadFile } from '../utils/helpers.js';
+import { readFileAsArrayBuffer } from '../utils/helpers.js';
 import { state } from '../state.js';
 
 const signState = {
@@ -12,79 +12,87 @@ export async function setupSignTool() {
   document.getElementById('signature-editor').classList.remove('hidden');
 
   showLoader('Loading PDF viewer...');
-  
-    const container = document.getElementById('canvas-container-sign');
-    if (container) {
-      container.textContent = '';
-      const iframe = document.createElement('iframe');
-      iframe.style.width = '100%';
-      iframe.style.height = '100%';
-      iframe.style.border = 'none';
-      container.appendChild(iframe);
-      signState.viewerIframe = iframe;
 
-      const pdfBytes = await state.pdfDoc.save();
-      const blob = new Blob([pdfBytes], { type: 'application/pdf' });
-      const blobUrl = URL.createObjectURL(blob);
+  const container = document.getElementById('canvas-container-sign');
+  if (!container) {
+    console.error('Sign tool canvas container not found');
+    hideLoader();
+    return;
+  }
 
-      // PDF.js expects the file URL in the query string, while
-      // the annotation extension reads its options from the URL hash.
-      const viewerBase = '/pdfjs-annotation-viewer/web/viewer.html';
-      const query = new URLSearchParams({ file: blobUrl });
-      const hash = new URLSearchParams({
-        // Annotation extension params (must be in the hash, not the query)
-        ae_username: 'Bento User',
-        ae_default_editor_active: 'true',
-        ae_default_sidebar_open: 'true',
-        // We intentionally do NOT set ae_post_url because Bento uses
-        // client-side export only (no backend save endpoint).
-      });
+  if (!state.files || !state.files[0]) {
+    console.error('No file loaded into state for signing');
+    hideLoader();
+    return;
+  }
 
-      iframe.src = `${viewerBase}?${query.toString()}#${hash.toString()}`;
-    
-    iframe.onload = () => {
-      hideLoader();
-      signState.viewerReady = true;
-      
-      try {
-        const viewerWindow: any = iframe.contentWindow;
-        if (viewerWindow) {
-          setTimeout(() => {
-            const sigButton = viewerWindow.document.getElementById('editorSignature');
-            if (sigButton) {
-              sigButton.removeAttribute('hidden');
-              const sigButtonElement = viewerWindow.document.getElementById('editorSignatureButton');
-              if (sigButtonElement) {
-                sigButtonElement.removeAttribute('disabled');
-              }
-            }
+  container.textContent = '';
+  const iframe = document.createElement('iframe');
+  iframe.style.width = '100%';
+  iframe.style.height = '100%';
+  iframe.style.border = 'none';
+  container.appendChild(iframe);
+  signState.viewerIframe = iframe;
 
-            // Make the annotation extension's "Save" button behave like
-            // "Export PDF" (purely client-side) instead of POSTing to
-            // ae_post_url, which we don't use in Bento.
-            const ext = viewerWindow.pdfjsAnnotationExtensionInstance;
-            if (ext && typeof ext.exportPdf === 'function') {
-              ext.saveData = async () => {
-                try {
-                  await ext.exportPdf();
-                } catch (err) {
-                  console.error('Failed to export annotated PDF via Save button:', err);
-                  viewerWindow.alert?.('Failed to export the signed PDF. Please try again.');
-                }
-              };
-            }
-          }, 500);
+  // Use original uploaded bytes to avoid re-writing the PDF structure
+  const file = state.files[0];
+  const pdfBytes = await readFileAsArrayBuffer(file);
+  const blob = new Blob([pdfBytes as BlobPart], { type: 'application/pdf' });
+  const blobUrl = URL.createObjectURL(blob);
+
+  const viewerBase = '/pdfjs-viewer/viewer.html';
+  const query = new URLSearchParams({ file: blobUrl });
+  iframe.src = `${viewerBase}?${query.toString()}`;
+
+  iframe.onload = () => {
+    hideLoader();
+    signState.viewerReady = true;
+    try {
+      const viewerWindow: any = iframe.contentWindow;
+      if (viewerWindow && viewerWindow.PDFViewerApplication) {
+        const app = viewerWindow.PDFViewerApplication;
+        const doc = viewerWindow.document;
+
+        const editorModeButtons = doc.getElementById('editorModeButtons');
+        editorModeButtons?.classList.remove('hidden');
+
+        const editorSignature = doc.getElementById('editorSignature');
+        editorSignature?.removeAttribute('hidden');
+        const editorSignatureButton = doc.getElementById('editorSignatureButton') as HTMLButtonElement | null;
+        if (editorSignatureButton) {
+          editorSignatureButton.disabled = false;
         }
-      } catch (e) {
-        console.error('Could not enable signature button:', e);
+
+        const editorStamp = doc.getElementById('editorStamp');
+        editorStamp?.removeAttribute('hidden');
+        const editorStampButton = doc.getElementById('editorStampButton') as HTMLButtonElement | null;
+        if (editorStampButton) {
+          editorStampButton.disabled = false;
+        }
+
+        // Ensure annotation editor is fully enabled; start in Signature mode
+        const pdfViewer = app.pdfViewer;
+        const AnnotationEditorType = viewerWindow.pdfjsLib?.AnnotationEditorType;
+        if (pdfViewer && AnnotationEditorType) {
+          pdfViewer.annotationEditorMode = {
+            mode: AnnotationEditorType.SIGNATURE,
+          };
+        }
       }
-    };
-  }
-  
-  const saveBtn = document.getElementById('process-btn');
-  if (saveBtn) {
-    saveBtn.style.display = 'none';
-  }
+    } catch (e) {
+      console.error('Could not initialize base PDF.js viewer for signing:', e);
+    }
+
+    // Now that the viewer is ready, expose the Save Signed PDF button in the Bento UI
+    const saveBtn = document.getElementById('process-btn') as HTMLButtonElement | null;
+    if (saveBtn) {
+      saveBtn.style.display = '';
+      saveBtn.disabled = false;
+      saveBtn.onclick = () => {
+        void applyAndSaveSignatures();
+      };
+    }
+  };
 }
 
 export async function applyAndSaveSignatures() {
@@ -95,15 +103,16 @@ export async function applyAndSaveSignatures() {
 
   try {
     const viewerWindow: any = signState.viewerIframe.contentWindow;
-    if (!viewerWindow || !viewerWindow.pdfjsAnnotationExtensionInstance) {
-      showAlert('Annotations not ready', 'Please wait for the annotation tools to finish loading.');
+    if (!viewerWindow || !viewerWindow.PDFViewerApplication) {
+      showAlert('Viewer not ready', 'The PDF viewer is still initializing.');
       return;
     }
 
-    // Trigger the extension's Export PDF flow so annotations are baked into the downloaded file.
-    await viewerWindow.pdfjsAnnotationExtensionInstance.exportPdf();
+    // Delegate to the built-in download behavior of the base viewer.
+    const app = viewerWindow.PDFViewerApplication;
+    app.eventBus?.dispatch('download', { source: app });
   } catch (error) {
-    console.error('Failed to export annotated PDF:', error);
-    showAlert('Export failed', 'Could not export the PDF with annotations. Please try again.');
+    console.error('Failed to trigger download in base PDF.js viewer:', error);
+    showAlert('Export failed', 'Could not export the signed PDF. Please try again.');
   }
 }

@@ -15430,6 +15430,14 @@ class SignatureManager {
         data = this.#extractedSignatureData;
         break;
     }
+
+    try {
+      const dialog = this.#dialog;
+      const sigColor = dialog?.getAttribute("data-signature-color");
+      if (sigColor && data && typeof data === "object") {
+        data.signatureColor = sigColor;
+      }
+    } catch {}
     let uuid = null;
     const description = this.#description.value;
     if (this.#saveCheckbox.checked) {
@@ -18092,6 +18100,61 @@ const AppConstants = {
 window.PDFViewerApplication = PDFViewerApplication;
 window.PDFViewerApplicationConstants = AppConstants;
 window.PDFViewerApplicationOptions = AppOptions;
+function setupSignatureTypeControls() {
+  const typeInput = document.getElementById("addSignatureTypeInput");
+  const fontSelect = document.getElementById("signatureFontSelect");
+  const colorInput = document.getElementById("signatureColorPicker");
+  if (!typeInput || !fontSelect || !colorInput) {
+    return;
+  }
+  const defaultFontFamily = window.getComputedStyle(typeInput).fontFamily;
+  fontSelect.addEventListener("change", () => {
+    const value = fontSelect.value;
+    switch (value) {
+      case "PingFang":
+        typeInput.style.fontFamily = '"PingFangChangAnTi", ' + defaultFontFamily;
+        break;
+      case "Qiantu":
+        typeInput.style.fontFamily = '"QiantuBifeng", ' + defaultFontFamily;
+        break;
+      case "cursive":
+        typeInput.style.fontFamily = defaultFontFamily;
+        break;
+      case "Great Vibes":
+        typeInput.style.fontFamily = '"Great Vibes", ' + defaultFontFamily;
+        break;
+      case "Kalam":
+        typeInput.style.fontFamily = '"Kalam", ' + defaultFontFamily;
+        break;
+      default:
+        typeInput.style.fontFamily = value + ", " + defaultFontFamily;
+        break;
+    }
+  });
+  const computedColor = window.getComputedStyle(typeInput).color;
+  try {
+    const match = /rgba?\(([^)]+)\)/.exec(computedColor);
+    if (match) {
+      const parts = match[1].split(",").map(part => parseFloat(part.trim()));
+      const [r, g, b] = parts;
+      if (!Number.isNaN(r) && !Number.isNaN(g) && !Number.isNaN(b)) {
+        const toHex = v => v.toString(16).padStart(2, "0");
+        colorInput.value = "#" + toHex(Math.round(r)) + toHex(Math.round(g)) + toHex(Math.round(b));
+      }
+    }
+  } catch {
+  }
+  colorInput.addEventListener("input", () => {
+    const color = colorInput.value;
+    typeInput.style.color = color;
+    const dialog = document.getElementById("addSignatureDialog");
+    if (dialog) {
+      dialog.style.setProperty("--signature-color", color);
+      dialog.setAttribute("data-signature-color", color);
+    }
+  });
+}
+
 function getViewerConfiguration() {
   return {
     appContainer: document.body,
@@ -18309,6 +18372,7 @@ function getViewerConfiguration() {
   };
 }
 function webViewerLoad() {
+  setupSignatureTypeControls();
   const config = getViewerConfiguration();
   const event = new CustomEvent("webviewerloaded", {
     bubbles: true,

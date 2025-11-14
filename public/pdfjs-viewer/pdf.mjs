@@ -23811,11 +23811,20 @@ class SignatureOptions extends DrawingOptions {
       "stroke-width": 0
     });
   }
-  clone() {
-    const clone = new SignatureOptions();
-    clone.updateAll(this);
-    return clone;
+}
+function parseHexColorToRgbArray(color) {
+  if (typeof color !== "string") {
+    return [0, 0, 0];
   }
+  const m = /^#?([0-9a-fA-F]{6})$/.exec(color.trim());
+  if (!m) {
+    return [0, 0, 0];
+  }
+  const hex = m[1];
+  const r = parseInt(hex.slice(0, 2), 16) / 255;
+  const g = parseInt(hex.slice(2, 4), 16) / 255;
+  const b = parseInt(hex.slice(4, 6), 16) / 255;
+  return [r, g, b];
 }
 class DrawnSignatureOptions extends InkDrawingOptions {
   constructor(viewerParameters) {
@@ -24014,17 +24023,23 @@ class SignatureEditor extends DrawingEditor {
       y: savedY
     } = this;
     const {
-      outline
+      outline,
+      signatureColor
     } = this.#signatureData = data;
     this.#isExtracted = outline instanceof ContourDrawOutline;
     this.description = description;
     let drawingOptions;
     if (this.#isExtracted) {
-      drawingOptions = SignatureEditor.getDefaultDrawingOptions();
+      drawingOptions = SignatureEditor.getDefaultDrawingOptions(signatureColor ? {
+        fill: signatureColor
+      } : {});
     } else {
       drawingOptions = SignatureEditor._defaultDrawnSignatureOptions.clone();
       drawingOptions.updateProperties({
-        "stroke-width": outline.thickness
+        "stroke-width": outline.thickness,
+        ...(signatureColor ? {
+          stroke: signatureColor
+        } : null)
       });
     }
     this._addOutlines({
@@ -24122,10 +24137,13 @@ class SignatureEditor extends DrawingEditor {
         "stroke-width": thickness
       }
     } = this;
+    const sigColor = this.#signatureData?.signatureColor;
+    const fallbackCssColor = this._drawingOptions?.stroke || this._drawingOptions?.fill;
+    const serializedColor = sigColor ? parseHexColorToRgbArray(sigColor) : parseHexColorToRgbArray(fallbackCssColor || "#000000");
     const serialized = Object.assign(super.serialize(isForCopying), {
       isSignature: true,
       areContours: this.#isExtracted,
-      color: [0, 0, 0],
+      color: serializedColor,
       thickness: this.#isExtracted ? 0 : thickness
     });
     this.addComment(serialized);

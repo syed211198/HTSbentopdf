@@ -65,9 +65,26 @@ export async function setupFormFiller() {
 }
 
 export async function processAndDownloadForm() {
-  if (viewerIframe && viewerReady) {
-    viewerIframe.contentWindow?.postMessage({ type: 'getData' }, '*');
-  } else {
+  if (!viewerIframe || !viewerReady) {
     showAlert('Viewer not ready', 'Please wait for the form to finish loading.');
+    return;
+  }
+
+  try {
+    const win: any = viewerIframe.contentWindow;
+    const doc: Document | null = win?.document ?? null;
+
+    // Prefer to trigger the same behavior as the toolbar's Download button
+    const downloadBtn = doc?.getElementById('download') as HTMLButtonElement | null;
+    if (downloadBtn) {
+      downloadBtn.click();
+      return;
+    }
+
+    // Fallback: use the postMessage-based getData flow
+    win?.postMessage({ type: 'getData' }, '*');
+  } catch (e) {
+    console.error('Failed to trigger form download:', e);
+    showAlert('Export failed', 'Could not export the filled form. Please try again.');
   }
 }

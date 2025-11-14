@@ -2401,6 +2401,50 @@
           display:none;
         }
 
+/* Custom handwriting fonts for signature type input */
+@font-face {
+  font-family:"PingFangChangAnTi";
+  src:url("./pdfjs-annotation-extension/font/PingFangChangAnTi-2.c4a81d.ttf") format("truetype");
+  font-weight:400;
+  font-style:normal;
+  font-display:swap;
+}
+@font-face {
+  font-family:"QiantuBifeng";
+  src:url("./pdfjs-annotation-extension/font/qiantubifengshouxieti.0cd35d.ttf") format("truetype");
+  font-weight:400;
+  font-style:normal;
+  font-display:swap;
+}
+
+@font-face {
+     font-family: "Kalam";
+     src: url("./pdfjs-annotation-extension/font/Kalam-Regular.ttf") format("truetype");
+     font-weight: 400;
+     font-style: normal;
+     font-display: swap;
+}
+
+@font-face {
+     font-family: "Merriweather";
+     src: url("./standard_fonts/merriweather-400.woff2") format("woff2");
+     font-weight: 400;
+     font-style: normal;
+     font-display: swap;
+}
+
+@font-face {
+     font-family: "Great Vibes";
+     src: url("./standard_fonts/great-vibes400.woff2") format("woff2");
+     font-weight: 400;
+     font-style: normal;
+     font-display: swap;
+}
+
+
+
+/* Custom end */
+
 #addSignatureTypeContainer:is(:is(:is(#addSignatureDialog .mainContainer) #addSignatureActionContainer) > [role="tabpanel"]) #addSignatureTypeInput{
             position:absolute;
             inset:0;
@@ -2418,6 +2462,33 @@
             font-style:italic;
             font-weight:400;
           }
+
+#signatureTypeControls{
+  position:absolute;
+  inset-inline:8px;
+  inset-block-start:8px;
+  display:flex;
+  align-items:center;
+  gap:8px;
+  padding:4px 8px;
+  background-color:rgba(0,0,0,0.4);
+  border-radius:4px;
+  z-index:1;
+}
+#signatureTypeControls label{
+  font-size:11px;
+  color:var(--secondary-text-color);
+}
+#signatureFontSelect{
+  font-size:11px;
+}
+#signatureColorPicker{
+  width:20px;
+  height:20px;
+  padding:0;
+  border:none;
+  background:transparent;
+}
 
 :is(#addSignatureTypeContainer:is(:is(:is(#addSignatureDialog .mainContainer) #addSignatureActionContainer) > [role="tabpanel"]) #addSignatureTypeInput)::-moz-placeholder{
               color:var(--signature-placeholder-color);
@@ -3064,7 +3135,7 @@
 @media (prefers-color-scheme: dark){
 
 :is(.annotationLayer,.annotationEditorLayer) .annotationCommentButton{
-    --csstools-color-scheme--light:;
+    --csstools-color-scheme--light: light;
   }
 }
 
@@ -3596,7 +3667,7 @@
 @media (prefers-color-scheme: dark){
 
 .commentPopup{
-  --csstools-color-scheme--light:;
+  --csstools-color-scheme--light: light;
 }
 }
 
@@ -5415,7 +5486,7 @@
 @media (prefers-color-scheme: dark){
 
 :root{
-  --csstools-color-scheme--light:;
+  --csstools-color-scheme--light: light;
 }
 }
 

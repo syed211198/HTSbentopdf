@@ -647,6 +647,25 @@ See https://github.com/adobe-type-tools/cmap-resources
             <div id="addSignatureActionContainer" data-selected="type">
               <div id="addSignatureTypeContainer" role="tabpanel" aria-labelledby="addSignatureTypeContainer">
                 <input id="addSignatureTypeInput" type="text" data-l10n-id="pdfjs-editor-add-signature-type-input" tabindex="0"></input>
+                <div id="signatureTypeControls">
+                  <label for="signatureFontSelect">Font:</label>
+                  <select id="signatureFontSelect" tabindex="0">
+                    <option value="cursive">Cursive (Default)</option>
+                    <option value="PingFang">PingFang (Handwriting)</option>
+                    <option value="Qiantu">Qiantu (Handwriting)</option>
+                    <option value="Kalam">Kalam</option>
+                    <option value="Merriweather">Merriweather</option>
+                    <option value="DM Sans">DM Sans</option>
+                    <option value="Dancing Script">Dancing Script</option>
+                    <option value="Great Vibes">Great Vibes</option>
+                    <option value="Cedarville Cursive">Cedarville Cursive</option>
+                    <option value="Arial, sans-serif">Arial</option>
+                    <option value="Times New Roman, serif">Times New Roman</option>
+                    <option value="Courier New, monospace">Courier New</option>
+                  </select>
+                  <label for="signatureColorPicker">Color:</label>
+                  <input type="color" id="signatureColorPicker" value="#000000" tabindex="0" />
+                </div>
               </div>
               <div id="addSignatureDrawContainer" role="tabpanel" aria-labelledby="addSignatureDrawButton" tabindex="-1">
                 <svg id="addSignatureDraw" xmlns="http://www.w3.org/2000/svg" aria-labelledby="addSignatureDrawPlaceholder"></svg>
