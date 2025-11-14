@@ -1,5 +1,5 @@
 import { showLoader, hideLoader, showAlert } from '../ui.js';
-import { downloadFile } from '../utils/helpers.js';
+import { downloadFile, readFileAsArrayBuffer } from '../utils/helpers.js';
 import { state } from '../state.js';
 
 let viewerIframe: HTMLIFrameElement | null = null;
@@ -7,7 +7,7 @@ let viewerReady = false;
 
 
 export async function setupFormFiller() {
-  if (!state.pdfDoc) return;
+  if (!state.files || !state.files[0]) return;
 
   showLoader('Loading PDF form...');
   const pdfViewerContainer = document.getElementById('pdf-viewer-container');
@@ -30,7 +30,10 @@ export async function setupFormFiller() {
     window.addEventListener('message', async (event) => {
       if (event.data.type === 'viewerReady') {
         viewerReady = true;
-        const pdfBytes = await state.pdfDoc.save();
+        // Use the original uploaded bytes so that XFA streams remain intact
+        // and PDF.js can fully render XFA-based forms.
+        const file = state.files[0];
+        const pdfBytes = await readFileAsArrayBuffer(file);
         viewerIframe?.contentWindow?.postMessage(
           { type: 'loadPDF', data: pdfBytes },
           '*'

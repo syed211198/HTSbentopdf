@@ -183,7 +183,10 @@
 
     async function loadPDF(data) {
       try {
-        const loadingTask = pdfjsLib.getDocument({ data });
+        const loadingTask = pdfjsLib.getDocument({
+          data,
+          enableXfa: true,
+        });
         pdfDocument = await loadingTask.promise;
         pdfViewer.setDocument(pdfDocument);
         linkService.setDocument(pdfDocument);
