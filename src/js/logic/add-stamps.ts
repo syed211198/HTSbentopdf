@@ -91,11 +91,6 @@ function setupAnnotationViewer(iframe: HTMLIFrameElement) {
           stampBtn.disabled = false
         }
 
-        const AnnotationEditorType = win.pdfjsLib?.AnnotationEditorType
-        if (app?.pdfViewer && AnnotationEditorType?.STAMP != null) {
-          app.pdfViewer.annotationEditorMode = AnnotationEditorType.STAMP
-        }
-
         const root = doc.querySelector('.PdfjsAnnotationExtension') as HTMLElement | null
         if (root) {
           root.classList.add('PdfjsAnnotationExtension_Comment_hidden')
