@@ -18120,12 +18120,23 @@ function setupSignatureTypeControls() {
       case "cursive":
         typeInput.style.fontFamily = defaultFontFamily;
         break;
-      case "Great Vibes":
-        typeInput.style.fontFamily = '"Great Vibes", ' + defaultFontFamily;
-        break;
+
       case "Kalam":
         typeInput.style.fontFamily = '"Kalam", ' + defaultFontFamily;
         break;
+      case "Sacramento":
+        typeInput.style.fontFamily = '"Sacramento", ' + defaultFontFamily;
+        break;
+      case "AlexBrush":
+        typeInput.style.fontFamily = '"AlexBrush", ' + defaultFontFamily;
+        break;
+      case "Allura":
+        typeInput.style.fontFamily = '"Allura", ' + defaultFontFamily;
+        break;
+      case "Handlee":
+        typeInput.style.fontFamily = '"Handlee", ' + defaultFontFamily;
+        break;
+
       default:
         typeInput.style.fontFamily = value + ", " + defaultFontFamily;
         break;

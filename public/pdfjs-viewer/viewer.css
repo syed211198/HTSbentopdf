@@ -2419,29 +2419,43 @@
 
 @font-face {
      font-family: "Kalam";
-     src: url("./pdfjs-annotation-extension/font/Kalam-Regular.ttf") format("truetype");
+     src: url("./standard_fonts/Kalam.ttf") format("truetype");
      font-weight: 400;
      font-style: normal;
      font-display: swap;
 }
 
 @font-face {
-     font-family: "Merriweather";
-     src: url("./standard_fonts/merriweather-400.woff2") format("woff2");
+     font-family: "Sacramento";
+     src: url("./standard_fonts/Sacramento.ttf") format("truetype");
      font-weight: 400;
      font-style: normal;
      font-display: swap;
 }
 
 @font-face {
-     font-family: "Great Vibes";
-     src: url("./standard_fonts/great-vibes400.woff2") format("woff2");
+     font-family: "Alex";
+     src: url("./standard_fonts/AlexBrush.ttf") format("truetype");
      font-weight: 400;
      font-style: normal;
      font-display: swap;
 }
 
+@font-face {
+  font-family: "Allura";
+  src: url("./standard_fonts/Allura.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
 
+@font-face {
+  font-family: "Handlee";
+  src: url("./standard_fonts/Handlee.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
 
 /* Custom end */
 
