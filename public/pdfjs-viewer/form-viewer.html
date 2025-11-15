@@ -112,6 +112,25 @@
       background-color: #323639;
       color: #fff;
     }
+    
+    /* Print styles */
+    /* @media print {
+      .toolbar {
+        display: none !important;
+      }
+      
+      #viewerContainer {
+        position: static !important;
+        overflow: visible !important;
+        background: white !important;
+      }
+      
+      .page {
+        page-break-after: always;
+        page-break-inside: avoid;
+        margin: 0 auto !important;
+      }
+    } */
   </style>
 </head>
 <body>
@@ -139,6 +158,7 @@
       <button id="zoomIn" title="Zoom In">+</button>
     </div>
     
+    <button id="print" title="Print to PDF">Print to PDF</button>
     <button id="download" title="Save & Download">Download</button>
   </div>
   
@@ -148,24 +168,44 @@
 
   <script type="module">
     import * as pdfjsLib from './pdf.mjs';
-    import { EventBus, PDFViewer, PDFLinkService } from './pdf_viewer.mjs';
+    import { EventBus, PDFViewer, PDFLinkService, PDFScriptingManager } from './pdf_viewer.mjs';
 
     pdfjsLib.GlobalWorkerOptions.workerSrc = './pdf.worker.mjs';
 
     const eventBus = new EventBus();
     const linkService = new PDFLinkService({ eventBus });
     
+    // Create scripting manager for XFA forms with JavaScript
+    const scriptingManager = new PDFScriptingManager({
+      eventBus,
+      // Use the packaged sandbox for PDF.js JavaScript (required for XFA)
+      sandboxBundleSrc: './pdf.sandbox.mjs',
+      docProperties: async (pdfDocument) => {
+        // Minimal doc properties are fine; XFA scripts mostly need field objects
+        return {
+          title: '',
+          author: '',
+          subject: '',
+          keywords: '',
+          creator: '',
+          producer: '',
+          creationDate: null,
+          modDate: null
+        };
+      }
+    });
+    
     const pdfViewer = new PDFViewer({
       container: document.getElementById('viewerContainer'),
       viewer: document.getElementById('viewer'),
       eventBus,
       linkService,
-      enableScripting: true,
-      enableXfa: true,
+      scriptingManager,
       renderer: 'canvas'
     });
     
     linkService.setViewer(pdfViewer);
+    scriptingManager.setViewer(pdfViewer);
 
     let pdfDocument = null;
     let currentScale = 1.0;
@@ -188,6 +228,8 @@
           enableXfa: true,
         });
         pdfDocument = await loadingTask.promise;
+        // Wire scripting to the loaded document so XFA/JS executes
+        await scriptingManager.setDocument(pdfDocument);
         pdfViewer.setDocument(pdfDocument);
         linkService.setDocument(pdfDocument);
         
@@ -205,9 +247,28 @@
     async function getPDFData() {
       if (!pdfDocument) return null;
       
-      // Get the PDF data with form fields filled
-      const data = await pdfDocument.saveDocument();
-      return data;
+      // Check if this is an XFA form
+      if (pdfDocument.isPureXfa) {
+        console.warn('Pure XFA form detected - saving with filled data is not supported');
+        window.parent.postMessage({ 
+          type: 'error', 
+          message: 'XFA forms cannot be saved with filled data. Please print to PDF instead.' 
+        }, '*');
+        return null;
+      }
+      
+      try {
+        // For AcroForms, saveDocument() should work
+        const data = await pdfDocument.saveDocument();
+        return data;
+      } catch (error) {
+        console.error('Error saving PDF document:', error);
+        window.parent.postMessage({ 
+          type: 'error', 
+          message: 'Failed to save PDF. This may be an XFA form or protected PDF.' 
+        }, '*');
+        return null;
+      }
     }
 
     // Navigation controls
@@ -253,6 +314,12 @@
       }
     });
 
+    // Print button - trigger browser print
+    document.getElementById('print').addEventListener('click', () => {
+      if (!pdfDocument) return;
+      window.print();
+    });
+    
     // Download button
     document.getElementById('download').addEventListener('click', async () => {
       const data = await getPDFData();
