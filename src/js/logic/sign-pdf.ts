@@ -69,15 +69,6 @@ export async function setupSignTool() {
         if (editorStampButton) {
           editorStampButton.disabled = false;
         }
-
-        // Ensure annotation editor is fully enabled; start in Signature mode
-        const pdfViewer = app.pdfViewer;
-        const AnnotationEditorType = viewerWindow.pdfjsLib?.AnnotationEditorType;
-        if (pdfViewer && AnnotationEditorType) {
-          pdfViewer.annotationEditorMode = {
-            mode: AnnotationEditorType.SIGNATURE,
-          };
-        }
       }
     } catch (e) {
       console.error('Could not initialize base PDF.js viewer for signing:', e);

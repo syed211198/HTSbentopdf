@@ -21663,7 +21663,9 @@ class DrawingOptions {
     this.updateProperties(options);
   }
   clone() {
-    unreachable("Not implemented");
+    const copy = new this.constructor();
+    copy.updateAll(this);
+    return copy;
   }
 }
 class DrawingEditor extends AnnotationEditor {
