@@ -1,5 +1,5 @@
 import { showLoader, hideLoader, showAlert } from '../ui.js';
-import { downloadFile, readFileAsArrayBuffer } from '../utils/helpers.js';
+import { readFileAsArrayBuffer } from '../utils/helpers.js';
 import { state } from '../state.js';
 
 let viewerIframe: HTMLIFrameElement | null = null;
@@ -20,7 +20,7 @@ export async function setupFormFiller() {
 
   try {
     pdfViewerContainer.innerHTML = '';
-    
+
     const file = state.files[0];
     const arrayBuffer = await readFileAsArrayBuffer(file);
     const blob = new Blob([arrayBuffer as ArrayBuffer], { type: 'application/pdf' });
@@ -31,12 +31,12 @@ export async function setupFormFiller() {
     viewerIframe.style.width = '100%';
     viewerIframe.style.height = '100%';
     viewerIframe.style.border = 'none';
-    
+
     viewerIframe.onload = () => {
       viewerReady = true;
       hideLoader();
     };
-    
+
     pdfViewerContainer.appendChild(viewerIframe);
 
     const formFillerOptions = document.getElementById('form-filler-options');
@@ -57,10 +57,50 @@ export async function processAndDownloadForm() {
     return;
   }
 
-  // The full PDF.js viewer has its own download button in the toolbar
-  // Users can use that to download or the print button to print to PDF
-  showAlert(
-    'Download Form',
-    'Use the Download button in the PDF viewer toolbar above, or use Print to save as PDF.'
-  );
+  try {
+    const viewerWindow = viewerIframe.contentWindow;
+    if (!viewerWindow) {
+      console.error('Cannot access iframe window');
+      showAlert(
+        'Download',
+        'Please use the Download button in the PDF viewer toolbar above.'
+      );
+      return;
+    }
+
+    const viewerDoc = viewerWindow.document;
+    if (!viewerDoc) {
+      console.error('Cannot access iframe document');
+      showAlert(
+        'Download',
+        'Please use the Download button in the PDF viewer toolbar above.'
+      );
+      return;
+    }
+
+    const downloadBtn = viewerDoc.getElementById('downloadButton') as HTMLButtonElement | null;
+
+    if (downloadBtn) {
+      console.log('Clicking download button...');
+      downloadBtn.click();
+    } else {
+      console.error('Download button not found in viewer');
+      const secondaryDownload = viewerDoc.getElementById('secondaryDownload') as HTMLButtonElement | null;
+      if (secondaryDownload) {
+        console.log('Clicking secondary download button...');
+        secondaryDownload.click();
+      } else {
+        showAlert(
+          'Download',
+          'Please use the Download button in the PDF viewer toolbar above.'
+        );
+      }
+    }
+  } catch (e) {
+    console.error('Failed to trigger download:', e);
+    showAlert(
+      'Download',
+      'Cannot access viewer controls. Please use the Download button in the PDF viewer toolbar above.'
+    );
+  }
 }

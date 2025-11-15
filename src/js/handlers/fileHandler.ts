@@ -24,9 +24,20 @@ import * as pdfjsLib from 'pdfjs-dist';
 async function handleSinglePdfUpload(toolId, file) {
   showLoader('Loading PDF...');
   try {
-    // pdf-lib does not support XFA, so we let pdf.js render it
+    // For form-filler, bypass pdf-lib (can't handle XFA) and use PDF.js
     if (toolId === 'form-filler') {
       hideLoader();
+
+      const optionsDiv = document.getElementById('form-filler-options');
+      if (optionsDiv) optionsDiv.classList.remove('hidden');
+
+      const processBtn = document.getElementById('process-btn');
+      if (processBtn) {
+        const logic = toolLogic[toolId];
+        if (logic && logic.process) {
+          processBtn.onclick = logic.process;
+        }
+      }
 
       const logic = toolLogic[toolId];
       if (logic && logic.setup) {
