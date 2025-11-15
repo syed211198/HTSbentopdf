@@ -2402,20 +2402,6 @@
         }
 
 /* Custom handwriting fonts for signature type input */
-@font-face {
-  font-family:"PingFangChangAnTi";
-  src:url("./pdfjs-annotation-extension/font/PingFangChangAnTi-2.c4a81d.ttf") format("truetype");
-  font-weight:400;
-  font-style:normal;
-  font-display:swap;
-}
-@font-face {
-  font-family:"QiantuBifeng";
-  src:url("./pdfjs-annotation-extension/font/qiantubifengshouxieti.0cd35d.ttf") format("truetype");
-  font-weight:400;
-  font-style:normal;
-  font-display:swap;
-}
 
 @font-face {
      font-family: "Kalam";

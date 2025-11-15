@@ -18111,12 +18111,6 @@ function setupSignatureTypeControls() {
   fontSelect.addEventListener("change", () => {
     const value = fontSelect.value;
     switch (value) {
-      case "PingFang":
-        typeInput.style.fontFamily = '"PingFangChangAnTi", ' + defaultFontFamily;
-        break;
-      case "Qiantu":
-        typeInput.style.fontFamily = '"QiantuBifeng", ' + defaultFontFamily;
-        break;
       case "cursive":
         typeInput.style.fontFamily = defaultFontFamily;
         break;
