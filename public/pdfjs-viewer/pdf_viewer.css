@@ -3064,7 +3064,7 @@
 @media (prefers-color-scheme: dark){
 
 :is(.annotationLayer,.annotationEditorLayer) .annotationCommentButton{
-    --csstools-color-scheme--light:;
+    --csstools-color-scheme--light: initial;
   }
 }
 
@@ -3596,8 +3596,7 @@
 @media (prefers-color-scheme: dark){
 
 .commentPopup{
-  --csstools-color-scheme--light:;
-}
+  --csstools-color-scheme--light: initial;
 }
 
 @media screen and (forced-colors: active){
@@ -5415,7 +5414,7 @@
 @media (prefers-color-scheme: dark){
 
 :root{
-  --csstools-color-scheme--light:;
+  --csstools-color-scheme--light: initial; 
 }
 }
 
@@ -5606,4 +5605,5 @@
 .pdfPresentationMode .pdfViewer .page{
   margin:0 auto;
   border:2px solid transparent;
+}
 }
