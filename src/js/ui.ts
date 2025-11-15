@@ -1794,6 +1794,15 @@ export const toolTemplates = {
   'form-filler': () => `
     <h2 class="text-2xl font-bold text-white mb-4">PDF Form Filler</h2>
     <p class="mb-6 text-gray-400">Upload a PDF with form fields. Fill them directly in the viewer below, then click the button to save and download the filled form. Also supports XFA forms.</p>
+    
+    <div class="mb-4 p-3 bg-blue-900/20 border border-blue-700/50 rounded-lg">
+      <p class="text-sm text-blue-300">
+        <strong>Note on XFA Forms:</strong> XFA (XML Forms Architecture) is a legacy format that's only supported by certain PDF viewers like BentoPDF and Firefox. 
+        If you open an XFA PDF in other software and see blank pages or no form fields, it means that viewer doesn't support XFA. 
+        To view and fill XFA forms properly, use Firefox or BentoPDF's Form Filler.
+      </p>
+    </div>
+    
     ${createFileInputHTML()}
     <div id="file-display-area" class="mt-4 space-y-2"></div>
     <div id="form-filler-options" class="hidden mt-6">
