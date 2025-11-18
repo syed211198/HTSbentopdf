@@ -5,7 +5,7 @@ import { createIcons, icons } from 'lucide';
 import * as pdfjsLib from 'pdfjs-dist';
 import '../css/styles.css';
 import { formatStars } from './utils/helpers.js';
-import '../version.js';
+import { APP_VERSION, injectVersion } from '../version.js';
 
 const init = () => {
   pdfjsLib.GlobalWorkerOptions.workerSrc = new URL(
@@ -95,7 +95,7 @@ const init = () => {
               &copy; 2025 BentoPDF. All rights reserved.
             </p>
             <p class="text-gray-500 text-xs mt-2">
-              Version <span id="app-version-simple">1.6.2</span>
+              Version <span id="app-version-simple">${APP_VERSION}</span>
             </p>
           </div>
         `;
