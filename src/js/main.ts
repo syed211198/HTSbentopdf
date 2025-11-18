@@ -5,6 +5,7 @@ import { createIcons, icons } from 'lucide';
 import * as pdfjsLib from 'pdfjs-dist';
 import '../css/styles.css';
 import { formatStars } from './utils/helpers.js';
+import '../version.js';
 
 const init = () => {
   pdfjsLib.GlobalWorkerOptions.workerSrc = new URL(
