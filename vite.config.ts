@@ -29,6 +29,7 @@ export default defineConfig(({ mode }) => ({
     exclude: ['coherentpdf'],
   },
   server: {
+    host: true,
     headers: {
       'Cross-Origin-Opener-Policy': 'same-origin',
       'Cross-Origin-Embedder-Policy': 'require-corp',
