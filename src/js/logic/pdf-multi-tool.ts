@@ -17,9 +17,10 @@ interface PageData {
   pageIndex: number;
   rotation: number;
   visualRotation: number;
-  canvas: HTMLCanvasElement | null; 
+  canvas: HTMLCanvasElement | null;
   pdfDoc: PDFLibDocument;
   originalPageIndex: number;
+  fileName: string; // Added for lazy loading identification
 }
 
 function generateId(): string {
@@ -104,7 +105,7 @@ function showLoading(current: number, total: number) {
   loader.classList.remove('hidden');
   const percentage = Math.round((current / total) * 100);
   progress.style.width = `${percentage}%`;
-  text.textContent = `Rendering pages... ${current} of ${total}`;
+  text.textContent = `Rendering pages...`;
 }
 
 async function withButtonLoading(buttonId: string, action: () => Promise<void>) {
@@ -198,6 +199,18 @@ function initializeTool() {
     });
   });
 
+  document.getElementById('select-all-btn')?.addEventListener('click', () => {
+    if (isRendering) return;
+    snapshot();
+    selectAll();
+  });
+
+  document.getElementById('deselect-all-btn')?.addEventListener('click', () => {
+    if (isRendering) return;
+    snapshot();
+    deselectAll();
+  });
+
   document.getElementById('export-pdf-btn')?.addEventListener('click', () => {
     if (isRendering) return;
     if (allPages.length === 0) {
@@ -278,7 +291,7 @@ function initializeTool() {
 }
 
 function resetAll() {
-  renderCancelled = true; 
+  renderCancelled = true;
   isRendering = false;
   snapshot();
   allPages = [];
@@ -286,7 +299,7 @@ function resetAll() {
   splitMarkers.clear();
   currentPdfDocs = [];
   pageCanvasCache.clear();
-  cleanupLazyRendering(); 
+  cleanupLazyRendering();
 
   if (sortableInstance) {
     sortableInstance.destroy();
@@ -356,6 +369,7 @@ async function loadPdfs(files: File[]) {
             canvas: null, // Will be filled when rendered
             pdfDoc,
             originalPageIndex: i,
+            fileName: file.name,
           });
         }
 
@@ -402,6 +416,9 @@ async function loadPdfs(files: File[]) {
     if (renderCancelled) {
       renderCancelled = false;
     }
+    if (allPages.length === 0) {
+      resetAll();
+    }
   }
 }
 
@@ -431,14 +448,22 @@ function createPageElement(canvas: HTMLCanvasElement | null, index: number): HTM
   card.className = 'bg-gray-800 rounded-lg border-2 border-gray-700 p-2 relative group cursor-move';
   card.dataset.pageIndex = index.toString();
   card.dataset.pageId = pageData.id; // Set ID for reconciliation
+
+  // Add attributes for lazy loading identification
+  card.dataset.pageNumber = (pageData.pageIndex + 1).toString();
+  if (pageData.fileName) {
+    card.dataset.fileName = pageData.fileName;
+  }
+  if (!pageData.canvas) {
+    card.dataset.lazyLoad = 'true';
+  }
+
   if (selectedPages.has(index)) {
     card.classList.add('border-indigo-500', 'ring-2', 'ring-indigo-500');
   }
 
   const preview = document.createElement('div');
-  preview.className = 'bg-white rounded mb-2 overflow-hidden w-full flex items-center justify-center relative';
-  preview.style.minHeight = '160px';
-  preview.style.height = '250px';
+  preview.className = 'bg-white rounded mb-2 overflow-hidden w-full flex items-center justify-center relative h-36 sm:h-64';
 
   if (canvas) {
     const previewCanvas = canvas;
@@ -574,6 +599,9 @@ function setupSortable() {
     fallbackTolerance: 3,
     delay: 200,
     delayOnTouchOnly: true,
+    scroll: document.getElementById('main-scroll-container'),
+    scrollSensitivity: 100, // Increase sensitivity for smoother scrolling
+    bubbleScroll: false, // Prevent bubbling scroll to parent
     onEnd: (evt) => {
       const oldIndex = evt.oldIndex!;
       const newIndex = evt.newIndex!;
@@ -724,6 +752,7 @@ async function handleInsertPdf(e: Event) {
         canvas: null, // Placeholder
         pdfDoc,
         originalPageIndex: i,
+        fileName: file.name,
       });
     }
 
@@ -752,9 +781,7 @@ async function handleInsertPdf(e: Event) {
           if (preview) {
             // Re-create the preview content
             preview.innerHTML = '';
-            preview.className = 'bg-white rounded mb-2 overflow-hidden w-full flex items-center justify-center relative';
-            (preview as HTMLElement).style.minHeight = '160px';
-            (preview as HTMLElement).style.height = '250px';
+            preview.className = 'bg-white rounded mb-2 overflow-hidden w-full flex items-center justify-center relative h-36 sm:h-64';
 
             const previewCanvas = canvas;
             previewCanvas.className = 'max-w-full max-h-full object-contain';
@@ -814,6 +841,7 @@ function addBlankPage() {
     canvas,
     pdfDoc: null as any,
     originalPageIndex: -1,
+    fileName: '', // Blank page has no file
   };
 
   allPages.push(blankPageData);
@@ -1064,6 +1092,12 @@ function updatePageDisplay() {
           e.stopPropagation();
           toggleSelectOptimized(index);
         };
+      }
+
+      // Update visual rotation
+      const canvas = card.querySelector('canvas');
+      if (canvas) {
+        canvas.style.transform = `rotate(${pageData.visualRotation}deg)`;
       }
 
       // Update action buttons

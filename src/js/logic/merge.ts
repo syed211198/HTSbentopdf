@@ -1,7 +1,7 @@
 import { showLoader, hideLoader, showAlert } from '../ui.ts';
 import { downloadFile, readFileAsArrayBuffer } from '../utils/helpers.ts';
 import { state } from '../state.ts';
-import { renderPagesProgressively, cleanupLazyRendering } from '../utils/render-utils.ts';
+import { renderPagesProgressively, cleanupLazyRendering, createPlaceholder } from '../utils/render-utils.ts';
 
 import { createIcons, icons } from 'lucide';
 import { PDFDocument as PDFLibDocument } from 'pdf-lib';
@@ -202,7 +202,7 @@ async function renderPageMergeThumbnails() {
           onProgress: (current, total) => {
             currentPageNumber++;
             showLoader(
-              `Rendering page previews: ${currentPageNumber}/${totalPages}`
+              `Rendering page previews...`
             );
           },
           onBatchComplete: () => {
