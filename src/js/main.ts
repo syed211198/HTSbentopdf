@@ -283,7 +283,7 @@ const init = () => {
   }
 
   if (window.location.hash.startsWith('#tool-')) {
-    const toolId = window.location.hash.substring(6); 
+    const toolId = window.location.hash.substring(6);
     setTimeout(() => {
       setupToolInterface(toolId);
       history.replaceState(null, '', window.location.pathname);
@@ -560,7 +560,7 @@ const init = () => {
         input.className = 'shortcut-input w-32 bg-gray-800 border border-gray-600 text-white text-center text-sm rounded px-2 py-1 focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition-all';
         input.placeholder = 'Click to set';
         input.value = formatShortcutDisplay(currentShortcut, isMac);
-        input.readOnly = true; 
+        input.readOnly = true;
 
         const clearBtn = document.createElement('button');
         clearBtn.className = 'absolute -right-2 -top-2 bg-gray-700 hover:bg-red-600 text-white rounded-full p-0.5 hidden group-hover:block shadow-sm';
@@ -572,7 +572,7 @@ const init = () => {
         clearBtn.onclick = (e) => {
           e.stopPropagation();
           ShortcutsManager.setShortcut(toolId, '');
-          renderShortcutsList(); 
+          renderShortcutsList();
         };
 
         input.onkeydown = async (e) => {
@@ -597,7 +597,16 @@ const init = () => {
           if (e.altKey) keys.push('alt');
           if (e.shiftKey) keys.push('shift');
 
-          const key = e.key.toLowerCase();
+          let key = e.key.toLowerCase();
+
+          if (e.altKey && e.code) {
+            if (e.code.startsWith('Key')) {
+              key = e.code.slice(3).toLowerCase();
+            } else if (e.code.startsWith('Digit')) {
+              key = e.code.slice(5);
+            }
+          }
+
           const isModifier = ['control', 'shift', 'alt', 'meta'].includes(key);
           const isDeadKey = key === 'dead' || key.startsWith('dead');
 
@@ -628,7 +637,7 @@ const init = () => {
                 `<strong>${displayCombo}</strong> is already assigned to:<br><br>` +
                 `<em>"${existingToolName}"</em><br><br>` +
                 `Please choose a different shortcut.`,
-                false 
+                false
               );
 
               input.value = formatShortcutDisplay(ShortcutsManager.getShortcut(toolId) || '', isMac);

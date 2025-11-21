@@ -155,7 +155,16 @@ export class ShortcutsManager {
             if (e.altKey) keys.push('alt');
             if (e.shiftKey) keys.push('shift');
 
-            const key = e.key.toLowerCase();
+            let key = e.key.toLowerCase();
+
+            if (e.altKey && e.code) {
+                if (e.code.startsWith('Key')) {
+                    key = e.code.slice(3).toLowerCase();
+                } else if (e.code.startsWith('Digit')) {
+                    key = e.code.slice(5);
+                }
+            }
+
             if (!['control', 'shift', 'alt', 'meta'].includes(key)) {
                 keys.push(key);
             }
@@ -184,6 +193,6 @@ export class ShortcutsManager {
                     return;
                 }
             }
-        }, { capture: true }); 
+        }, { capture: true });
     }
 }
