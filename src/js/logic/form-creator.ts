@@ -364,15 +364,8 @@ function renderField(field: FormField): void {
         contentEl.innerHTML = '<div class="flex flex-col items-center"><i data-lucide="pen-tool" class="w-6 h-6 mb-1"></i><span class="text-[10px]">Sign Here</span></div>'
         setTimeout(() => (window as any).lucide?.createIcons(), 0)
     } else if (field.type === 'date') {
-        contentEl.className = 'w-full h-full flex items-center px-2 text-sm text-black bg-white border border-gray-300'
-        const textSpan = document.createElement('span')
-        textSpan.className = 'date-format-text'
-        textSpan.textContent = field.dateFormat || 'mm/dd/yyyy'
-        contentEl.appendChild(textSpan)
-        const icon = document.createElement('div')
-        icon.className = 'absolute right-2 top-1/2 -translate-y-1/2 text-gray-400'
-        icon.innerHTML = '<i data-lucide="calendar" class="w-4 h-4"></i>'
-        fieldContainer.appendChild(icon)
+        contentEl.className = 'w-full h-full flex items-center justify-center bg-white text-gray-600 border border-gray-300'
+        contentEl.innerHTML = `<div class="flex items-center gap-2 px-2"><i data-lucide="calendar" class="w-4 h-4"></i><span class="text-sm date-format-text">${field.dateFormat || 'mm/dd/yyyy'}</span></div>`
         setTimeout(() => (window as any).lucide?.createIcons(), 0)
     } else if (field.type === 'image') {
         contentEl.className = 'w-full h-full flex items-center justify-center bg-gray-100 text-gray-500 border border-gray-300'
@@ -1590,29 +1583,27 @@ downloadBtn.addEventListener('click', async () => {
                     backgroundColor: rgb(1, 1, 1),
                 })
 
-                // Add Date Format and Keystroke Actions
-                const widgets = dateField.acroField.getWidgets()
+                // Add Date Format and Keystroke Actions to the FIELD (not widget)
                 const dateFormat = field.dateFormat || 'mm/dd/yyyy'
-                widgets.forEach(widget => {
-                    const formatAction = pdfDoc.context.obj({
-                        Type: 'Action',
-                        S: 'JavaScript',
-                        JS: PDFString.of(`AFDate_FormatEx("${dateFormat}");`)
-                    })
-
-                    const keystrokeAction = pdfDoc.context.obj({
-                        Type: 'Action',
-                        S: 'JavaScript',
-                        JS: PDFString.of(`AFDate_KeystrokeEx("${dateFormat}");`)
-                    })
-
-                    // Set as Format action (AA / F) and Keystroke action (AA / K)
-                    const additionalActions = pdfDoc.context.obj({
-                        F: formatAction,
-                        K: keystrokeAction
-                    })
-                    widget.dict.set(PDFName.of('AA'), additionalActions)
+                
+                const formatAction = pdfDoc.context.obj({
+                    Type: 'Action',
+                    S: 'JavaScript',
+                    JS: PDFString.of(`AFDate_FormatEx("${dateFormat}");`)
                 })
+
+                const keystrokeAction = pdfDoc.context.obj({
+                    Type: 'Action',
+                    S: 'JavaScript',
+                    JS: PDFString.of(`AFDate_KeystrokeEx("${dateFormat}");`)
+                })
+
+                // Attach AA (Additional Actions) to the field dictionary
+                const additionalActions = pdfDoc.context.obj({
+                    F: formatAction,
+                    K: keystrokeAction
+                })
+                dateField.acroField.dict.set(PDFName.of('AA'), additionalActions)
 
                 if (field.required) dateField.enableRequired()
                 if (field.readOnly) dateField.enableReadOnly()
