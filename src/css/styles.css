@@ -291,9 +291,6 @@ footer a {
   box-shadow:
     0 10px 15px -3px rgba(79, 70, 229, 0.3),
     0 4px 6px -4px rgba(79, 70, 229, 0.3);
-  /* hover:shadow-xl hover:shadow-indigo-500/30 */
-  transform: translateY(-0.25rem);
-  /* hover:-translate-y-1 */
 }
 
 .btn-gradient:focus {

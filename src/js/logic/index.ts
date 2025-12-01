@@ -67,6 +67,7 @@ import { extractAttachments } from './extract-attachments.js';
 import { editAttachments, setupEditAttachmentsTool } from './edit-attachments.js';
 import { sanitizePdf } from './sanitize-pdf.js';
 import { removeRestrictions } from './remove-restrictions.js';
+import { repairPdf } from './repair-pdf.js';
 
 export const toolLogic = {
   merge: { process: merge, setup: setupMergeTool },
@@ -74,6 +75,7 @@ export const toolLogic = {
   encrypt,
   decrypt,
   'remove-restrictions': removeRestrictions,
+  'repair-pdf': repairPdf,
   organize,
   rotate,
   'add-page-numbers': addPageNumbers,

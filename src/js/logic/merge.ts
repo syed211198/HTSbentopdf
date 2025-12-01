@@ -192,7 +192,7 @@ async function renderPageMergeThumbnails() {
         container,
         createWrapperWithFileName,
         {
-          batchSize: 6,
+          batchSize: 8,
           useLazyLoading: true,
           lazyLoadMargin: '300px',
           onProgress: (current, total) => {

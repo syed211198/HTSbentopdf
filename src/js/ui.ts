@@ -44,19 +44,23 @@ export const dom = {
 };
 
 export const showLoader = (text = 'Processing...') => {
-    dom.loaderText.textContent = text;
-    dom.loaderModal.classList.remove('hidden');
+    if (dom.loaderText) dom.loaderText.textContent = text;
+    if (dom.loaderModal) dom.loaderModal.classList.remove('hidden');
 };
 
-export const hideLoader = () => dom.loaderModal.classList.add('hidden');
+export const hideLoader = () => {
+    if (dom.loaderModal) dom.loaderModal.classList.add('hidden');
+};
 
 export const showAlert = (title: any, message: any) => {
-    dom.alertTitle.textContent = title;
-    dom.alertMessage.textContent = message;
-    dom.alertModal.classList.remove('hidden');
+    if (dom.alertTitle) dom.alertTitle.textContent = title;
+    if (dom.alertMessage) dom.alertMessage.textContent = message;
+    if (dom.alertModal) dom.alertModal.classList.remove('hidden');
 };
 
-export const hideAlert = () => dom.alertModal.classList.add('hidden');
+export const hideAlert = () => {
+    if (dom.alertModal) dom.alertModal.classList.add('hidden');
+};
 
 export const switchView = (view: any) => {
     if (view === 'grid') {
@@ -243,7 +247,7 @@ export const renderPageThumbnails = async (toolId: any, pdfDoc: any) => {
             container,
             createWrapper,
             {
-                batchSize: 6,
+                batchSize: 8,
                 useLazyLoading: true,
                 lazyLoadMargin: '300px',
                 onProgress: (current, total) => {
