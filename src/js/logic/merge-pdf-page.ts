@@ -201,6 +201,59 @@ async function renderPageMergeThumbnails() {
     }
 }
 
+const updateUI = async () => {
+    const fileControls = document.getElementById('file-controls');
+    const mergeOptions = document.getElementById('merge-options');
+
+    if (state.files.length > 0) {
+        if (fileControls) fileControls.classList.remove('hidden');
+        if (mergeOptions) mergeOptions.classList.remove('hidden');
+        await refreshMergeUI();
+    } else {
+        if (fileControls) fileControls.classList.add('hidden');
+        if (mergeOptions) mergeOptions.classList.add('hidden');
+        // Clear file list UI
+        const fileList = document.getElementById('file-list');
+        if (fileList) fileList.innerHTML = '';
+    }
+};
+
+const resetState = async () => {
+    state.files = [];
+    state.pdfDoc = null;
+
+    mergeState.pdfDocs = {};
+    mergeState.pdfBytes = {};
+    mergeState.activeMode = 'file';
+    mergeState.cachedThumbnails = null;
+    mergeState.lastFileHash = null;
+    mergeState.mergeSuccess = false;
+
+    const fileList = document.getElementById('file-list');
+    if (fileList) fileList.innerHTML = '';
+
+    const pageMergePreview = document.getElementById('page-merge-preview');
+    if (pageMergePreview) pageMergePreview.innerHTML = '';
+
+    const fileModeBtn = document.getElementById('file-mode-btn');
+    const pageModeBtn = document.getElementById('page-mode-btn');
+    const filePanel = document.getElementById('file-mode-panel');
+    const pagePanel = document.getElementById('page-mode-panel');
+
+    if (fileModeBtn && pageModeBtn && filePanel && pagePanel) {
+        fileModeBtn.classList.add('bg-indigo-600', 'text-white');
+        fileModeBtn.classList.remove('bg-gray-700', 'text-gray-300');
+        pageModeBtn.classList.remove('bg-indigo-600', 'text-white');
+        pageModeBtn.classList.add('bg-gray-700', 'text-gray-300');
+
+        filePanel.classList.remove('hidden');
+        pagePanel.classList.add('hidden');
+    }
+
+    await updateUI();
+};
+
+
 export async function merge() {
     showLoader('Merging PDFs...');
     try {
@@ -320,7 +373,9 @@ export async function merge() {
                 const blob = new Blob([e.data.pdfBytes], { type: 'application/pdf' });
                 downloadFile(blob, 'merged.pdf');
                 mergeState.mergeSuccess = true;
-                showAlert('Success', 'PDFs merged successfully!');
+                showAlert('Success', 'PDFs merged successfully!', 'success', async () => {
+                    await resetState();
+                });
             } else {
                 console.error('Worker merge error:', e.data.message);
                 showAlert('Error', e.data.message || 'Failed to merge PDFs.');
@@ -494,19 +549,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    const updateUI = async () => {
-        if (state.files.length > 0) {
-            if (fileControls) fileControls.classList.remove('hidden');
-            if (mergeOptions) mergeOptions.classList.remove('hidden');
-            await refreshMergeUI();
-        } else {
-            if (fileControls) fileControls.classList.add('hidden');
-            if (mergeOptions) mergeOptions.classList.add('hidden');
-            // Clear file list UI
-            const fileList = document.getElementById('file-list');
-            if (fileList) fileList.innerHTML = '';
-        }
-    };
+
 
     if (fileInput && dropZone) {
         fileInput.addEventListener('change', async (e) => {
@@ -565,14 +608,5 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    const alertOkBtn = document.getElementById('alert-ok-btn');
-    if (alertOkBtn) {
-        alertOkBtn.addEventListener('click', async () => {
-            if (mergeState.mergeSuccess) {
-                state.files = [];
-                mergeState.mergeSuccess = false;
-                await updateUI();
-            }
-        });
-    }
+
 });

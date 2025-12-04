@@ -16,7 +16,7 @@ export const categories = [
         subtitle: 'Combine multiple PDFs into one file. Preserves Bookmarks.',
       },
       {
-        id: 'split',
+        href: '/src/pages/split-pdf.html',
         name: 'Split PDF',
         icon: 'scissors',
         subtitle: 'Extract a range of pages into a new PDF.',

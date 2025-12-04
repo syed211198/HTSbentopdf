@@ -63,6 +63,7 @@ export default defineConfig(({ mode }) => ({
         'form-creator': resolve(__dirname, 'src/pages/form-creator.html'),
         'repair-pdf': resolve(__dirname, 'src/pages/repair-pdf.html'),
         'merge-pdf': resolve(__dirname, 'src/pages/merge-pdf.html'),
+        'split-pdf': resolve(__dirname, 'src/pages/split-pdf.html'),
       },
     },
   },

@@ -1,5 +1,5 @@
 
-import { setupSplitTool, split } from './split.js';
+
 import { encrypt } from './encrypt.js';
 import { decrypt } from './decrypt.js';
 import { organize } from './organize.js';
@@ -71,7 +71,6 @@ import { repairPdf } from './repair-pdf.js';
 
 export const toolLogic = {
 
-  split: { process: split, setup: setupSplitTool },
   encrypt,
   decrypt,
   'remove-restrictions': removeRestrictions,
