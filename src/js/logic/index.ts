@@ -8,7 +8,7 @@ import { addPageNumbers } from './add-page-numbers.js';
 import { pdfToJpg } from './pdf-to-jpg.js';
 import { jpgToPdf } from './jpg-to-pdf.js';
 import { scanToPdf } from './scan-to-pdf.js';
-import { compress } from './compress.js';
+
 import { pdfToGreyscale } from './pdf-to-greyscale.js';
 import { pdfToZip } from './pdf-to-zip.js';
 import { editMetadata } from './edit-metadata.js';
@@ -81,7 +81,7 @@ export const toolLogic = {
   'pdf-to-jpg': pdfToJpg,
   'jpg-to-pdf': jpgToPdf,
   'scan-to-pdf': scanToPdf,
-  compress,
+
   'pdf-to-greyscale': pdfToGreyscale,
   'pdf-to-zip': pdfToZip,
   'edit-metadata': editMetadata,

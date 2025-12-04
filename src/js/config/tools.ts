@@ -22,7 +22,7 @@ export const categories = [
         subtitle: 'Extract a range of pages into a new PDF.',
       },
       {
-        id: 'compress',
+        href: '/src/pages/compress-pdf.html',
         name: 'Compress PDF',
         icon: 'zap',
         subtitle: 'Reduce the file size of your PDF.',
@@ -438,7 +438,7 @@ export const categories = [
     name: 'Optimize & Repair',
     tools: [
       {
-        id: 'compress',
+        href: '/src/pages/compress-pdf.html',
         name: 'Compress PDF',
         icon: 'zap',
         subtitle: 'Reduce the file size of your PDF.',
