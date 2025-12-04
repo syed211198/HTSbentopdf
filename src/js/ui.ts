@@ -449,7 +449,7 @@ export const toolTemplates = {
     encrypt: () => `
                                                                                                                                                                                                                                     <h2 class="text-2xl font-bold text-white mb-4" > Encrypt PDF </h2>
                                                                                                                                                                                                                                         <p class="mb-6 text-gray-400" > Add 256 - bit AES password protection to your PDF.</p>
-  ${ createFileInputHTML() }
+  ${createFileInputHTML()}
 <div id="file-display-area" class="mt-4 space-y-2" > </div>
     <div id = "encrypt-options" class="hidden space-y-4 mt-6" >
         <div>
@@ -517,7 +517,7 @@ export const toolTemplates = {
     decrypt: () => `
                                                                                                                                                                                 <h2 class="text-2xl font-bold text-white mb-4" > Decrypt PDF </h2>
                                                                                                                                                                                     <p class="mb-6 text-gray-400" > Upload an encrypted PDF and provide its password to create an unlocked version.</p>
-        ${ createFileInputHTML() }
+        ${createFileInputHTML()}
 <div id="file-display-area" class="mt-4 space-y-2" > </div>
     <div id = "decrypt-options" class="hidden space-y-4 mt-6" >
         <div>
@@ -531,7 +531,7 @@ export const toolTemplates = {
     organize: () => `
                         <h2 class="text-2xl font-bold text-white mb-4" > Organize PDF </h2>
                             <p class="mb-6 text-gray-400" > Reorder, rotate, or delete pages.Drag and drop pages to reorder them.</p>
-        ${ createFileInputHTML() }
+        ${createFileInputHTML()}
 <div id="file-display-area" class="mt-4 space-y-2" > </div>
     <div id = "page-organizer" class="hidden grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-4 my-6" > </div>
         <button id = "process-btn" class="btn-gradient w-full mt-6" > Save Changes </button>
@@ -540,7 +540,7 @@ export const toolTemplates = {
     rotate: () => `
             <h2 class="text-2xl font-bold text-white mb-4" > Rotate PDF </h2>
                 <p class="mb-6 text-gray-400" > Rotate all or specific pages in a PDF document.</p>
-        ${ createFileInputHTML() }
+        ${createFileInputHTML()}
 <div id="file-display-area" class="mt-4 space-y-2" > </div>
 
     <div id = "rotate-all-controls" class="hidden my-6" >
@@ -599,7 +599,7 @@ Right
     'add-page-numbers': () => `
                                                                     <h2 class="text-2xl font-bold text-white mb-4" > Add Page Numbers </h2>
                                                                         <p class="mb-6 text-gray-400" > Add customizable page numbers to your PDF file.</p>
-        ${ createFileInputHTML() }
+        ${createFileInputHTML()}
 <div id="file-display-area" class="mt-4 space-y-2" > </div>
     <div id = "pagenum-options" class="hidden grid grid-cols-1 md:grid-cols-2 gap-4 mt-6" >
         <div>
@@ -634,7 +634,7 @@ Right
     'pdf-to-jpg': () => `
                                                                             <h2 class="text-2xl font-bold text-white mb-4" > PDF to JPG </h2>
                                                                                 <p class="mb-6 text-gray-400" > Convert each page of a PDF file into a high - quality JPG image.</p>
-        ${ createFileInputHTML() }
+        ${createFileInputHTML()}
 <div id="file-display-area" class="mt-4 space-y-2" > </div>
     <div id = "jpg-preview" class="hidden mt-6" >
         <div class="mb-4" >
@@ -649,28 +649,11 @@ Right
                                     <button id = "process-btn" class="btn-gradient w-full" > Download All as ZIP</button >
                                         </div>
                                             `,
-    'jpg-to-pdf': () => `
-                                        <h2 class="text-2xl font-bold text-white mb-4" > JPG to PDF </h2>
-                                            <p class="mb-6 text-gray-400" > Convert one or more JPG images into a single PDF file.</p>
-        ${ createFileInputHTML({ multiple: true, accept: 'image/jpeg', showControls: true }) }
-<div id="file-display-area" class="mt-4 space-y-2" > </div>
-    <div id = "jpg-to-pdf-options" class="hidden mt-6" >
-        <div class="mb-4" >
-            <label for= "jpg-pdf-quality" class= "block mb-2 text-sm font-medium text-gray-300" > PDF Quality </label>
-                <select id = "jpg-pdf-quality" class="w-full bg-gray-700 border border-gray-600 text-white rounded-lg p-2.5" >
-                    <option value="high" > High Quality(Larger file) </option>
-                        <option value = "medium" selected > Medium Quality(Balanced) </option>
-                            <option value = "low" > Low Quality(Smaller file) </option>
-                                </select>
-                                <p class="mt-1 text-xs text-gray-400" > Controls image compression when embedding into PDF </p>
-                                    </div>
-                                    </div>
-                                    <button id = "process-btn" class="btn-gradient w-full mt-6" > Convert to PDF </button>
-                                        `,
+
     'scan-to-pdf': () => `
                                         <h2 class="text-2xl font-bold text-white mb-4" > Scan to PDF </h2>
                                             <p class="mb-6 text-gray-400" > Use your device's camera to scan documents and save them as a PDF. On desktop, this will open a file picker.</p>
-        ${ createFileInputHTML({ accept: 'image/*' }) }
+        ${createFileInputHTML({ accept: 'image/*' })}
 <div id="file-display-area" class="mt-4 space-y-2" > </div>
     <button id = "process-btn" class="btn-gradient w-full mt-6" > Create PDF from Scans </button>
         `,
@@ -678,7 +661,7 @@ Right
     crop: () => `
         <h2 class="text-2xl font-bold text-white mb-4" > Crop PDF </h2>
             <p class="mb-6 text-gray-400" > Click and drag to select a crop area on any page.You can set different crop areas for each page.</p>
-    ${ createFileInputHTML() }
+    ${createFileInputHTML()}
 <div id="crop-editor" class="hidden" >
     <div class="flex flex-col md:flex-row items-center justify-center gap-4 mb-4 p-3 bg-gray-900 rounded-lg border border-gray-700" >
         <div id="page-nav" class="flex items-center gap-2" > </div>
@@ -703,7 +686,7 @@ Right
     compress: () => `
                                                             <h2 class="text-2xl font-bold text-white mb-4" > Compress PDF </h2>
                                                                 <p class="mb-6 text-gray-400" > Reduce file size by choosing the compression method that best suits your document.Supports multiple PDFs.</p>
-    ${ createFileInputHTML({ multiple: true, showControls: true }) }
+    ${createFileInputHTML({ multiple: true, showControls: true })}
 <div id="file-display-area" class="mt-4 space-y-2" > </div>
     <div id = "compress-options" class="hidden mt-6 space-y-6" >
         <div>
@@ -733,14 +716,14 @@ Right
     'pdf-to-greyscale': () => `
                                                             <h2 class="text-2xl font-bold text-white mb-4" > PDF to Greyscale </h2>
                                                                 <p class="mb-6 text-gray-400" > Convert all pages of a PDF to greyscale.This is done by rendering each page, applying a filter, and rebuilding the PDF.</p>
-        ${ createFileInputHTML() }
+        ${createFileInputHTML()}
 <div id="file-display-area" class="mt-4 space-y-2" > </div>
     <button id = "process-btn" class="btn-gradient w-full mt-6" > Convert to Greyscale </button>
         `,
     'pdf-to-zip': () => `
         <h2 class="text-2xl font-bold text-white mb-4" > Combine PDFs into ZIP </h2>
             <p class="mb-6 text-gray-400" > Select multiple PDF files to download them together in a single ZIP archive.</p>
-        ${ createFileInputHTML({ multiple: true, showControls: true }) }
+        ${createFileInputHTML({ multiple: true, showControls: true })}
 <div id="file-display-area" class="mt-4 space-y-2" > </div>
     <button id = "process-btn" class="btn-gradient w-full mt-6" > Create ZIP File </button>
         `,
@@ -757,7 +740,7 @@ Right
     </div>
     </div>
 
-    ${ createFileInputHTML() }
+    ${createFileInputHTML()}
 
 <div id="metadata-form" class="hidden mt-6 space-y-4" >
     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4" >
@@ -811,21 +794,21 @@ Right
     'remove-metadata': () => `
                                                                                                 <h2 class="text-2xl font-bold text-white mb-4" > Remove PDF Metadata </h2>
                                                                                                     <p class="mb-6 text-gray-400" > Completely remove identifying metadata from your PDF.</p>
-        ${ createFileInputHTML() }
+        ${createFileInputHTML()}
 <div id="file-display-area" class="mt-4 space-y-2" > </div>
     <button id = "process-btn" class="hidden mt-6 btn-gradient w-full" > Remove Metadata & Download </button>
         `,
     flatten: () => `
         <h2 class="text-2xl font-bold text-white mb-4" > Flatten PDF </h2>
             <p class="mb-6 text-gray-400" > Make PDF forms and annotations non - editable by flattening them.</p>
-        ${ createFileInputHTML({ multiple: true, showControls: true }) }
+        ${createFileInputHTML({ multiple: true, showControls: true })}
 <div id="file-display-area" class="mt-4 space-y-2" > </div>
     <button id = "process-btn" class="hidden mt-6 btn-gradient w-full" > Flatten PDF </button>
         `,
     'pdf-to-png': () => `
         <h2 class="text-2xl font-bold text-white mb-4" > PDF to PNG </h2>
             <p class="mb-6 text-gray-400" > Convert each page of a PDF file into a high - quality PNG image.</p>
-        ${ createFileInputHTML() }
+        ${createFileInputHTML()}
 <div id="file-display-area" class="mt-4 space-y-2" > </div>
     <div id = "png-preview" class="hidden mt-6" >
         <div class="mb-4" >
@@ -843,7 +826,7 @@ Right
     'png-to-pdf': () => `
                                         <h2 class="text-2xl font-bold text-white mb-4" > PNG to PDF </h2>
                                             <p class="mb-6 text-gray-400" > Convert one or more PNG images into a single PDF file.</p>
-        ${ createFileInputHTML({ multiple: true, accept: 'image/png', showControls: true }) }
+        ${createFileInputHTML({ multiple: true, accept: 'image/png', showControls: true })}
 <div id="file-display-area" class="mt-4 space-y-2" > </div>
     <div id = "png-to-pdf-options" class="hidden mt-6" >
         <div class="mb-4" >
@@ -861,7 +844,7 @@ Right
     'pdf-to-webp': () => `
                                         <h2 class="text-2xl font-bold text-white mb-4" > PDF to WebP </h2>
                                             <p class="mb-6 text-gray-400" > Convert each page of a PDF file into a modern WebP image.</p>
-        ${ createFileInputHTML() }
+        ${createFileInputHTML()}
 <div id="file-display-area" class="mt-4 space-y-2" > </div>
     <div id = "webp-preview" class="hidden mt-6" >
         <div class="mb-4" >
@@ -879,14 +862,14 @@ Right
     'webp-to-pdf': () => `
                                         <h2 class="text-2xl font-bold text-white mb-4" > WebP to PDF </h2>
                                             <p class="mb-6 text-gray-400" > Convert one or more WebP images into a single PDF file.</p>
-        ${ createFileInputHTML({ multiple: true, accept: 'image/webp', showControls: true }) }
+        ${createFileInputHTML({ multiple: true, accept: 'image/webp', showControls: true })}
 <div id="file-display-area" class="mt-4 space-y-2" > </div>
     <button id = "process-btn" class="btn-gradient w-full mt-6" > Convert to PDF </button>
         `,
     edit: () => `
         <h2 class="text-2xl font-bold text-white mb-4" > PDF Studio </h2>
             <p class="mb-6 text-gray-400" > An all -in -one PDF workspace where you can annotate, draw, highlight, redact, add comments and shapes, take screenshots, and view PDFs.</p>
-        ${ createFileInputHTML() }
+        ${createFileInputHTML()}
 <div id="file-display-area" class="mt-4 space-y-2" > </div>
     <div id = "embed-pdf-wrapper" class="hidden mt-6 w-full h-[75vh] border border-gray-600 rounded-lg" >
         <div id="embed-pdf-container" class="w-full h-full" > </div>
@@ -895,7 +878,7 @@ Right
     'delete-pages': () => `
             <h2 class="text-2xl font-bold text-white mb-4" > Delete Pages </h2>
                 <p class="mb-6 text-gray-400" > Remove specific pages or ranges of pages from your PDF file.</p>
-        ${ createFileInputHTML() }
+        ${createFileInputHTML()}
 <div id="file-display-area" class="mt-4 space-y-2" > </div>
     <div id = "delete-options" class="hidden mt-6" >
         <p class="mb-2 font-medium text-white" > Total Pages: <span id="total-pages" > </span></p >
@@ -908,7 +891,7 @@ Right
     'add-blank-page': () => `
                             <h2 class="text-2xl font-bold text-white mb-4" > Add Blank Pages </h2>
                                 <p class="mb-6 text-gray-400" > Insert one or more blank pages at a specific position in your document.</p>
-        ${ createFileInputHTML() }
+        ${createFileInputHTML()}
 <div id="file-display-area" class="mt-4 space-y-2" > </div>
     <div id = "blank-page-options" class="hidden mt-6" >
         <p class="mb-2 font-medium text-white" > Total Pages: <span id="total-pages" > </span></p >
@@ -922,7 +905,7 @@ Right
     'extract-pages': () => `
                                 <h2 class="text-2xl font-bold text-white mb-4" > Extract Pages </h2>
                                     <p class="mb-6 text-gray-400" > Extract specific pages from a PDF into separate files.Your files will download in a ZIP archive.</p>
-        ${ createFileInputHTML() }
+        ${createFileInputHTML()}
 <div id="file-display-area" class="mt-4 space-y-2" > </div>
     <div id = "extract-options" class="hidden mt-6" >
         <p class="mb-2 font-medium text-white" > Total Pages: <span id="total-pages" > </span></p >
@@ -935,7 +918,7 @@ Right
     'add-watermark': () => `
                         <h2 class="text-2xl font-bold text-white mb-4" > Add Watermark </h2>
                             <p class="mb-6 text-gray-400" > Apply a text or image watermark to every page of your PDF document.</p>
-    ${ createFileInputHTML() }
+    ${createFileInputHTML()}
 <div id="file-display-area" class="mt-4 space-y-2" > </div>
 
     <div id = "watermark-options" class="hidden mt-6 space-y-4" >
@@ -999,7 +982,7 @@ Right
     'add-header-footer': () => `
                                                                                                 <h2 class= "text-2xl font-bold text-white mb-4" > Add Header & Footer </h2>
                                                                                                 <p class= "mb-6 text-gray-400" > Add custom text to the top and bottom margins of every page.</p>
-    ${ createFileInputHTML() }
+    ${createFileInputHTML()}
                                                                                             <div id = "file-display-area" class= "mt-4 space-y-2" > </div>
                                                                                             <div id = "header-footer-options" class= "hidden mt-6 space-y-4" >
 
@@ -1063,7 +1046,7 @@ Right
                                                                                                                                                                                                     <p class="text-xs text-gray-400" > JPG, PNG, WebP, BMP, TIFF, SVG, HEIC / HEIF </p>
                                                                                                                                                                                                         </div>
         
-        ${ createFileInputHTML({ multiple: true, accept: 'image/jpeg,image/png,image/webp,image/bmp,image/tiff,image/svg+xml', showControls: true }) }
+        ${createFileInputHTML({ multiple: true, accept: 'image/jpeg,image/png,image/webp,image/bmp,image/tiff,image/svg+xml', showControls: true })}
 <ul id="image-list" class="mt-4 grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-4" >
     </ul>
     <div id = "image-to-pdf-options" class="hidden mt-6" >
@@ -1082,7 +1065,7 @@ Right
     'change-permissions': () => `
                                     <h2 class="text-2xl font-bold text-white mb-4" > Change PDF Permissions </h2>
                                         <p class="mb-6 text-gray-400" > Modify passwords and permissions without losing quality.</p>
-    ${ createFileInputHTML() }
+    ${createFileInputHTML()}
 <div id="file-display-area" class="mt-4 space-y-2" > </div>
     <div id = "permissions-options" class="hidden mt-6 space-y-4" >
         <div>
@@ -1151,7 +1134,7 @@ Right
     'pdf-to-markdown': () => `
                                                                                                                                                                     <h2 class="text-2xl font-bold text-white mb-4" > PDF to Markdown </h2>
                                                                                                                                                                         <p class="mb-6 text-gray-400" > Convert a PDF's text content into a structured Markdown file.</p>
-        ${ createFileInputHTML({ accept: '.pdf' }) }
+        ${createFileInputHTML({ accept: '.pdf' })}
 <div id="file-display-area" class="mt-4 space-y-2" > </div>
     <div class="hidden mt-4 p-3 bg-gray-900 border border-yellow-500/30 text-yellow-200 rounded-lg" id = "quality-note" >
         <p class="text-sm text-gray-400" > <b>Note: </b> This is a text-focused conversion. Tables and images will not be included.</p >
@@ -1169,7 +1152,7 @@ Right
                                         </div>
 
                                         <div id = "txt-upload-panel" >
-                                            ${ createFileInputHTML({ multiple: true, accept: 'text/plain,.txt', showControls: true }) }
+                                            ${createFileInputHTML({ multiple: true, accept: 'text/plain,.txt', showControls: true })}
 <div id="file-display-area" class="mt-4 space-y-2" > </div>
     </div>
 
@@ -1249,21 +1232,21 @@ Right
     'invert-colors': () => `
                                                                                                                                                                                 <h2 class="text-2xl font-bold text-white mb-4" > Invert PDF Colors </h2>
                                                                                                                                                                                     <p class="mb-6 text-gray-400" > Convert your PDF to a "dark mode" by inverting its colors.This works best on simple text and image documents.</p>
-        ${ createFileInputHTML() }
+        ${createFileInputHTML()}
 <div id="file-display-area" class="mt-4 space-y-2" > </div>
     <button id = "process-btn" class="hidden btn-gradient w-full mt-6" > Invert Colors & Download </button>
         `,
     'view-metadata': () => `
         <h2 class="text-2xl font-bold text-white mb-4" > View PDF Metadata </h2>
             <p class="mb-6 text-gray-400" > Upload a PDF to view its internal properties, such as Title, Author, and Creation Date.</p>
-        ${ createFileInputHTML() }
+        ${createFileInputHTML()}
 <div id="file-display-area" class="mt-4 space-y-2" > </div>
     <div id = "metadata-results" class="hidden mt-6 p-4 bg-gray-900 border border-gray-700 rounded-lg" > </div>
         `,
     'reverse-pages': () => `
         <h2 class="text-2xl font-bold text-white mb-4" > Reverse PDF Pages </h2>
             <p class="mb-6 text-gray-400" > Flip the order of all pages in your document, making the last page the first.</p>
-        ${ createFileInputHTML({ multiple: true, accept: 'application/pdf', showControls: true }) }
+        ${createFileInputHTML({ multiple: true, accept: 'application/pdf', showControls: true })}
 <div id="file-display-area" class="mt-4 space-y-2" > </div>
     <button id = "process-btn" class="hidden btn-gradient w-full mt-6" > Reverse & Download </button>
         `,
@@ -1303,42 +1286,42 @@ Right
     'svg-to-pdf': () => `
                                                                                         <h2 class="text-2xl font-bold text-white mb-4" > SVG to PDF </h2>
                                                                                             <p class="mb-6 text-gray-400" > Convert one or more SVG vector images into a single PDF file.</p>
-        ${ createFileInputHTML({ multiple: true, accept: 'image/svg+xml', showControls: true }) }
+        ${createFileInputHTML({ multiple: true, accept: 'image/svg+xml', showControls: true })}
 <div id="file-display-area" class="mt-4 space-y-2" > </div>
     <button id = "process-btn" class="btn-gradient w-full mt-6" > Convert to PDF </button>
         `,
     'bmp-to-pdf': () => `
         <h2 class="text-2xl font-bold text-white mb-4" > BMP to PDF </h2>
             <p class="mb-6 text-gray-400" > Convert one or more BMP images into a single PDF file.</p>
-        ${ createFileInputHTML({ multiple: true, accept: 'image/bmp', showControls: true }) }
+        ${createFileInputHTML({ multiple: true, accept: 'image/bmp', showControls: true })}
 <div id="file-display-area" class="mt-4 space-y-2" > </div>
     <button id = "process-btn" class="btn-gradient w-full mt-6" > Convert to PDF </button>
         `,
     'heic-to-pdf': () => `
         <h2 class="text-2xl font-bold text-white mb-4" > HEIC to PDF </h2>
             <p class="mb-6 text-gray-400" > Convert one or more HEIC(High Efficiency) images from your iPhone or camera into a single PDF file.</p>
-        ${ createFileInputHTML({ multiple: true, accept: '.heic,.heif', showControls: true }) }
+        ${createFileInputHTML({ multiple: true, accept: '.heic,.heif', showControls: true })}
 <div id="file-display-area" class="mt-4 space-y-2" > </div>
     <button id = "process-btn" class="btn-gradient w-full mt-6" > Convert to PDF </button>
         `,
     'tiff-to-pdf': () => `
         <h2 class="text-2xl font-bold text-white mb-4" > TIFF to PDF </h2>
             <p class="mb-6 text-gray-400" > Convert one or more single or multi - page TIFF images into a single PDF file.</p>
-        ${ createFileInputHTML({ multiple: true, accept: 'image/tiff', showControls: true }) }
+        ${createFileInputHTML({ multiple: true, accept: 'image/tiff', showControls: true })}
 <div id="file-display-area" class="mt-4 space-y-2" > </div>
     <button id = "process-btn" class="btn-gradient w-full mt-6" > Convert to PDF </button>
         `,
     'pdf-to-bmp': () => `
         <h2 class="text-2xl font-bold text-white mb-4" > PDF to BMP </h2>
             <p class="mb-6 text-gray-400" > Convert each page of a PDF file into a BMP image.Your files will be downloaded in a ZIP archive.</p>
-        ${ createFileInputHTML() }
+        ${createFileInputHTML()}
 <div id="file-display-area" class="mt-4 space-y-2" > </div>
     <button id = "process-btn" class="btn-gradient w-full mt-6" > Convert to BMP & Download ZIP </button>
         `,
     'pdf-to-tiff': () => `
         <h2 class="text-2xl font-bold text-white mb-4" > PDF to TIFF </h2>
             <p class="mb-6 text-gray-400" > Convert each page of a PDF file into a high - quality TIFF image.Your files will be downloaded in a ZIP archive.</p>
-        ${ createFileInputHTML() }
+        ${createFileInputHTML()}
 <div id="file-display-area" class="mt-4 space-y-2" > </div>
     <button id = "process-btn" class="btn-gradient w-full mt-6" > Convert to TIFF & Download ZIP </button>
         `,
@@ -1346,7 +1329,7 @@ Right
     'split-in-half': () => `
         <h2 class="text-2xl font-bold text-white mb-4" > Split Pages in Half </h2>
             <p class="mb-6 text-gray-400" > Choose a method to divide every page of your document into two separate pages.</p>
-        ${ createFileInputHTML() }
+        ${createFileInputHTML()}
 <div id="file-display-area" class="mt-4 space-y-2" > </div>
 
     <div id = "split-half-options" class="hidden mt-6" >
@@ -1362,7 +1345,7 @@ Right
     'page-dimensions': () => `
                             <h2 class="text-2xl font-bold text-white mb-4" > Analyze Page Dimensions </h2>
                                 <p class="mb-6 text-gray-400" > Upload a PDF to see the precise dimensions, standard size, and orientation of every page.</p>
-        ${ createFileInputHTML() }
+        ${createFileInputHTML()}
 <div id="file-display-area" class="mt-4 space-y-2" > </div>
 
     <div id = "dimensions-results" class="hidden mt-6" >
@@ -1411,7 +1394,7 @@ Right
     'n-up': () => `
                                                     <h2 class="text-2xl font-bold text-white mb-4" > N - Up Page Arrangement </h2>
                                                         <p class="mb-6 text-gray-400" > Combine multiple pages from your PDF onto a single sheet.This is great for creating booklets or proof sheets.</p>
-        ${ createFileInputHTML() }
+        ${createFileInputHTML()}
 <div id="file-display-area" class="mt-4 space-y-2" > </div>
 
     <div id = "n-up-options" class="hidden mt-6 space-y-4" >
@@ -1474,7 +1457,7 @@ Right
     'duplicate-organize': () => `
                                                                                                                                             <h2 class="text-2xl font-bold text-white mb-4" > Page Manager </h2>
                                                                                                                                                 <p class="mb-6 text-gray-400" > Drag pages to reorder them.Use the <i data-lucide="copy-plus" class="inline-block w-4 h-4 text-green-400" > </i> icon to duplicate a page or the <i data-lucide="x-circle" class="inline-block w-4 h-4 text-red-400"></i > icon to delete it.</p>
-        ${ createFileInputHTML() }
+        ${createFileInputHTML()}
 <div id="file-display-area" class="mt-4 space-y-2" > </div>
 
     <div id = "page-manager-options" class="hidden mt-6" >
@@ -1487,7 +1470,7 @@ Right
     'combine-single-page': () => `
                 <h2 class="text-2xl font-bold text-white mb-4" > Combine to a Single Page </h2>
                     <p class="mb-6 text-gray-400" > Stitch all pages of your PDF together vertically or horizontally to create one continuous page.</p>
-        ${ createFileInputHTML() }
+        ${createFileInputHTML()}
 <div id="file-display-area" class="mt-4 space-y-2" > </div>
 
     <div id = "combine-options" class="hidden mt-6 space-y-4" >
@@ -1535,7 +1518,7 @@ Right
     'fix-dimensions': () => `
                                                                                 <h2 class="text-2xl font-bold text-white mb-4" > Standardize Page Dimensions </h2>
                                                                                     <p class="mb-6 text-gray-400" > Convert all pages in your PDF to a uniform size.Choose a standard format or define a custom dimension.</p>
-        ${ createFileInputHTML() }
+        ${createFileInputHTML()}
 <div id="file-display-area" class="mt-4 space-y-2" > </div>
 
     <div id = "fix-dimensions-options" class="hidden mt-6 space-y-4" >
@@ -1611,7 +1594,7 @@ Right
     'change-background-color': () => `
                                                                                                                                                         <h2 class="text-2xl font-bold text-white mb-4" > Change Background Color </h2>
                                                                                                                                                             <p class="mb-6 text-gray-400" > Select a new background color for every page of your PDF.</p>
-        ${ createFileInputHTML() }
+        ${createFileInputHTML()}
 <div id="file-display-area" class="mt-4 space-y-2" > </div>
     <div id = "change-background-color-options" class="hidden mt-6" >
         <label for= "background-color" class= "block mb-2 text-sm font-medium text-gray-300" > Choose Background Color </label>
@@ -1623,7 +1606,7 @@ Right
     'change-text-color': () => `
                     <h2 class="text-2xl font-bold text-white mb-4" > Change Text Color </h2>
                         <p class="mb-6 text-gray-400" > Change the color of dark text in your PDF.This process converts pages to images, so text will not be selectable in the final file.</p>
-        ${ createFileInputHTML() }
+        ${createFileInputHTML()}
 <div id="file-display-area" class="mt-4 space-y-2" > </div>
     <div id = "text-color-options" class="hidden mt-6 space-y-4" >
         <div>
@@ -1709,7 +1692,7 @@ Right
                                                                                                                                                                                                                             </ul>
                                                                                                                                                                                                                             </div>
     
-    ${ createFileInputHTML() }
+    ${createFileInputHTML()}
 <div id="file-display-area" class="mt-4 space-y-2" > </div>
 
     <div id = "ocr-options" class="hidden mt-6 space-y-4" >
@@ -1718,18 +1701,17 @@ Right
             <div class="relative" >
                 <input type="text" id = "lang-search" class="w-full bg-gray-900 border border-gray-600 text-white rounded-lg p-2.5 mb-2" placeholder = "Search for languages..." >
                     <div id="lang-list" class="max-h-48 overflow-y-auto border border-gray-600 rounded-lg p-2 bg-gray-900" >
-                        ${
-                            Object.entries(tesseractLanguages)
-                            .map(
-                                ([code, name]) => `
+                        ${Object.entries(tesseractLanguages)
+            .map(
+                ([code, name]) => `
                         <label class="flex items-center gap-2 p-2 rounded-md hover:bg-gray-700 cursor-pointer">
                             <input type="checkbox" value="${code}" class="lang-checkbox w-4 h-4 rounded text-indigo-600 bg-gray-700 border-gray-600 focus:ring-indigo-500">
                             ${name}
                         </label>
                     `
-                            )
-                            .join('')
-}
+            )
+            .join('')
+        }
 </div>
     </div>
     <p class="text-xs text-gray-500 mt-1" > Selected: <span id="selected-langs-display" class="font-semibold" > None < /span></p >
@@ -1831,7 +1813,7 @@ Right
     'sign-pdf': () => `
                                                                                                                                                                         <h2 class="text-2xl font-bold text-white mb-4" > Sign PDF </h2>
                                                                                                                                                                             <p class="mb-6 text-gray-400" > Upload a PDF to sign it using the built-in PDF.js viewer.Look for the <strong > signature / pen tool < /strong> in the toolbar to add your signature.</p >
-                                                                                                                                                                                ${ createFileInputHTML() }
+                                                                                                                                                                                ${createFileInputHTML()}
     <div id = "file-display-area" class="mt-4 space-y-2" > </div>
 
         <div id = "signature-editor" class="hidden mt-6" >
@@ -1853,7 +1835,7 @@ Right
     'remove-annotations': () => `
                                         <h2 class="text-2xl font-bold text-white mb-4" > Remove Annotations </h2>
                                             <p class="mb-6 text-gray-400" > Select the types of annotations to remove from all pages or a specific range.</p>
-    ${ createFileInputHTML() }
+    ${createFileInputHTML()}
 <div id="file-display-area" class="mt-4 space-y-2" > </div>
 
     <div id = "remove-annotations-options" class="hidden mt-6 space-y-6" >
@@ -1913,7 +1895,7 @@ Right
                                                                                                                                                         <h2 class="text-2xl font-bold text-white mb-4" > PDF Cropper </h2>
                                                                                                                                                             <p class="mb-6 text-gray-400" > Upload a PDF to visually crop one or more pages.This tool offers a live preview and two distinct cropping modes.</p>
     
-    ${ createFileInputHTML() }
+    ${createFileInputHTML()}
 <div id="file-display-area" class="mt-4 space-y-2" > </div>
 
     <div id = "cropper-ui-container" class="hidden mt-6" >
@@ -1965,7 +1947,7 @@ Right
     </p>
     </div>
     
-    ${ createFileInputHTML() }
+    ${createFileInputHTML()}
 <div id="file-display-area" class="mt-4 space-y-2" > </div>
     <div id = "form-filler-options" class="hidden mt-6" >
         <div id="pdf-viewer-container" class="relative w-full overflow-auto bg-gray-900 rounded-lg border border-gray-600" style = "height: 80vh;" >
@@ -1978,7 +1960,7 @@ Right
     posterize: () => `
                     <h2 class="text-2xl font-bold text-white mb-4" > Posterize PDF </h2>
                         <p class="mb-6 text-gray-400" > Split pages into multiple smaller sheets to print as a poster.Navigate the preview and see the grid update based on your settings.</p>
-    ${ createFileInputHTML() }
+    ${createFileInputHTML()}
 <div id="file-display-area" class="mt-4 space-y-2" > </div>
 
     <div id = "posterize-options" class="hidden mt-6 space-y-6" >
@@ -2078,7 +2060,7 @@ Right
     'remove-blank-pages': () => `
                                                                                                                                                                                         <h2 class="text-2xl font-bold text-white mb-4" > Remove Blank Pages </h2>
                                                                                                                                                                                             <p class="mb-6 text-gray-400" > Automatically detect and remove blank or nearly blank pages from your PDF.Adjust the sensitivity to control what is considered "blank".</p>
-    ${ createFileInputHTML() }
+    ${createFileInputHTML()}
 <div id="file-display-area" class="mt-4 space-y-2" > </div>
 
     <div id = "remove-blank-options" class="hidden mt-6 space-y-4" >
@@ -2103,7 +2085,7 @@ Right
     'alternate-merge': () => `
                                         <h2 class="text-2xl font-bold text-white mb-4" > Alternate & Mix Pages </h2>
                                             <p class="mb-6 text-gray-400" > Combine pages from 2 or more documents, alternating between them.Drag the files to set the mixing order(e.g., Page 1 from Doc A, Page 1 from Doc B, Page 2 from Doc A, Page 2 from Doc B, etc.).</p>
-    ${ createFileInputHTML({ multiple: true, accept: 'application/pdf', showControls: true }) }
+    ${createFileInputHTML({ multiple: true, accept: 'application/pdf', showControls: true })}
 
 <div id="alternate-merge-options" class="hidden mt-6" >
     <div class="p-3 bg-gray-900 rounded-lg border border-gray-700 mb-3" >
@@ -2121,14 +2103,14 @@ Right
     linearize: () => `
                                 <h2 class="text-2xl font-bold text-white mb-4" > Linearize PDFs(Fast Web View) </h2>
                                     <p class="mb-6 text-gray-400" > Optimize multiple PDFs for faster loading over the web.Files will be downloaded in a ZIP archive.</p>
-    ${ createFileInputHTML({ multiple: true, accept: 'application/pdf', showControls: true }) }
+    ${createFileInputHTML({ multiple: true, accept: 'application/pdf', showControls: true })}
 <div id="file-display-area" class="mt-4 space-y-2" > </div>
     <button id = "process-btn" class="hidden btn-gradient w-full mt-6" disabled > Linearize PDFs & Download ZIP </button>
         `,
     'add-attachments': () => `
         <h2 class="text-2xl font-bold text-white mb-4" > Add Attachments to PDF </h2>
             <p class="mb-6 text-gray-400" > First, upload the PDF document you want to add files to.</p>
-    ${ createFileInputHTML({ accept: 'application/pdf' }) }
+    ${createFileInputHTML({ accept: 'application/pdf' })}
 <div id="file-display-area" class="mt-4 space-y-2" > </div>
 
     <div id = "attachment-options" class="hidden mt-8" >
@@ -2180,14 +2162,14 @@ Right
     'extract-attachments': () => `
                                                                                                         <h2 class="text-2xl font-bold text-white mb-4" > Extract Attachments </h2>
                                                                                                             <p class="mb-6 text-gray-400" > Extract all embedded files from one or more PDFs.All attachments will be downloaded in a ZIP archive.</p>
-    ${ createFileInputHTML({ multiple: true, accept: 'application/pdf', showControls: true }) }
+    ${createFileInputHTML({ multiple: true, accept: 'application/pdf', showControls: true })}
 <div id="file-display-area" class="mt-4 space-y-2" > </div>
     <button id = "process-btn" class="btn-gradient w-full mt-6" > Extract Attachments </button>
         `,
     'edit-attachments': () => `
         <h2 class="text-2xl font-bold text-white mb-4" > Edit Attachments </h2>
             <p class="mb-6 text-gray-400" > View, remove, or replace attachments in your PDF.</p>
-    ${ createFileInputHTML({ accept: 'application/pdf' }) }
+    ${createFileInputHTML({ accept: 'application/pdf' })}
 <div id="file-display-area" class="mt-4 space-y-2" > </div>
     <div id = "edit-attachments-options" class="hidden mt-6" >
         <div id="attachments-list" class="space-y-3 mb-4" > </div>
@@ -2198,7 +2180,7 @@ Right
     'sanitize-pdf': () => `
                 <h2 class="text-2xl font-bold text-white mb-4" > Sanitize PDF </h2>
                     <p class="mb-6 text-gray-400" > Remove potentially sensitive or unnecessary information from your PDF before sharing.Select the items you want to remove.</p>
-    ${ createFileInputHTML() }
+    ${createFileInputHTML()}
 <div id="file-display-area" class="mt-4 space-y-2" > </div>
 
     <div id = "sanitize-pdf-options" class="hidden mt-6 space-y-4 p-4 bg-gray-900 border border-gray-700 rounded-lg" >
@@ -2266,7 +2248,7 @@ Removing <code class="bg-gray-700 px-1 rounded text-white" > Embedded Fonts </co
     'remove-restrictions': () => `
                                                                                                                                                     <h2 class="text-2xl font-bold text-white mb-4" > Remove PDF Restrictions </h2>
                                                                                                                                                         <p class="mb-6 text-gray-400" > Remove security restrictions and unlock PDF permissions for editing and printing.</p>
-  ${ createFileInputHTML() }
+  ${createFileInputHTML()}
 <div id="file-display-area" class="mt-4 space-y-2" > </div>
     <div id = "remove-restrictions-options" class="hidden space-y-4 mt-6" >
         <div class="p-4 bg-blue-900/20 border border-blue-500/30 text-blue-200 rounded-lg" >

@@ -743,7 +743,7 @@ async function handleMultiFileUpload(toolId) {
     }
   }
 
-  if (toolId === 'jpg-to-pdf' || toolId === 'png-to-pdf') {
+  if (toolId === 'png-to-pdf') {
     const optionsDiv = document.getElementById(`${toolId}-options`);
     if (optionsDiv) {
       optionsDiv.classList.remove('hidden');

@@ -35,7 +35,7 @@ export const categories = [
           'Annotate, highlight, redact, comment, add shapes/images, search, and view PDFs',
       },
       {
-        id: 'jpg-to-pdf',
+        href: '/src/pages/jpg-to-pdf.html',
         name: 'JPG to PDF',
         icon: 'image-up',
         subtitle: 'Create a PDF from one or more JPG images.',
@@ -185,7 +185,7 @@ export const categories = [
         subtitle: 'Convert JPG, PNG, WebP, BMP, TIFF, SVG, HEIC to PDF.',
       },
       {
-        id: 'jpg-to-pdf',
+        href: '/src/pages/jpg-to-pdf.html',
         name: 'JPG to PDF',
         icon: 'image-up',
         subtitle: 'Create a PDF from one or more JPG images.',

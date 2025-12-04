@@ -66,6 +66,8 @@ export default defineConfig(({ mode }) => ({
         'split-pdf': resolve(__dirname, 'src/pages/split-pdf.html'),
         'compress-pdf': resolve(__dirname, 'src/pages/compress-pdf.html'),
         'edit-pdf': resolve(__dirname, 'src/pages/edit-pdf.html'),
+        'jpg-to-pdf': resolve(__dirname, 'src/pages/jpg-to-pdf.html'),
+
       },
     },
   },
