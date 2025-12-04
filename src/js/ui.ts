@@ -432,43 +432,7 @@ const createFileInputHTML = (options = {}) => {
 };
 
 export const toolTemplates = {
-    merge: () => `
-    <h2 class="text-2xl font-bold text-white mb-4">Merge PDFs</h2>
-    <p class="mb-6 text-gray-400">Combine whole files, or select specific pages to merge into a new document.</p>
-    ${createFileInputHTML({ multiple: true, showControls: true })} 
 
-    <div id="merge-options" class="hidden mt-6">
-        <div class="flex gap-2 p-1 rounded-lg bg-gray-900 border border-gray-700 mb-4">
-            <button id="file-mode-btn" class="flex-1 btn bg-indigo-600 text-white font-semibold py-2 rounded-md">File Mode</button>
-            <button id="page-mode-btn" class="flex-1 btn text-gray-300 font-semibold py-2 rounded-md">Page Mode</button>
-        </div>
-
-        <div id="file-mode-panel">
-            <div class="p-3 bg-gray-900 rounded-lg border border-gray-700 mb-3">
-                <p class="text-sm text-gray-300"><strong class="text-white">How it works:</strong></p>
-                <ul class="list-disc list-inside text-xs text-gray-400 mt-1 space-y-1">
-                    <li>Click and drag the <i data-lucide="grip-vertical" class="inline-block w-3 h-3"></i> icon to change the order of the files.</li>
-                    <li>In the "Pages" box for each file, you can specify ranges (e.g., "1-3, 5") to merge only those pages.</li>
-                    <li>Leave the "Pages" box blank to include all pages from that file.</li>
-                </ul>
-            </div>
-            <ul id="file-list" class="space-y-2"></ul>
-        </div>
-
-        <div id="page-mode-panel" class="hidden">
-             <div class="p-3 bg-gray-900 rounded-lg border border-gray-700 mb-3">
-                <p class="text-sm text-gray-300"><strong class="text-white">How it works:</strong></p>
-                 <ul class="list-disc list-inside text-xs text-gray-400 mt-1 space-y-1">
-                    <li>All pages from your uploaded PDFs are shown below.</li>
-                    <li>Simply drag and drop the individual page thumbnails to create the exact order you want for your new file.</li>
-                </ul>
-            </div>
-             <div id="page-merge-preview" class="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 gap-4 p-4 bg-gray-900 rounded-lg border border-gray-700 min-h-[200px]"></div>
-        </div>
-        
-        <button id="process-btn" class="btn-gradient w-full mt-6" disabled>Merge PDFs</button>
-    </div>
-`,
 
     split: () => `
     <h2 class="text-2xl font-bold text-white mb-4">Split PDF</h2>

@@ -1,4 +1,4 @@
-import { merge, setupMergeTool } from './merge.js';
+
 import { setupSplitTool, split } from './split.js';
 import { encrypt } from './encrypt.js';
 import { decrypt } from './decrypt.js';
@@ -70,7 +70,7 @@ import { removeRestrictions } from './remove-restrictions.js';
 import { repairPdf } from './repair-pdf.js';
 
 export const toolLogic = {
-  merge: { process: merge, setup: setupMergeTool },
+
   split: { process: split, setup: setupSplitTool },
   encrypt,
   decrypt,
