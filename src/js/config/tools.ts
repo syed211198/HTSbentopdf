@@ -10,7 +10,7 @@ export const categories = [
         subtitle: 'Merge, Split, Organize, Delete, Rotate, Add Blank Pages, Extract and Duplicate in an unified interface.',
       },
       {
-        href: import.meta.env.BASE_URL + '/src/pages/merge-pdf.html',
+        href: import.meta.env.BASE_URL + 'src/pages/merge-pdf.html',
         name: 'Merge PDF',
         icon: 'combine',
         subtitle: 'Combine multiple PDFs into one file. Preserves Bookmarks.',
