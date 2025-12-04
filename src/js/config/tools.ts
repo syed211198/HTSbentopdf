@@ -28,7 +28,7 @@ export const categories = [
         subtitle: 'Reduce the file size of your PDF.',
       },
       {
-        id: 'edit',
+        href: '/src/pages/edit-pdf.html',
         name: 'PDF Editor',
         icon: 'pocket-knife',
         subtitle:
@@ -76,7 +76,7 @@ export const categories = [
     name: 'Edit & Annotate',
     tools: [
       {
-        id: 'edit',
+        href: '/src/pages/edit-pdf.html',
         name: 'PDF Editor',
         icon: 'pocket-knife',
         subtitle:
