@@ -45,7 +45,7 @@ function initializePage() {
     }
 
     document.getElementById('back-to-tools')?.addEventListener('click', () => {
-        window.location.href = '/';
+        window.location.href = import.meta.env.BASE_URL;
     });
 }
 
@@ -114,7 +114,7 @@ async function handleFiles(files: FileList) {
                     URL.revokeObjectURL(currentPdfUrl);
                     currentPdfUrl = null;
                 }
-                window.location.href = '/';
+                window.location.href = import.meta.env.BASE_URL;
             });
         }
 

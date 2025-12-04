@@ -35,7 +35,7 @@ const mergeState: MergeState = {
     mergeSuccess: false,
 };
 
-const mergeWorker = new Worker('/workers/merge.worker.js');
+const mergeWorker = new Worker(import.meta.env.BASE_URL + 'workers/merge.worker.js');
 
 function initializeFileListSortable() {
     const fileList = document.getElementById('file-list');
@@ -545,7 +545,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (backBtn) {
         backBtn.addEventListener('click', () => {
-            window.location.href = '/';
+            window.location.href = import.meta.env.BASE_URL;
         });
     }
 

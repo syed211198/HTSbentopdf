@@ -66,7 +66,7 @@ function initializePage() {
     }
 
     document.getElementById('back-to-tools')?.addEventListener('click', () => {
-        window.location.href = '/';
+        window.location.href = import.meta.env.BASE_URL;
     });
 }
 
