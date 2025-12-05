@@ -9,15 +9,13 @@ on:
 # Permissions needed for the workflow
 permissions:
   actions: write
-  contents: read
+  contents: write
   pull-requests: write
   statuses: write
 
 jobs:
   cla-check:
     runs-on: ubuntu-latest
-    # OPTIMIZATION: This logic is moved here. 
-    # The job will only start if it's a PR update, OR a comment on a PR containing the magic words.
     if: >
       github.event_name == 'pull_request_target' ||
       (
@@ -33,10 +31,8 @@ jobs:
         uses: cla-assistant/github-action@v2.5.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          # Ensure this secret is set in your repo settings!
           PERSONAL_ACCESS_TOKEN: ${{ secrets.CLA_ASSISTANT_TOKEN }}
         with:
-          # Path to the CLA document(s)
           path-to-signatures: 'signatures/cla.json'
           path-to-document: 'https://github.com/${{ github.repository }}/blob/main/ICLA.md'
           
