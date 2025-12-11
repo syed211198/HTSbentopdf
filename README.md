@@ -326,7 +326,9 @@ docker build \
 docker run -p 3000:8080 bentopdf-simple
 ```
 
-> **Important**: Always include trailing slashes in `BASE_URL` (e.g., `/bentopdf/` not `/bentopdf`). The default value is `/` for root deployment.
+> **Important**: 
+> - Always include trailing slashes in `BASE_URL` (e.g., `/bentopdf/` not `/bentopdf`)
+> - The default value is `/` for root deployment
 
 ### 🚀 Run with Docker Compose (Recommended)
 
