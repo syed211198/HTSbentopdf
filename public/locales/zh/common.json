@@ -271,5 +271,48 @@
     "licensing": {
         "title": "许可适用",
         "subtitle": "选择适合您需求的许可。"
+    },
+    "multiTool": {
+        "uploadPdfs": "上传 PDF",
+        "upload": "上传",
+        "addBlankPage": "添加空白页",
+        "edit": "编辑:",
+        "undo": "撤销",
+        "redo": "重做",
+        "reset": "重置",
+        "selection": "选择:",
+        "selectAll": "全选",
+        "deselectAll": "取消全选",
+        "rotate": "旋转:",
+        "rotateLeft": "向左",
+        "rotateRight": "向右",
+        "transform": "变换:",
+        "duplicate": "复制",
+        "split": "拆分",
+        "clear": "清除:",
+        "delete": "删除",
+        "download": "下载:",
+        "downloadSelected": "下载选中",
+        "exportPdf": "导出 PDF",
+        "uploadPdfFiles": "上传 PDF 文件",
+        "dragAndDrop": "将 PDF 文件拖放到此处，或点击选择",
+        "selectFiles": "选择文件",
+        "renderingPages": "正在渲染页面...",
+        "actions": {
+            "duplicatePage": "复制此页",
+            "deletePage": "删除此页",
+            "insertPdf": "在此页后插入 PDF",
+            "toggleSplit": "在此页后切换拆分"
+        },
+        "pleaseWait": "请稍候",
+        "pagesRendering": "页面正在渲染中，请稍候...",
+        "noPagesSelected": "未选择页面",
+        "selectOnePage": "请至少选择一页以进行下载。",
+        "noPages": "没有页面",
+        "noPagesToExport": "没有可导出的页面。",
+        "renderingTitle": "正在渲染页面预览",
+        "errorRendering": "渲染页面缩略图失败",
+        "error": "错误",
+        "failedToLoad": "加载失败"
     }
 }
