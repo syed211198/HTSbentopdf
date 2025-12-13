@@ -294,7 +294,7 @@
         "download": "Download:",
         "downloadSelected": "Download Selected",
         "exportPdf": "Export PDF",
-        "uploadPdfFiles": "Upload PDF Files",
+        "uploadPdfFiles": "Select PDF Files",
         "dragAndDrop": "Drag and drop PDF files here, or click to select",
         "selectFiles": "Select Files",
         "renderingPages": "Rendering pages...",

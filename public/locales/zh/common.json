@@ -45,7 +45,7 @@
         },
         "lightningFast": {
             "title": "极速处理",
-            "description": "瞬间处理 PDF，无需等待。"
+            "description": "瞬间处理 PDF, 无需等待。"
         }
     },
     "tools": {
@@ -294,7 +294,7 @@
         "download": "下载:",
         "downloadSelected": "下载选中",
         "exportPdf": "导出 PDF",
-        "uploadPdfFiles": "上传 PDF 文件",
+        "uploadPdfFiles": "选择 PDF 文件",
         "dragAndDrop": "将 PDF 文件拖放到此处，或点击选择",
         "selectFiles": "选择文件",
         "renderingPages": "正在渲染页面...",
