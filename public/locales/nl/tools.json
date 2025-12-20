@@ -1,0 +1,282 @@
+{
+    "categories": {
+        "popularTools": "Populaire Tools",
+        "editAnnotate": "Bewerken & Annoteren",
+        "convertToPdf": "Converteren naar PDF",
+        "convertFromPdf": "Converteren van PDF",
+        "organizeManage": "Organiseren & Beheren",
+        "optimizeRepair": "Optimaliseren & Repareren",
+        "securePdf": "PDF beveiligen"
+    },
+    "pdfMultiTool": {
+        "name": "PDF Multi-tool",
+        "subtitle": "Samenvoegen, Splitsen, Organiseren, Verwijderen, Roteren, Blanco pagina's toevoegen, Extraheren and Dupliceren in een enkele werkomgeving."
+    },
+    "mergePdf": {
+        "name": "PDF Samenvoegen",
+        "subtitle": "Meerdere PDFs combineren tot een enkel bestand. Bladwijzers behouden."
+    },
+    "splitPdf": {
+        "name": "PDF Splitsen",
+        "subtitle": "Een reeks pagina's opslaan in een nieuwe PDF."
+    },
+    "compressPdf": {
+        "name": "PDF Comprimeren",
+        "subtitle": "De bestandsgrootte van je PDF verkleinen."
+    },
+    "pdfEditor": {
+        "name": "PDF Editor",
+        "subtitle": "PDFs annoteren, markeren, redigeren, commentaar toevoegen, vormen/afbeelding toevoegen, doorzoeken and weergeven."
+    },
+    "jpgToPdf": {
+        "name": "JPG naar PDF",
+        "subtitle": "Een of meer JPG-afbeeldingen opslaan als PDF."
+    },
+    "signPdf": {
+        "name": "PDF Ondertekenen",
+        "subtitle": "Je handtekening tekenen, typen, of invoegen."
+    },
+    "cropPdf": {
+        "name": "PDF Bijsnijden",
+        "subtitle": "De marges aanpassen van alle pagina's in je PDF."
+    },
+    "extractPages": {
+        "name": "Pagina's Extraheren",
+        "subtitle": "Een selectie van pagina's opslaan als nieuw bestand."
+    },
+    "duplicateOrganize": {
+        "name": "Dupliceren & Organiseren",
+        "subtitle": "Pagina's dupliceren, ordenen en verwijderen."
+    },
+    "deletePages": {
+        "name": "Pagina's Verwijderen",
+        "subtitle": "Specifieke pagina's uit een dodocument verwijderen."
+    },
+    "editBookmarks": {
+        "name": "Bladwijzers Bewerken",
+        "subtitle": "PDF-bladwijzers toevoegen, bewerken, importeren, verwijderen and extraheren."
+    },
+    "tableOfContents": {
+        "name": "Inhoudsopgave",
+        "subtitle": "Een inhoudsopgave genereren van PDF-bladwijzers."
+    },
+    "pageNumbers": {
+        "name": "Paginanummers",
+        "subtitle": "Paginanummers aan je document toevoegen."
+    },
+    "addWatermark": {
+        "name": "Watermerk toevoegen",
+        "subtitle": "Tekst of een afbeelding over de pagina's van je PDF stempelen."
+    },
+    "headerFooter": {
+        "name": "Koptekst & Voettekst",
+        "subtitle": "Tekst boven- of onderaan de pagina's toevoegen."
+    },
+    "invertColors": {
+        "name": "Kleuren Omkeren",
+        "subtitle": "Maak een \"donkere modus\"-versie van je PDF."
+    },
+    "backgroundColor": {
+        "name": "Achtergrondkleur",
+        "subtitle": "Wijzig de achtergrondkleur van je PDF."
+    },
+    "changeTextColor": {
+        "name": "Tekstkleur",
+        "subtitle": "Wijzig de tekstkleur van je PDF."
+    },
+    "addStamps": {
+        "name": "Stempels Toevoegen",
+        "subtitle": "Voeg afbeeldingsstempels toe aan je PDF met de werkbalk Annotatie.",
+        "usernameLabel": "Gebruikersnaam stempelen",
+        "usernamePlaceholder": "Voer je naam in (voor stempels)",
+        "usernameHint": "Deze naam verschijnt op stempels die jij aanmaakt."
+    },
+    "removeAnnotations": {
+        "name": "Annotaties Verwijderen",
+        "subtitle": "Commentaar, markeringen en links verwijderen."
+    },
+    "pdfFormFiller": {
+        "name": "PDF-formulier Vullen",
+        "subtitle": "Vul formulieren in vanuit de browser, incl. ondersteuning voor XFA-formulieren."
+    },
+    "createPdfForm": {
+        "name": "PDF-formulier Aanmaken",
+        "subtitle": "Maak invulbare PDF-formulieren aan met drag-and-drop tekstvelden."
+    },
+    "removeBlankPages": {
+        "name": "Blanco pagina's Verwijderen",
+        "subtitle": "Automatisch blanco pagina's detecteren en verwijderen."
+    },
+    "imageToPdf": {
+        "name": "Afbeelding naar PDF",
+        "subtitle": "Converteer JPG, PNG, WebP, BMP, TIFF, SVG, HEIC naar PDF."
+    },
+    "pngToPdf": {
+        "name": "PNG naar PDF",
+        "subtitle": "Maak een PDF van een of meer PNG-afbeeldingen."
+    },
+    "webpToPdf": {
+        "name": "WebP naar PDF",
+        "subtitle": "Maak een PDF van een of meer WebP-afbeeldingen."
+    },
+    "svgToPdf": {
+        "name": "SVG naar PDF",
+        "subtitle": "Maak een PDF van een of meer SVG-afbeeldingen."
+    },
+    "bmpToPdf": {
+        "name": "BMP naar PDF",
+        "subtitle": "Maak een PDF van een of meer BMP-afbeeldingen."
+    },
+    "heicToPdf": {
+        "name": "HEIC naar PDF",
+        "subtitle": "Maak een PDF van een of meer HEIC-afbeeldingen."
+    },
+    "tiffToPdf": {
+        "name": "TIFF naar PDF",
+        "subtitle": "Maak een PDF van een of meer TIFF-afbeeldingen."
+    },
+    "textToPdf": {
+        "name": "Tekst naar PDF",
+        "subtitle": "Converteer een bestand met platte tekst naar een PDF."
+    },
+    "jsonToPdf": {
+        "name": "JSON naar PDF",
+        "subtitle": "Converteer JSON-bestanden naar PDF-formaat."
+    },
+    "pdfToJpg": {
+        "name": "PDF naar JPG",
+        "subtitle": "Converteer elke PDF-pagina naar een JPG-afbeelding."
+    },
+    "pdfToPng": {
+        "name": "PDF naar PNG",
+        "subtitle": "Converteer elke PDF-pagina naar een PNG-afbeelding."
+    },
+    "pdfToWebp": {
+        "name": "PDF naar WebP",
+        "subtitle": "Converteer elke PDF-pagina naar een WebP-afbeelding."
+    },
+    "pdfToBmp": {
+        "name": "PDF naar BMP",
+        "subtitle": "Converteer elke PDF-pagina naar een BMP-afbeelding."
+    },
+    "pdfToTiff": {
+        "name": "PDF naar TIFF",
+        "subtitle": "Converteer elke PDF-pagina naar een TIFF-afbeelding."
+    },
+    "pdfToGreyscale": {
+        "name": "PDF naar Grijswaarden",
+        "subtitle": "Converteer alle kleuren naar zwart-wit."
+    },
+    "pdfToJson": {
+        "name": "PDF naar JSON",
+        "subtitle": "Converteer PDF-bestanden naar JSON-formaat."
+    },
+    "ocrPdf": {
+        "name": "OCR PDF",
+        "subtitle": "Maak een PDF doorzoekbaar en kopieerbaar."
+    },
+    "alternateMix": {
+        "name": "Pagina's Afwisselen & Mixen",
+        "subtitle": "Voeg PDF-en samen met afwisselende pagina's vanuit elke PDF. Bladwijzers behouden."
+    },
+    "addAttachments": {
+        "name": "Bijlagen Toevoegen",
+        "subtitle": "Voeg een of meerbestanden in je PDF."
+    },
+    "extractAttachments": {
+        "name": "Bijlagen Extraheren",
+        "subtitle": "Extraheer alle ingevoegde bestanden als ZIP uit PDF(-en)."
+    },
+    "editAttachments": {
+        "name": "Bijlagen Bewerken",
+        "subtitle": "Bijlagen in je PDF weergeven of verwijderen."
+    },
+    "dividePages": {
+        "name": "Paginas Opdelen",
+        "subtitle": "Pagina's horizontaal of verticaal opdelen."
+    },
+    "addBlankPage": {
+        "name": "Blanco pagina Toevoegen",
+        "subtitle": "Een blanco pagina ergens in je PDF invoegen."
+    },
+    "reversePages": {
+        "name": "Paginavolgorde Omkeren",
+        "subtitle": "Keer de volgorde om van alle pagina's in je document."
+    },
+    "rotatePdf": {
+        "name": "PDF Roteren",
+        "subtitle": "Roteer pagina's in stappen van 90 gradden."
+    },
+    "nUpPdf": {
+        "name": "N-Up PDF",
+        "subtitle": "Arrangeer meerdere pagina's op een enkel blad."
+    },
+    "combineToSinglePage": {
+        "name": "Combineren tot Enkele pagina",
+        "subtitle": "Plak alle pagina's aan elkaar tot een doorlopende rol."
+    },
+    "viewMetadata": {
+        "name": "Metadata Weergeven",
+        "subtitle": "Bekijk de verborgen eigenschappen van je PDF."
+    },
+    "editMetadata": {
+        "name": "Metadata Bewerken",
+        "subtitle": "Auteur, titel en andere eigenschappen aanpassen."
+    },
+    "pdfsToZip": {
+        "name": "PDF naar ZIP",
+        "subtitle": "Archiveer meerdere PDF-en in een ZIP-bestand."
+    },
+    "comparePdfs": {
+        "name": "PDF-en Vergelijken",
+        "subtitle": "Twee PDF-en zij-aan-zij vergelijken."
+    },
+    "posterizePdf": {
+        "name": "PDF-Poster",
+        "subtitle": "Deel een grote pagina op in meerdere kleinere pagina's."
+    },
+    "fixPageSize": {
+        "name": "Paginagrootte Fiksen",
+        "subtitle": "Alle pagina's aanpassen tot een uniform formaat."
+    },
+    "linearizePdf": {
+        "name": "PDF Lineariseren",
+        "subtitle": "Optimaliseer een PDF voor snelle webweergave."
+    },
+    "pageDimensions": {
+        "name": "Pagina Afmetingen",
+        "subtitle": "Maak een analyse van paginagrootte, oriëntatie en eenheden."
+    },
+    "removeRestrictions": {
+        "name": "Beperkingen Verwijderen",
+        "subtitle": "Beveiligingswachtwoord en -beperkingen verwijderen van digitaal ondertekende PDF-bestanden."
+    },
+    "repairPdf": {
+        "name": "PDF Repareren",
+        "subtitle": "Gegevens herstellen van beschadigde PDF-bestanden."
+    },
+    "encryptPdf": {
+        "name": "PDF Versleutelen",
+        "subtitle": "Vegrendel je PDF door toevoeging van een toegangswachtwoord."
+    },
+    "sanitizePdf": {
+        "name": "PDF Opschonen",
+        "subtitle": "Metadata, annotaties, scripts en meer verwijderen."
+    },
+    "decryptPdf": {
+        "name": "PDF Ontgrendelen",
+        "subtitle": "PDF ontgrendelen door het verwijderen van de wachtwoordbeveiliging."
+    },
+    "flattenPdf": {
+        "name": "PDF Platmaken",
+        "subtitle": "Maak formuliervelden en annotaties onbewerkbaar."
+    },
+    "removeMetadata": {
+        "name": "Metadata Verwijderen",
+        "subtitle": "Verwijder verborgen gegevens uit je PDF."
+    },
+    "changePermissions": {
+        "name": "Rechten Aanpassen",
+        "subtitle": "Gebruikersrechten van een PDF instellen of aanpasssen."
+    }
+}
