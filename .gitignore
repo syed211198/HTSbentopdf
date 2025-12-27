@@ -26,7 +26,4 @@ dist-ssr
 # Coverage reports
 coverage/
 *.lcov
-# will be deleted later
-new-changes-to-port
-pymupdf-wasm
-serve_test
+

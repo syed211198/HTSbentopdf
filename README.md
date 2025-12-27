@@ -577,5 +577,8 @@ BentoPDF wouldn't be possible without the amazing open-source tools and librarie
 - **[Tailwind CSS](https://tailwindcss.com/)** – For rapid, flexible, and beautiful UI styling.
 - **[qpdf](https://github.com/qpdf/qpdf)** and **[qpdf-wasm](https://github.com/neslinesli93/qpdf-wasm)**– A powerful command-line tool and library for inspecting, repairing, and transforming PDF file ported to wasm
 - **[cpdf](https://www.coherentpdf.com/)** – For content preserving pdf operations.
+- **[LibreOffice](https://www.libreoffice.org/)** – For powerful document conversion capabilities.
+- **[PyMuPDF](https://github.com/pymupdf/PyMuPDF)** – For high-performance PDF manipulation and data extraction.
+- **[Ghostscript(GhostPDL)](https://github.com/ArtifexSoftware/ghostpdl)** – Needs no Introduction.
 
 Your work inspires and empowers developers everywhere. Thank you for making open-source amazing!
