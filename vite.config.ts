@@ -158,38 +158,27 @@ export default defineConfig(({ mode }) => ({
         }
       ]
     }),
-    ...((() => {
-      const compressionMode = process.env.COMPRESSION_MODE || 'all';
-      const plugins = [];
-
-      if (compressionMode === 'b' || compressionMode === 'all') {
-        plugins.push(viteCompression({
-          algorithm: 'brotliCompress',
-          ext: '.br',
-          threshold: 1024,
-          compressionOptions: {
-            params: {
-              [zlibConstants.BROTLI_PARAM_QUALITY]: 11,
-              [zlibConstants.BROTLI_PARAM_MODE]: zlibConstants.BROTLI_MODE_TEXT,
-            },
-          },
-          deleteOriginFile: false,
-        }));
-      }
-
-      if (compressionMode === 'g' || compressionMode === 'all') {
-        plugins.push(viteCompression({
-          algorithm: 'gzip',
-          ext: '.gz',
-          threshold: 1024,
-          compressionOptions: {
-            level: 9,
-          },
-          deleteOriginFile: false,
-        }));
-      }
-      return plugins;
-    })()),
+    viteCompression({
+      algorithm: 'brotliCompress',
+      ext: '.br',
+      threshold: 1024,
+      compressionOptions: {
+        params: {
+          [zlibConstants.BROTLI_PARAM_QUALITY]: 11,
+          [zlibConstants.BROTLI_PARAM_MODE]: zlibConstants.BROTLI_MODE_TEXT,
+        },
+      },
+      deleteOriginFile: false,
+    }),
+    viteCompression({
+      algorithm: 'gzip',
+      ext: '.gz',
+      threshold: 1024,
+      compressionOptions: {
+        level: 9,
+      },
+      deleteOriginFile: false,
+    }),
   ],
   define: {
     __SIMPLE_MODE__: JSON.stringify(process.env.SIMPLE_MODE === 'true'),
