@@ -8,6 +8,10 @@
         "openMainMenu": "Hoofdmenu openen",
         "language": "Taal"
     },
+    "donation": {
+        "message": "Vind je BentoPDF geweldig? Help ons het gratis en open source te houden!",
+        "button": "Doneren"
+    },
     "hero": {
         "title": "De",
         "pdfToolkit": "PDF Toolkit",
@@ -54,6 +58,7 @@
         "subtitle": "Klik een tool om de bestandslader te openen",
         "searchPlaceholder": "Zoek een tool (bijv., 'splitsen', 'organiseren'...)",
         "backToTools": "Terug naar Tools"
+        "firstLoadNotice": "De eerste keer duurt het even om onze conversiemachine te laden. Daarna gaat alles meteen."
     },
     "upload": {
         "clickToSelect": "Klik om een bestand te selecteren",
