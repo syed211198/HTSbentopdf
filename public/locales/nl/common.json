@@ -45,11 +45,11 @@
         },
         "batchProcessing": {
             "title": "Reeksen verwerken",
-            "description": "Verwerk in een keer een onbeperkt aantal PDF-en."
+            "description": "Verwerk in een keer een onbeperkt aantal PDF's."
         },
         "lightningFast": {
             "title": "Bliksemsnel",
-            "description": "Verwerk PDF-en direct, zonder wachten of vertraging."
+            "description": "Verwerk PDF's direct, zonder wachten of vertraging."
         }
     },
     "tools": {
@@ -63,7 +63,7 @@
     "upload": {
         "clickToSelect": "Klik om een bestand te selecteren",
         "orDragAndDrop": "of sleep er een hierheen",
-        "pdfOrImages": "PDF-en of Afbeeldingen",
+        "pdfOrImages": "PDF's of Afbeeldingen",
         "filesNeverLeave": "Je bestanden blijven op jouw apparaat.",
         "addMore": "Meer bestanden toevoegen",
         "clearAll": "Alles wissen"
@@ -195,7 +195,7 @@
         "followUs": "Volgen"
     },
     "merge": {
-        "title": "PDF-en Samenvoegen",
+        "title": "PDF's Samenvoegen",
         "description": "Combineer hele bestanden, of selecteer specifieke pagina's om te samen te voegen tot een nieuw document.",
         "fileMode": "Bestandsmodus",
         "pageMode": "Paginamodus",
@@ -206,10 +206,10 @@
             "Laat het vak \"Pagina's\" leeg om alle pagina's in het bestand op te nemen."
         ],
         "pageModeInstructions": [
-            "Alle pagina's van je PDF-en worden hieronder weergegeven.",
+            "Alle pagina's van je PDF's worden hieronder weergegeven.",
             "Sleep afzonderlijke pagina-miniaturen in de gewenste volgorde voor je nieuwe bestand."
         ],
-        "mergePdfs": "PDF-en Samenvoegen"
+        "mergePdfs": "PDF's Samenvoegen"
     },
     "common": {
         "page": "Pagina",
@@ -278,7 +278,7 @@
         "subtitle": "Kies de licentie die bij je past."
     },
     "multiTool": {
-        "uploadPdfs": "PDF-en laden",
+        "uploadPdfs": "PDF's laden",
         "upload": "Laden",
         "addBlankPage": "Blanco pagina toevoegen",
         "edit": "Bewerken:",
@@ -299,7 +299,7 @@
         "download": "Laden:",
         "downloadSelected": "Selectie laden",
         "exportPdf": "PDF Exporteren",
-        "uploadPdfFiles": "Selecteer PDF-bestanden",
+        "uploadPdfFiles": "PDF-bestanden selecteren",
         "dragAndDrop": "Klik om een bestand te selecteren, of sleep er een hierheen",
         "selectFiles": "Bestanden selecteren",
         "renderingPages": "Pagina's vewerken...",
