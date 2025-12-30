@@ -56,6 +56,11 @@ function pagesRewritePlugin(): Plugin {
           const pagePath = resolve(__dirname, 'src/pages', pageName);
           if (fs.existsSync(pagePath)) {
             req.url = `/src/pages${url}`;
+          } else if (url !== '/404.html' && !fs.existsSync(resolve(__dirname, pageName))) {
+            const rootExists = fs.existsSync(resolve(__dirname, pageName));
+            if (!rootExists) {
+              req.url = '/404.html';
+            }
           }
         }
         next();
@@ -217,6 +222,7 @@ export default defineConfig(({ mode }) => ({
         terms: resolve(__dirname, 'terms.html'),
         licensing: resolve(__dirname, 'licensing.html'),
         tools: resolve(__dirname, 'tools.html'),
+        '404': resolve(__dirname, '404.html'),
         // Category Hub Pages
         'pdf-converter': resolve(__dirname, 'pdf-converter.html'),
         'pdf-editor': resolve(__dirname, 'pdf-editor.html'),
