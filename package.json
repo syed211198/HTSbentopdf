@@ -106,6 +106,6 @@
     "tiff": "^7.1.2",
     "utif": "^3.1.0",
     "vite-plugin-static-copy": "^3.1.4",
-    "xlsx": "^0.18.5"
+    "xlsx": "file:vendor/sheetjs/xlsx-0.20.2.tgz"
   }
 }
