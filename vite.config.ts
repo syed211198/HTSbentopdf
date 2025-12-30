@@ -215,8 +215,15 @@ export default defineConfig(({ mode }) => ({
         faq: resolve(__dirname, 'faq.html'),
         privacy: resolve(__dirname, 'privacy.html'),
         terms: resolve(__dirname, 'terms.html'),
-        bookmark: resolve(__dirname, 'src/pages/bookmark.html'),
         licensing: resolve(__dirname, 'licensing.html'),
+        tools: resolve(__dirname, 'tools.html'),
+        // Category Hub Pages
+        'pdf-converter': resolve(__dirname, 'pdf-converter.html'),
+        'pdf-editor': resolve(__dirname, 'pdf-editor.html'),
+        'pdf-security': resolve(__dirname, 'pdf-security.html'),
+        'pdf-merge-split': resolve(__dirname, 'pdf-merge-split.html'),
+        // Tool Pages
+        bookmark: resolve(__dirname, 'src/pages/bookmark.html'),
         'table-of-contents': resolve(
           __dirname,
           'src/pages/table-of-contents.html'
