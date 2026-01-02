@@ -3,19 +3,20 @@ import LanguageDetector from 'i18next-browser-languagedetector';
 import HttpBackend from 'i18next-http-backend';
 
 // Supported languages
-export const supportedLanguages = ['en', 'de', 'zh', 'vi'] as const;
+export const supportedLanguages = ['en', 'de', 'es', 'zh', 'vi'] as const;
 export type SupportedLanguage = (typeof supportedLanguages)[number];
 
 export const languageNames: Record<SupportedLanguage, string> = {
     en: 'English',
     de: 'Deutsch',
+    es: 'Español',
     zh: '中文',
     vi: 'Tiếng Việt',
 };
 
 export const getLanguageFromUrl = (): SupportedLanguage => {
     const path = window.location.pathname;
-    const langMatch = path.match(/^\/(en|de|zh|vi)(?:\/|$)/);
+    const langMatch = path.match(/^\/(en|de|es|zh|vi)(?:\/|$)/);
     if (langMatch && supportedLanguages.includes(langMatch[1] as SupportedLanguage)) {
         return langMatch[1] as SupportedLanguage;
     }
