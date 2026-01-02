@@ -85,15 +85,15 @@ This Agreement shall be governed by and construed in accordance with the laws of
 
 By submitting a pull request or other Contribution to the Project, and by typing your name and date below (or by signing electronically via CLA Assistant), you agree to the terms of this Individual Contributor License Agreement.
 
-**Full Legal Name:** Raul Gonzalez
+**Full Legal Name:** Stephan Paternotte
 
-**GitHub Username:** raulgcode
+**GitHub Username:** Stephan-P
 
-**Email Address:** armandourbina@gmail.com
+**Email Address:** stephan@paternottes.net
 
-**Date:** 02-01-2026
+**Date:** 20-12-2025
 
-**Signature:** Raul Gonzalez
+**Signature:** ___________________________
 
 ---
 
