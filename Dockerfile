@@ -36,8 +36,8 @@ LABEL org.opencontainers.image.url="https://github.com/alam00000/bentopdf"
 # global arg to local arg
 ARG BASE_URL
 
-# Set this to "true" or anything to disable Nginx listening on IPv6
-ENV DISABLE_IPV6
+# Set this to "true" to disable Nginx listening on IPv6
+ENV DISABLE_IPV6=false
 
 COPY --chown=nginx:nginx --from=builder /app/dist /usr/share/nginx/html${BASE_URL%/}
 COPY --chown=nginx:nginx nginx.conf /etc/nginx/nginx.conf

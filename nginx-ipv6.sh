@@ -9,7 +9,7 @@ entrypoint_log() {
     fi
 }
 
-if [ -n "$DISABLE_IPV6" ]; then
+if [ "$DISABLE_IPV6" = "true" ]; then
   entrypoint_log "Disabling the Nginx IPv6 listener"
   sed -i '/^[[:space:]]*listen[[:space:]]*\[::\]:[0-9]*/s/^/#/' /etc/nginx/nginx.conf
 fi
