@@ -369,7 +369,7 @@
         "step2": "Pagina's worden in brochurevolgorde gerangschikt.",
         "step3": "Dubbelzijdig afdrukken, omdraaien langs de korte kant, vouwen en nieten.",
         "paperSize": "Paperformaat",
-        "orientation": "Ori�ntatie",
+        "orientation": "Ori뮴atie",
         "portrait": "Staand",
         "landscape": "Liggend",
         "pagesPerSheet": "Pagina's per vel",
@@ -488,5 +488,32 @@
         "subtitle": "Haal tekst uit PDF-bestanden en sla op als gewone tekst (.txt). Ondersteunt meerdere bestanden.",
         "note": "Dit hulpmiddel werkt ALLEEN met digitaal gemaakte PDF's. Gebruik voor gescande documenten of op afbeeldingen gebaseerde PDF's in plaats hiervan de OCR PDF-tool.",
         "convertButton": "Tekst extraheren"
+    },
+    "digitalSignPdf": {
+        "name": "Digitale handtekening PDF",
+        "pageTitle": "Digitale handtekening PDF - Cryptografische handtekening toevoegen | BentoPDF",
+        "subtitle": "Voeg een cryptografische digitale handtekening toe aan je PDF met behulp van X.509-certificaten. Ondersteunt PKCS#12 (.pfx, .p12) en PEM-formaten. Je priv鳬eutel verlaat jouw browser nooit.",
+        "certificateSection": "Certificaat",
+        "uploadCert": "Certificaat laden (.pfx, .p12)",
+        "certPassword": "Certificaatwachtwoord",
+        "certPasswordPlaceholder": "Voer het wachtwoord van het certificaat in",
+        "certInfo": "Certificaatinformatie",
+        "certSubject": "Onderwerp",
+        "certIssuer": "Uitgever",
+        "certValidity": "Geldigheid",
+        "signatureDetails": "Signature Details (Optioneel)",
+        "reason": "Reden",
+        "reasonPlaceholder": "bijv., Ik keur dit document goed",
+        "location": "Plaats",
+        "locationPlaceholder": "bijv., New York, USA",
+        "contactInfo": "Contactinformatie",
+        "contactPlaceholder": "bijv., email@example.com",
+        "applySignature": "Digitale handtekening toepassen",
+        "successMessage": "PDF succesvol ondertekend! De handtekening kan in elke PDF-lezer worden geverifieerd."
+    },
+    "validateSignaturePdf": {
+        "name": "PDF-handtekening valideren",
+        "pageTitle": "PDF-handtekening valideren - Digitale handtekeningen verifi벥n | BentoPDF",
+        "subtitle": "Digitale handtekeningen in je PDF-bestanden verifi벥n. Controleer de geldigheid van het certificaat, bekijk de gegevens van de ondertekenaar en bevestig de integriteit van het document. Alle verwerking gebeurt binnen jouw browser."
     }
 }
