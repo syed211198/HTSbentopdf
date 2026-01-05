@@ -136,7 +136,7 @@ async function posterize() {
         const rows = parseInt((document.getElementById('posterize-rows') as HTMLInputElement).value) || 1;
         const cols = parseInt((document.getElementById('posterize-cols') as HTMLInputElement).value) || 1;
         const pageSizeKey = (document.getElementById('output-page-size') as HTMLSelectElement).value as keyof typeof PageSizes;
-        let orientation = (document.getElementById('output-orientation') as HTMLSelectElement).value;
+        const orientation = (document.getElementById('output-orientation') as HTMLSelectElement).value;
         const scalingMode = (document.querySelector('input[name="scaling-mode"]:checked') as HTMLInputElement).value;
         const overlap = parseFloat((document.getElementById('overlap') as HTMLInputElement).value) || 0;
         const overlapUnits = (document.getElementById('overlap-units') as HTMLSelectElement).value;
