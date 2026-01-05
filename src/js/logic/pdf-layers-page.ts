@@ -271,7 +271,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         try {
-            showLoader('Loading PyMuPDF...');
+            showLoader('Loading engine...');
             await pymupdf.load();
 
             showLoader(`Loading layers from ${currentFile.name}...`);
