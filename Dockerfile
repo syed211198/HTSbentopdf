@@ -7,6 +7,7 @@ FROM node:20-alpine AS builder
 WORKDIR /app
 COPY package*.json ./
 COPY vendor ./vendor
+RUN npm pkg delete scripts.prepare
 RUN npm ci
 COPY . .
 
