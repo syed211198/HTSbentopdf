@@ -489,7 +489,7 @@ Rate limiting requires Cloudflare KV storage:
 cd cloudflare
 
 # Create KV namespace
-npx wrangler kv:namespace create "RATE_LIMIT_KV"
+npx wrangler kv namespace create "RATE_LIMIT_KV"
 
 # Copy the returned ID and add to wrangler.toml:
 # [[kv_namespaces]]

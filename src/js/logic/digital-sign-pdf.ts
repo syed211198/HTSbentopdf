@@ -1,37 +1,6 @@
 import { PdfSigner, type SignOption } from 'zgapdfsigner';
 import forge from 'node-forge';
-
-export interface SignatureInfo {
-    reason?: string;
-    location?: string;
-    contactInfo?: string;
-    name?: string;
-}
-
-export interface CertificateData {
-    p12Buffer: ArrayBuffer;
-    password: string;
-    certificate: forge.pki.Certificate;
-}
-
-export interface SignPdfOptions {
-    signatureInfo?: SignatureInfo;
-    visibleSignature?: VisibleSignatureOptions;
-}
-
-export interface VisibleSignatureOptions {
-    enabled: boolean;
-    imageData?: ArrayBuffer;
-    imageType?: 'png' | 'jpeg' | 'webp';
-    x: number;
-    y: number;
-    width: number;
-    height: number;
-    page: number | string;
-    text?: string;
-    textColor?: string;
-    textSize?: number;
-}
+import { CertificateData, SignPdfOptions } from '@/types';
 
 export function parsePfxFile(pfxBytes: ArrayBuffer, password: string): CertificateData {
     const pfxAsn1 = forge.asn1.fromDer(forge.util.createBuffer(new Uint8Array(pfxBytes)));

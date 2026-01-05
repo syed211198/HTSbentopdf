@@ -3,16 +3,9 @@ import { downloadFile, parsePageRanges, getPDFDocument, formatBytes } from '../u
 import { PDFDocument, PageSizes } from 'pdf-lib';
 import * as pdfjsLib from 'pdfjs-dist';
 import { createIcons, icons } from 'lucide';
+import { PosterizeState } from '@/types';
 
 pdfjsLib.GlobalWorkerOptions.workerSrc = new URL('pdfjs-dist/build/pdf.worker.min.mjs', import.meta.url).toString();
-
-interface PosterizeState {
-    file: File | null;
-    pdfJsDoc: pdfjsLib.PDFDocumentProxy | null;
-    pdfBytes: Uint8Array | null;
-    pageSnapshots: Record<number, ImageData>;
-    currentPage: number;
-}
 
 const pageState: PosterizeState = {
     file: null,

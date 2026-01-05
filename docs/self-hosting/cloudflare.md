@@ -100,7 +100,7 @@ npx wrangler deploy
 
 ```bash
 # Create KV namespace
-npx wrangler kv:namespace create "RATE_LIMIT_KV"
+npx wrangler kv namespace create "RATE_LIMIT_KV"
 
 # Add to wrangler.toml with returned ID:
 # [[kv_namespaces]]
