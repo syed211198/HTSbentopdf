@@ -102,7 +102,7 @@ const init = async () => {
                   <span class="text-white font-bold text-lg">BentoPDF</span>
                 </div>
                 <p class="text-gray-400 text-sm">
-                  &copy; 2025 BentoPDF. All rights reserved.
+                  &copy; 2026 BentoPDF. All rights reserved.
                 </p>
                 <p class="text-gray-500 text-xs mt-2">
                   Version <span id="app-version-simple">${APP_VERSION}</span>
@@ -321,30 +321,63 @@ const init = async () => {
     const searchBar = document.getElementById('search-bar');
     const categoryGroups = dom.toolGrid.querySelectorAll('.category-group');
 
+    const searchResultsContainer = document.createElement('div');
+    searchResultsContainer.id = 'search-results';
+    searchResultsContainer.className = 'hidden grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-6 col-span-full';
+    dom.toolGrid.insertBefore(searchResultsContainer, dom.toolGrid.firstChild);
+
     searchBar.addEventListener('input', () => {
       // @ts-expect-error TS(2339) FIXME: Property 'value' does not exist on type 'HTMLEleme... Remove this comment to see the full error message
       const searchTerm = searchBar.value.toLowerCase().trim();
 
+      if (!searchTerm) {
+        searchResultsContainer.classList.add('hidden');
+        searchResultsContainer.innerHTML = '';
+        categoryGroups.forEach((group) => {
+          (group as HTMLElement).style.display = '';
+          const toolCards = group.querySelectorAll('.tool-card');
+          toolCards.forEach((card) => {
+            (card as HTMLElement).style.display = '';
+          });
+        });
+        return;
+      }
+
+      categoryGroups.forEach((group) => {
+        (group as HTMLElement).style.display = 'none';
+      });
+
+      searchResultsContainer.innerHTML = '';
+      searchResultsContainer.classList.remove('hidden');
+
+      const seenToolIds = new Set<string>();
+      const allTools: HTMLElement[] = [];
+
       categoryGroups.forEach((group) => {
         const toolCards = Array.from(group.querySelectorAll('.tool-card'));
-
-        let visibleToolsInCategory = 0;
 
         toolCards.forEach((card) => {
           const toolName = (card.querySelector('h3')?.textContent || '').toLowerCase();
           const toolSubtitle = (card.querySelector('p')?.textContent || '').toLowerCase();
+          const toolHref = (card as HTMLAnchorElement).href || (card as HTMLElement).dataset.toolId || '';
 
-          const isMatch = !searchTerm || toolName.includes(searchTerm) || toolSubtitle.includes(searchTerm);
+          const toolId = toolHref.split('/').pop()?.replace('.html', '') || toolName;
 
-          (card as HTMLElement).style.display = isMatch ? '' : 'none';
+          const isMatch = toolName.includes(searchTerm) || toolSubtitle.includes(searchTerm);
+          const isDuplicate = seenToolIds.has(toolId);
 
-          if (isMatch) {
-            visibleToolsInCategory++;
+          if (isMatch && !isDuplicate) {
+            seenToolIds.add(toolId);
+            allTools.push(card.cloneNode(true) as HTMLElement);
           }
         });
-
-        (group as HTMLElement).style.display = visibleToolsInCategory === 0 ? 'none' : '';
       });
+
+      allTools.forEach((tool) => {
+        searchResultsContainer.appendChild(tool);
+      });
+
+      createIcons({ icons });
     });
 
     window.addEventListener('keydown', function (e) {
@@ -465,8 +498,7 @@ const init = async () => {
   const fullWidthToggle = document.getElementById('full-width-toggle') as HTMLInputElement;
   const toolInterface = document.getElementById('tool-interface');
 
-  // Load saved preference
-  const savedFullWidth = localStorage.getItem('fullWidthMode') === 'true';
+  const savedFullWidth = localStorage.getItem('fullWidthMode') !== 'false';
   if (fullWidthToggle) {
     fullWidthToggle.checked = savedFullWidth;
     applyFullWidthMode(savedFullWidth);

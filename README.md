@@ -1,4 +1,4 @@
-<p align="center"><img src="public/images/favicon.svg" width="80"></p>
+<p align="center"><img src="public/images/favicon-no-bg.svg" width="80"></p>
 <h1 align="center">BentoPDF</h1>
 
 **BentoPDF** is a powerful, privacy-first, client-side PDF toolkit that is self hostable and allows you to manipulate, edit, merge, and process PDF files directly in your browser. No server-side processing is required, ensuring your files remain secure and private.
@@ -162,6 +162,8 @@ BentoPDF offers a comprehensive suite of tools to handle all your PDF needs.
 | **Decrypt PDF**        | Remove password protection from a PDF (password required).         |
 | **Change Permissions** | Set or modify user permissions for printing, copying, and editing. |
 | **Sign PDF**           | Add your digital signature to a document.                          |
+| **Digital Signature**  | Add cryptographic digital signatures using X.509 certificates (PFX/PEM). |
+| **Validate Signature** | Verify digital signatures and view certificate details.            |
 | **Redact Content**     | Permanently remove sensitive content from your PDFs.               |
 | **Edit Metadata**      | View and modify PDF metadata (author, title, keywords, etc.).      |
 | **Remove Metadata**    | Strip all metadata from your PDF for privacy.                      |
@@ -433,6 +435,89 @@ docker run -p 8080:8080 bentopdf
 ```
 
 For detailed security configuration, see [SECURITY.md](SECURITY.md).
+
+### Digital Signature CORS Proxy (Required)
+
+The **Digital Signature** tool uses a signing library that may need to fetch certificate chain data from certificate authority provider. Since many certificate servers don't include CORS headers, a proxy is required for this feature to work in the browser.
+
+**When is the proxy needed?**
+- Only when using the Digital Signature tool
+- Only if your certificate requires fetching issuer certificates from external URLs
+- Self-signed certificates typically don't need this
+
+**Deploying the CORS Proxy (Cloudflare Workers):**
+
+1. **Navigate to the cloudflare directory:**
+   ```bash
+   cd cloudflare
+   ```
+
+2. **Login to Cloudflare (if not already):**
+   ```bash
+   npx wrangler login
+   ```
+
+3. **Deploy the worker:**
+   ```bash
+   npx wrangler deploy
+   ```
+
+4. **Note your worker URL** (e.g., `https://bentopdf-cors-proxy.your-subdomain.workers.dev`)
+
+5. **Set the environment variable when building:**
+   ```bash
+   VITE_CORS_PROXY_URL=https://your-worker-url.workers.dev npm run build
+   ```
+
+#### Production Security Features
+
+The CORS proxy includes several security measures:
+
+| Feature | Description |
+|---------|-------------|
+| **URL Restrictions** | Only allows certificate URLs (`.crt`, `.cer`, `.pem`, `/certs/`, `/ocsp`) |
+| **Private IP Blocking** | Blocks requests to localhost, 10.x, 192.168.x, 172.16-31.x |
+| **File Size Limit** | Rejects files larger than 10MB |
+| **Rate Limiting** | 60 requests per IP per minute (requires KV) |
+| **HMAC Signatures** | Optional client-side signing (limited protection) |
+
+#### Enabling Rate Limiting (Recommended)
+
+Rate limiting requires Cloudflare KV storage:
+
+```bash
+cd cloudflare
+
+# Create KV namespace
+npx wrangler kv namespace create "RATE_LIMIT_KV"
+
+# Copy the returned ID and add to wrangler.toml:
+# [[kv_namespaces]]
+# binding = "RATE_LIMIT_KV"
+# id = "YOUR_ID_HERE"
+
+# Redeploy
+npx wrangler deploy
+```
+
+**Free tier limits:** 100,000 reads/day, 1,000 writes/day (~300-500 signatures/day)
+
+#### HMAC Signature Verification (Optional)
+
+> **⚠️ Security Warning:** Client-side secrets can be extracted from bundled JavaScript. For production deployments with sensitive requirements, use your own backend server to proxy requests instead of embedding secrets in frontend code.
+
+BentoPDF uses client-side HMAC as a deterrent against casual abuse, but accepts this tradeoff due to its fully client-side architecture. To enable:
+
+```bash
+# Generate a secret
+openssl rand -hex 32
+
+# Set on Cloudflare Worker
+npx wrangler secret put PROXY_SECRET
+
+# Set in build environment
+VITE_CORS_PROXY_SECRET=your-secret npm run build
+```
 
 ### 📦 Version Management
 

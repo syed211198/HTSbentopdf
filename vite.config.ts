@@ -14,7 +14,7 @@ function pagesRewritePlugin(): Plugin {
       server.middlewares.use((req, res, next) => {
         const url = req.url?.split('?')[0] || '';
 
-        const langMatch = url.match(/^\/(en|de|es|zh|vi)(\/.*)?$/);
+        const langMatch = url.match(/^\/(en|de|es|zh|vi|it)(\/.*)?$/);
         if (langMatch) {
           const lang = langMatch[1];
           const restOfPath = langMatch[2] || '/';
@@ -352,7 +352,7 @@ export default defineConfig(({ mode }) => {
           'pdf-to-csv': resolve(__dirname, 'src/pages/pdf-to-csv.html'),
           'pdf-to-excel': resolve(__dirname, 'src/pages/pdf-to-excel.html'),
           'pdf-to-text': resolve(__dirname, 'src/pages/pdf-to-text.html'),
-
+          'digital-sign-pdf': resolve(__dirname, 'src/pages/digital-sign-pdf.html'),
         },
       },
     },
