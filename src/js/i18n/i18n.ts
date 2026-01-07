@@ -12,7 +12,7 @@ export const languageNames: Record<SupportedLanguage, string> = {
   zh: '中文',
   vi: 'Tiếng Việt',
   it: 'Italiano',
-  id: 'Indonesia',
+  id: 'Indonesian',
 };
 
 export const getLanguageFromUrl = (): SupportedLanguage => {
