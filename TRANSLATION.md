@@ -117,7 +117,16 @@ export const languageNames: Record<SupportedLanguage, string> = {
 };
 ```
 
-### Step 4: Test Your Translation
+### Step 4: Update Vite Configuration
+
+In `vite.config.ts`, ensure the new language is included in the build:
+
+```typescript
+// Add 'fr' to the language regex
+const langMatch = url.match(/^\/(en|de|zh|vi|it|fr)(\/.*)?$/);
+```
+
+### Step 5: Test Your Translation
 
 ```bash
 # Start the dev server
