@@ -418,6 +418,11 @@ export default defineConfig(({ mode }) => {
             __dirname,
             'src/pages/digital-sign-pdf.html'
           ),
+          'validate-signature-pdf': resolve(
+            __dirname,
+            'src/pages/validate-signature-pdf.html'
+          ),
+          'email-to-pdf': resolve(__dirname, 'src/pages/email-to-pdf.html'),
         },
       },
     },
