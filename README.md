@@ -1,9 +1,9 @@
-<p align="center"><img src="public/images/favicon.svg" width="80"></p>
+<p align="center"><img src="public/images/favicon-no-bg.svg" width="80"></p>
 <h1 align="center">BentoPDF</h1>
 
 **BentoPDF** is a powerful, privacy-first, client-side PDF toolkit that is self hostable and allows you to manipulate, edit, merge, and process PDF files directly in your browser. No server-side processing is required, ensuring your files remain secure and private.
 
-![Docker Pulls](https://img.shields.io/docker/pulls/bentopdf/bentopdf) [![Ko-fi](https://img.shields.io/badge/Buy%20me%20a%20Coffee-yellow?logo=kofi&style=flat-square)](https://ko-fi.com/alio0) ![GitHub Stars](https://img.shields.io/github/stars/alam00000/bentopdf?style=social)
+![Docker Pulls](https://img.shields.io/docker/pulls/bentopdf/bentopdf) [![Ko-fi](https://img.shields.io/badge/Buy%20me%20a%20Coffee-yellow?logo=kofi&style=flat-square)](https://ko-fi.com/alio01) ![GitHub Stars](https://img.shields.io/github/stars/alam00000/bentopdf?style=social)
 [![Sponsor me on GitHub](https://img.shields.io/badge/Sponsor-%E2%9D%A4-ff69b4)](https://github.com/sponsors/alam00000)
 
 ![BentoPDF Tools](public/images/bentopdf-tools.png)
@@ -15,6 +15,19 @@
 [![Discord](https://img.shields.io/badge/Discord-Join%20Server-7289da?style=for-the-badge&logo=discord&logoColor=white)](https://discord.gg/Bgq3Ay3f2w)
 
 Have questions, feature requests, or want to chat with the community? Join our Discord server!
+
+---
+
+## 📚 Documentation
+
+[![Documentation](https://img.shields.io/badge/Docs-VitePress-646cff?style=for-the-badge&logo=vite&logoColor=white)](https://bentopdf.com/docs/)
+
+Visit our [Documentation](https://bentopdf.com/docs/) for:
+- **Getting Started** guide
+- **Tools Reference** (50+ tools)
+- **Self-Hosting** guides (Docker, Vercel, Netlify, Cloudflare, AWS, Hostinger, Nginx, Apache)
+- **Contributing** guide
+- **Commercial License** details
 
 ---
 
@@ -32,6 +45,18 @@ For more details, see our [Licensing Page](https://bentopdf.com/licensing.html)
 ## ⭐ Stargazers over time
 
 [![Star History Chart](https://api.star-history.com/svg?repos=alam00000/bentopdf&type=Date)](https://star-history.com/#alam00000/bentopdf&Date)
+
+---
+
+## 💖 Thank You to Our Sponsors
+
+We're incredibly grateful to all our sponsors and supporters who help keep BentoPDF free and open source!
+
+[![Sponsor me on GitHub](https://img.shields.io/badge/Become%20a%20Sponsor-%E2%9D%A4-ff69b4?style=for-the-badge)](https://github.com/sponsors/alam00000)
+[![Buy me a Coffee](https://img.shields.io/badge/Buy%20me%20a%20Coffee-yellow?style=for-the-badge&logo=kofi)](https://ko-fi.com/alio01)
+
+<!-- sponsors -->
+<!-- sponsors -->
 
 ---
 
@@ -110,6 +135,7 @@ BentoPDF offers a comprehensive suite of tools to handle all your PDF needs.
 | **TIFF to PDF**     | Convert TIFF images to PDF.                                       |
 | **Markdown to PDF** | Convert `.md` files into professional PDF documents.            |
 | **Text to PDF**     | Convert plain text files into a PDF.                            |
+| **EPUB to PDF**     | Convert EPUB e-books to PDF format.                             |
 | **JSON to PDF**     | Convert JSON to PDF.                                             |
 
 ### Convert from PDF
@@ -136,6 +162,8 @@ BentoPDF offers a comprehensive suite of tools to handle all your PDF needs.
 | **Decrypt PDF**        | Remove password protection from a PDF (password required).         |
 | **Change Permissions** | Set or modify user permissions for printing, copying, and editing. |
 | **Sign PDF**           | Add your digital signature to a document.                          |
+| **Digital Signature**  | Add cryptographic digital signatures using X.509 certificates (PFX/PEM). |
+| **Validate Signature** | Verify digital signatures and view certificate details.            |
 | **Redact Content**     | Permanently remove sensitive content from your PDFs.               |
 | **Edit Metadata**      | View and modify PDF metadata (author, title, keywords, etc.).      |
 | **Remove Metadata**    | Strip all metadata from your PDF for privacy.                      |
@@ -151,11 +179,12 @@ BentoPDF offers a comprehensive suite of tools to handle all your PDF needs.
 
 BentoPDF is available in multiple languages:
 
-| Language | Status |
-|----------|--------|
-| English  | [![English](https://img.shields.io/badge/Complete-green?style=flat-square)](public/locales/en/common.json) |
-| German   | [![German](https://img.shields.io/badge/In_Progress-yellow?style=flat-square)](public/locales/de/common.json) |
-| Vietnamese | [![Vietnamese](https://img.shields.io/badge/Complete-green?style=flat-square)](public/locales/vi/common.json) |
+| Language   | Status |
+|------------|--------|
+| English    | [![English](https://img.shields.io/badge/Complete-green?style=flat-square)](public/locales/en/common.json) |
+| German     | [![German](https://img.shields.io/badge/In_Progress-yellow?style=flat-square)](public/locales/de/common.json) |
+| Vietnamese | [![Vietnamese](https://img.shields.io/badge/In_Progress-yellow?style=flat-square)](public/locales/vi/common.json) |
+| Chinese    | [![Chinese](https://img.shields.io/badge/In_Progress-yellow?style=flat-square)](public/locales/zh/common.json) |
 
 Want to help translate BentoPDF into your language? Check out our [Translation Guide](TRANSLATION.md)!
 
@@ -196,7 +225,11 @@ Open your browser at: http://localhost:3000
 
 This is the fastest way to try BentoPDF without setting up a development environment.
 
-### 🏠 Self-Hosting
+### Static Hosting using Netlify, Vercel, and GitHub Pages
+
+It is very straightforward to host your own instance of BentoPDF using a static web page hosting service. Plus, services such as Netlify, Vercel, and GitHub Pages all offer a free tier for getting started.  See [Static Hosting](https://github.com/alam00000/bentopdf/blob/main/STATIC-HOSTING.md)) for details. 
+
+### 🏠 Self-Hosting Locally
 
 Since BentoPDF is fully client-side, all processing happens in the user's browser and no server-side processing is required. This means you can host BentoPDF as simple static files on any web server or hosting platform.
 
@@ -247,6 +280,52 @@ npm run preview
 # The website will be accessible at: http://localhost:4173/
 
 ```
+
+**Compression Modes:**
+
+BentoPDF supports different compression modes for optimized builds:
+
+```bash
+# Gzip only (smallest Docker image size)
+npm run build:gzip
+docker build --build-arg COMPRESSION_MODE=g -t bentopdf:gzip .
+
+# Brotli only (best compression ratio)
+npm run build:brotli
+docker build --build-arg COMPRESSION_MODE=b -t bentopdf:brotli .
+
+# No compression (fastest build time)
+npm run build:original
+docker build --build-arg COMPRESSION_MODE=o -t bentopdf:original .
+
+# All formats (default, maximum browser compatibility)
+npm run build:all
+docker build --build-arg COMPRESSION_MODE=all -t bentopdf:all .
+```
+
+| Mode | Files Kept | Use Case |
+|------|------------|----------|
+| `g` | `.gz` only | Standard nginx or minimal size |
+| `b` | `.br` only | Modern CDN with Brotli support |
+| `o` | originals | Development or custom compression |
+| `all` | all formats | Maximum compatibility (default) |
+
+**CDN Optimization:**
+
+BentoPDF can use jsDelivr CDN to serve large WASM files (LibreOffice, Ghostscript, PyMuPDF) for improved performance and reduced bandwidth costs:
+
+```bash
+# Production build with CDN (Recommended)
+VITE_USE_CDN=true npm run build
+
+# Standard build with local files only
+npm run build
+```
+
+**How it works:**
+- When `VITE_USE_CDN=true`: Browser loads WASM files from jsDelivr CDN (fast, global delivery)
+- Local files are **always included** as automatic fallback
+- If CDN fails then it falls back to local files
 
 **Subdirectory Hosting:**
 
@@ -356,6 +435,89 @@ docker run -p 8080:8080 bentopdf
 ```
 
 For detailed security configuration, see [SECURITY.md](SECURITY.md).
+
+### Digital Signature CORS Proxy (Required)
+
+The **Digital Signature** tool uses a signing library that may need to fetch certificate chain data from certificate authority provider. Since many certificate servers don't include CORS headers, a proxy is required for this feature to work in the browser.
+
+**When is the proxy needed?**
+- Only when using the Digital Signature tool
+- Only if your certificate requires fetching issuer certificates from external URLs
+- Self-signed certificates typically don't need this
+
+**Deploying the CORS Proxy (Cloudflare Workers):**
+
+1. **Navigate to the cloudflare directory:**
+   ```bash
+   cd cloudflare
+   ```
+
+2. **Login to Cloudflare (if not already):**
+   ```bash
+   npx wrangler login
+   ```
+
+3. **Deploy the worker:**
+   ```bash
+   npx wrangler deploy
+   ```
+
+4. **Note your worker URL** (e.g., `https://bentopdf-cors-proxy.your-subdomain.workers.dev`)
+
+5. **Set the environment variable when building:**
+   ```bash
+   VITE_CORS_PROXY_URL=https://your-worker-url.workers.dev npm run build
+   ```
+
+#### Production Security Features
+
+The CORS proxy includes several security measures:
+
+| Feature | Description |
+|---------|-------------|
+| **URL Restrictions** | Only allows certificate URLs (`.crt`, `.cer`, `.pem`, `/certs/`, `/ocsp`) |
+| **Private IP Blocking** | Blocks requests to localhost, 10.x, 192.168.x, 172.16-31.x |
+| **File Size Limit** | Rejects files larger than 10MB |
+| **Rate Limiting** | 60 requests per IP per minute (requires KV) |
+| **HMAC Signatures** | Optional client-side signing (limited protection) |
+
+#### Enabling Rate Limiting (Recommended)
+
+Rate limiting requires Cloudflare KV storage:
+
+```bash
+cd cloudflare
+
+# Create KV namespace
+npx wrangler kv namespace create "RATE_LIMIT_KV"
+
+# Copy the returned ID and add to wrangler.toml:
+# [[kv_namespaces]]
+# binding = "RATE_LIMIT_KV"
+# id = "YOUR_ID_HERE"
+
+# Redeploy
+npx wrangler deploy
+```
+
+**Free tier limits:** 100,000 reads/day, 1,000 writes/day (~300-500 signatures/day)
+
+#### HMAC Signature Verification (Optional)
+
+> **⚠️ Security Warning:** Client-side secrets can be extracted from bundled JavaScript. For production deployments with sensitive requirements, use your own backend server to proxy requests instead of embedding secrets in frontend code.
+
+BentoPDF uses client-side HMAC as a deterrent against casual abuse, but accepts this tradeoff due to its fully client-side architecture. To enable:
+
+```bash
+# Generate a secret
+openssl rand -hex 32
+
+# Set on Cloudflare Worker
+npx wrangler secret put PROXY_SECRET
+
+# Set in build environment
+VITE_CORS_PROXY_SECRET=your-secret npm run build
+```
 
 ### 📦 Version Management
 
@@ -476,6 +638,32 @@ We welcome contributions from the community! Here's how you can get started:
 
 Have an idea for a new tool or an improvement? [Open an issue](https://github.com/alam00000/bentopdf/issues) to discuss it first.
 
+### 📖 Contributing to Documentation
+
+Our documentation is built with [VitePress](https://vitepress.dev/). Here's how to contribute:
+
+```bash
+# Install dependencies
+npm install
+
+# Start docs dev server
+npm run docs:dev
+
+# Build docs for production
+npm run docs:build
+
+# Preview the built docs
+npm run docs:preview
+```
+
+Documentation files are in the `docs/` folder:
+- `docs/index.md` - Home page
+- `docs/getting-started.md` - Getting started guide
+- `docs/tools/` - Tools reference
+- `docs/self-hosting/` - Self-hosting guides (Docker, Vercel, Netlify, Hostinger, etc.)
+- `docs/contributing.md` - Contributing guide
+- `docs/licensing.md` - Commercial license info
+
 ---
 
 ## Special Thanks
@@ -491,5 +679,8 @@ BentoPDF wouldn't be possible without the amazing open-source tools and librarie
 - **[Tailwind CSS](https://tailwindcss.com/)** – For rapid, flexible, and beautiful UI styling.
 - **[qpdf](https://github.com/qpdf/qpdf)** and **[qpdf-wasm](https://github.com/neslinesli93/qpdf-wasm)**– A powerful command-line tool and library for inspecting, repairing, and transforming PDF file ported to wasm
 - **[cpdf](https://www.coherentpdf.com/)** – For content preserving pdf operations.
+- **[LibreOffice](https://www.libreoffice.org/)** – For powerful document conversion capabilities.
+- **[PyMuPDF](https://github.com/pymupdf/PyMuPDF)** – For high-performance PDF manipulation and data extraction.
+- **[Ghostscript(GhostPDL)](https://github.com/ArtifexSoftware/ghostpdl)** – Needs no Introduction.
 
 Your work inspires and empowers developers everywhere. Thank you for making open-source amazing!

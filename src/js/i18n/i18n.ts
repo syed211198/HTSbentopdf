@@ -31,38 +31,38 @@ export const getLanguageFromUrl = (): SupportedLanguage => {
 let initialized = false;
 
 export const initI18n = async (): Promise<typeof i18next> => {
-    if (initialized) return i18next;
+  if (initialized) return i18next;
 
-    const currentLang = getLanguageFromUrl();
+  const currentLang = getLanguageFromUrl();
 
-    await i18next
-        .use(HttpBackend)
-        .use(LanguageDetector)
-        .init({
-            lng: currentLang,
-            fallbackLng: 'en',
-            supportedLngs: supportedLanguages as unknown as string[],
-            ns: ['common', 'tools'],
-            defaultNS: 'common',
-            backend: {
-                loadPath: `${import.meta.env.BASE_URL}locales/{{lng}}/{{ns}}.json`,
-            },
-            detection: {
-                order: ['path', 'localStorage', 'navigator'],
-                lookupFromPathIndex: 0,
-                caches: ['localStorage'],
-            },
-            interpolation: {
-                escapeValue: false,
-            },
-        });
+  await i18next
+    .use(HttpBackend)
+    .use(LanguageDetector)
+    .init({
+      lng: currentLang,
+      fallbackLng: 'en',
+      supportedLngs: supportedLanguages as unknown as string[],
+      ns: ['common', 'tools'],
+      defaultNS: 'common',
+      backend: {
+        loadPath: `${import.meta.env.BASE_URL.replace(/\/?$/, '/')}locales/{{lng}}/{{ns}}.json`,
+      },
+      detection: {
+        order: ['path', 'localStorage', 'navigator'],
+        lookupFromPathIndex: 0,
+        caches: ['localStorage'],
+      },
+      interpolation: {
+        escapeValue: false,
+      },
+    });
 
-    initialized = true;
-    return i18next;
+  initialized = true;
+  return i18next;
 };
 
 export const t = (key: string, options?: Record<string, unknown>): string => {
-    return i18next.t(key, options);
+  return i18next.t(key, options);
 };
 
 export const changeLanguage = (lang: SupportedLanguage): void => {
@@ -86,37 +86,37 @@ export const changeLanguage = (lang: SupportedLanguage): void => {
 
 // Apply translations to all elements with data-i18n attribute
 export const applyTranslations = (): void => {
-    document.querySelectorAll('[data-i18n]').forEach((element) => {
-        const key = element.getAttribute('data-i18n');
-        if (key) {
-            const translation = t(key);
-            if (translation && translation !== key) {
-                element.textContent = translation;
-            }
-        }
-    });
+  document.querySelectorAll('[data-i18n]').forEach((element) => {
+    const key = element.getAttribute('data-i18n');
+    if (key) {
+      const translation = t(key);
+      if (translation && translation !== key) {
+        element.textContent = translation;
+      }
+    }
+  });
 
-    document.querySelectorAll('[data-i18n-placeholder]').forEach((element) => {
-        const key = element.getAttribute('data-i18n-placeholder');
-        if (key && element instanceof HTMLInputElement) {
-            const translation = t(key);
-            if (translation && translation !== key) {
-                element.placeholder = translation;
-            }
-        }
-    });
+  document.querySelectorAll('[data-i18n-placeholder]').forEach((element) => {
+    const key = element.getAttribute('data-i18n-placeholder');
+    if (key && element instanceof HTMLInputElement) {
+      const translation = t(key);
+      if (translation && translation !== key) {
+        element.placeholder = translation;
+      }
+    }
+  });
 
-    document.querySelectorAll('[data-i18n-title]').forEach((element) => {
-        const key = element.getAttribute('data-i18n-title');
-        if (key) {
-            const translation = t(key);
-            if (translation && translation !== key) {
-                (element as HTMLElement).title = translation;
-            }
-        }
-    });
+  document.querySelectorAll('[data-i18n-title]').forEach((element) => {
+    const key = element.getAttribute('data-i18n-title');
+    if (key) {
+      const translation = t(key);
+      if (translation && translation !== key) {
+        (element as HTMLElement).title = translation;
+      }
+    }
+  });
 
-    document.documentElement.lang = i18next.language;
+  document.documentElement.lang = i18next.language;
 };
 
 export const rewriteLinks = (): void => {
@@ -136,7 +136,7 @@ export const rewriteLinks = (): void => {
             return;
         }
 
-        if (href.match(/^\/(en|de|zh|vi|tr)\//)) {
+        if (href.match(/^\/(en|de|zh|vi|tr|id)\//)) {
             return;
         }
         let newHref: string;
