@@ -23,6 +23,8 @@ BentoPDF uses **i18next** for internationalization (i18n). Currently supported l
 - **German** (`de`)
 - **Vietnamese** (`vi`)
 - **Indonesian** (`id`)
+- **Chinese** (`zh`)
+- **Traditional Chinese (Taiwan)** (`zh-TW`)
 
 The app automatically detects the language from the URL path:
 
@@ -30,6 +32,8 @@ The app automatically detects the language from the URL path:
 - `/de/` → German
 - `/vi/` → Vietnamese
 - `/id/` → Indonesian
+- `/zh/` → Chinese
+- `/zh-TW/` → Traditional Chinese (Taiwan)
 
 ---
 
