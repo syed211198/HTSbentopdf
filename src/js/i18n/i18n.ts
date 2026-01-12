@@ -8,6 +8,7 @@ export const supportedLanguages = [
   'fr',
   'de',
   'zh',
+  'zh-TW',
   'vi',
   'tr',
   'id',
@@ -20,6 +21,7 @@ export const languageNames: Record<SupportedLanguage, string> = {
   fr: 'Français',
   de: 'Deutsch',
   zh: '中文',
+  "zh-TW": '繁體中文（台灣）',
   vi: 'Tiếng Việt',
   tr: 'Türkçe',
   id: 'Bahasa Indonesia',
@@ -28,7 +30,7 @@ export const languageNames: Record<SupportedLanguage, string> = {
 
 export const getLanguageFromUrl = (): SupportedLanguage => {
   const path = window.location.pathname;
-  const langMatch = path.match(/^\/(en|fr|de|zh|vi|tr|id|it)(?:\/|$)/);
+  const langMatch = path.match(/^\/(en|fr|de|zh|zh-TW|vi|tr|id|it)(?:\/|$)/);
   if (
     langMatch &&
     supportedLanguages.includes(langMatch[1] as SupportedLanguage)
@@ -90,9 +92,9 @@ export const changeLanguage = (lang: SupportedLanguage): void => {
   const currentLang = getLanguageFromUrl();
 
   let newPath: string;
-  if (currentPath.match(/^\/(en|fr|de|zh|vi|tr|id|it)\//)) {
-    newPath = currentPath.replace(/^\/(en|fr|de|zh|vi|tr|id|it)\//, `/${lang}/`);
-  } else if (currentPath.match(/^\/(en|fr|de|zh|vi|tr|id|it)$/)) {
+  if (currentPath.match(/^\/(en|fr|de|zh|zh-TW|vi|tr|id|it)\//)) {
+    newPath = currentPath.replace(/^\/(en|fr|de|zh|zh-TW|vi|tr|id|it)\//, `/${lang}/`);
+  } else if (currentPath.match(/^\/(en|fr|de|zh|zh-TW|vi|tr|id|it)$/)) {
     newPath = `/${lang}`;
   } else {
     newPath = `/${lang}${currentPath}`;
@@ -156,7 +158,7 @@ export const rewriteLinks = (): void => {
       return;
     }
 
-    if (href.match(/^\/(en|fr|de|zh|vi|tr|id|it)\//)) {
+    if (href.match(/^\/(en|fr|de|zh|zh-TW|vi|tr|id|it)\//)) {
       return;
     }
     let newHref: string;
