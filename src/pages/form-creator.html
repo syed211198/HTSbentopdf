@@ -355,7 +355,9 @@
         <!-- Main Form Creator Area -->
         <div class="flex flex-col lg:flex-row gap-6">
           <!-- Sidebar with Properties -->
-          <aside class="lg:w-64 flex-shrink-0 order-2 lg:order-1">
+          <aside
+            class="lg:w-64 flex-shrink-0 order-2 lg:order-1 lg:sticky lg:top-4 lg:self-start"
+          >
             <!-- Properties Section -->
             <div class="bg-gray-700 rounded-lg p-4">
               <h2
@@ -389,7 +391,7 @@
           <main class="flex-1 order-1 lg:order-2 min-w-0">
             <!-- Page Management Toolbar -->
             <div
-              class="bg-gray-700 rounded-lg p-3 mb-4 flex flex-wrap gap-2 justify-center md:justify-between items-center overflow-hidden"
+              class="bg-gray-700 rounded-lg p-3 mb-4 flex flex-wrap gap-2 justify-center md:justify-between items-center overflow-hidden sticky top-16 z-20"
             >
               <div
                 class="flex flex-wrap items-center justify-center gap-2 min-w-0"
@@ -487,9 +489,11 @@
             </div>
 
             <!-- Top Toolbar -->
-            <div class="bg-gray-700 rounded-lg p-2 mb-4">
+            <div
+              class="bg-gray-700 rounded-lg p-3 mb-4 sticky top-[120px] z-20"
+            >
               <div
-                class="flex flex-wrap gap-2 justify-center items-center max-w-full overflow-hidden"
+                class="flex flex-wrap gap-2 justify-center items-center max-w-full py-1"
               >
                 <div
                   class="text-gray-400 text-sm font-semibold mr-2 flex items-center gap-1"
