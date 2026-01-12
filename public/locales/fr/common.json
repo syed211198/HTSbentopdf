@@ -8,9 +8,9 @@
     "openMainMenu": "Ouvrir le menu principal",
     "language": "Langue"
   },
-    "donation": {
-      "message": "Vous aimez BentoPDF ? Aidez-nous à le garder open source !",
-      "button": "Soutenir"
+  "donation": {
+    "message": "Vous aimez BentoPDF ? Aidez-nous à le garder open source !",
+    "button": "Soutenir"
   },
   "hero": {
     "title": "La",
@@ -183,7 +183,7 @@
     "buyMeCoffee": "M’offrir un café"
   },
   "footer": {
-    "copyright": "© 2025 BentoPDF. Tous droits réservés.",
+    "copyright": "© 2026 BentoPDF. Tous droits réservés.",
     "version": "Version",
     "company": "Entreprise",
     "aboutUs": "À propos",
