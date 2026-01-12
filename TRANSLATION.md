@@ -289,6 +289,8 @@ In `common.json`:
    - German: `http://localhost:5173/de/`
    - Vietnamese: `http://localhost:5173/vi/`
    - Indonesian: `http://localhost:5173/id/`
+   - Chinese: `http://localhost:5173/zh/`
+   - Traditional Chinese (Taiwan): `http://localhost:5173/zh-TW/`
    - French: `http://localhost:5173/fr/`
    - Your new language: `http://localhost:5173/es/`
 
