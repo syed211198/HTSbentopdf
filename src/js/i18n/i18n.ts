@@ -7,6 +7,7 @@ export const supportedLanguages = [
   'en',
   'fr',
   'de',
+  'es',
   'zh',
   'zh-TW',
   'vi',
@@ -20,6 +21,7 @@ export const languageNames: Record<SupportedLanguage, string> = {
   en: 'English',
   fr: 'Français',
   de: 'Deutsch',
+  es: 'Español',
   zh: '中文',
   "zh-TW": '繁體中文（台灣）',
   vi: 'Tiếng Việt',
@@ -30,7 +32,8 @@ export const languageNames: Record<SupportedLanguage, string> = {
 
 export const getLanguageFromUrl = (): SupportedLanguage => {
   const path = window.location.pathname;
-  const langMatch = path.match(/^\/(en|fr|de|zh|zh-TW|vi|tr|id|it)(?:\/|$)/);
+
+  const langMatch = path.match(/^\/(en|fr|es|de|zh|zh-TW|vi|tr|id|it)(?:\/|$)/);
   if (
     langMatch &&
     supportedLanguages.includes(langMatch[1] as SupportedLanguage)
