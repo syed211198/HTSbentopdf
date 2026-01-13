@@ -16,7 +16,7 @@ function pagesRewritePlugin(): Plugin {
         const url = req.url?.split('?')[0] || '';
 
         const langMatch = url.match(
-          /^\/(en|de|zh|zh-TW|vi|it|id|tr|fr)(\/.*)?$/
+          /^\/(en|de|zh|zh-TW|vi|it|id|tr|fr|pt)(\/.*)?$/
         );
         if (langMatch) {
           const lang = langMatch[1];
