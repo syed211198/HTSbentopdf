@@ -3,6 +3,7 @@ import tailwindcss from '@tailwindcss/vite';
 import { nodePolyfills } from 'vite-plugin-node-polyfills';
 import { viteStaticCopy } from 'vite-plugin-static-copy';
 import viteCompression from 'vite-plugin-compression';
+import handlebars from 'vite-plugin-handlebars';
 import { resolve } from 'path';
 import fs from 'fs';
 import { constants as zlibConstants } from 'zlib';
@@ -13,8 +14,10 @@ function pagesRewritePlugin(): Plugin {
     configureServer(server) {
       server.middlewares.use((req, res, next) => {
         const url = req.url?.split('?')[0] || '';
-
-        const langMatch = url.match(/^\/(en|de|es|zh|vi|it|id|tr)(\/.*)?$/);
+        
+        const langMatch = url.match(
+          /^\/(en|de|es|zh|zh-TW|vi|it|id|tr|fr|pt)(\/.*)?$/
+        );
         if (langMatch) {
           const lang = langMatch[1];
           const restOfPath = langMatch[2] || '/';
@@ -176,6 +179,9 @@ export default defineConfig(({ mode }) => {
   return {
     base: (process.env.BASE_URL || '/').replace(/\/?$/, '/'),
     plugins: [
+      handlebars({
+        partialDirectory: resolve(__dirname, 'src/partials'),
+      }),
       pagesRewritePlugin(),
       flattenPagesPlugin(),
       rewriteHtmlPathsPlugin(),
@@ -218,6 +224,7 @@ export default defineConfig(({ mode }) => {
     },
     resolve: {
       alias: {
+        '@/types': resolve(__dirname, 'src/js/types/index.ts'),
         stream: 'stream-browserify',
         zlib: 'browserify-zlib',
       },
@@ -423,6 +430,11 @@ export default defineConfig(({ mode }) => {
             'src/pages/validate-signature-pdf.html'
           ),
           'email-to-pdf': resolve(__dirname, 'src/pages/email-to-pdf.html'),
+          'font-to-outline': resolve(
+            __dirname,
+            'src/pages/font-to-outline.html'
+          ),
+          'deskew-pdf': resolve(__dirname, 'src/pages/deskew-pdf.html'),
         },
       },
     },
