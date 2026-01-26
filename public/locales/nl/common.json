@@ -57,7 +57,7 @@
     "toolsLabel": "Tools",
     "subtitle": "Klik een tool om de bestandslader te openen",
     "searchPlaceholder": "Zoek een tool (bijv., 'splitsen', 'organiseren'...)",
-    "backToTools": "Terug naar Tools"
+    "backToTools": "Terug naar Tools",
     "firstLoadNotice": "De eerste keer duurt het even om onze conversiemachine te laden. Daarna gaat alles meteen."
   },
   "upload": {
@@ -66,7 +66,8 @@
     "pdfOrImages": "PDF's of Afbeeldingen",
     "filesNeverLeave": "Je bestanden blijven op jouw apparaat.",
     "addMore": "Meer bestanden toevoegen",
-    "clearAll": "Alles wissen"
+    "clearAll": "Alles wissen",
+    "clearFiles": "Bestanden wissen"
   },
   "loader": {
     "processing": "Verwerken..."
@@ -226,7 +227,8 @@
     "error": "Fout",
     "success": "Success",
     "file": "Bestand",
-    "files": "Bestanden"
+    "files": "Bestanden",
+    "close": "Sluiten"
   },
   "about": {
     "hero": {
@@ -321,4 +323,3 @@
     "failedToLoad": "Laden is mislukt"
   }
 }
-
