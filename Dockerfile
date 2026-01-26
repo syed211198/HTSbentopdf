@@ -7,13 +7,20 @@ FROM node:20-alpine AS builder
 WORKDIR /app
 COPY package*.json ./
 COPY vendor ./vendor
-RUN npm ci
+ENV HUSKY=0
+RUN npm config set fetch-retries 5 && \
+    npm config set fetch-retry-mintimeout 60000 && \
+    npm config set fetch-retry-maxtimeout 300000 && \
+    npm config set fetch-timeout 600000 && \
+    npm ci
 COPY . .
 
 # Build without type checking (vite build only)
 # Pass SIMPLE_MODE environment variable if provided
 ARG SIMPLE_MODE=false
 ENV SIMPLE_MODE=$SIMPLE_MODE
+ARG COMPRESSION_MODE=all
+ENV COMPRESSION_MODE=$COMPRESSION_MODE
 
 # global arg to local arg
 ARG BASE_URL
@@ -29,12 +36,17 @@ RUN if [ -z "$BASE_URL" ]; then \
 FROM nginxinc/nginx-unprivileged:stable-alpine-slim
 
 LABEL org.opencontainers.image.source="https://github.com/alam00000/bentopdf"
+LABEL org.opencontainers.image.url="https://github.com/alam00000/bentopdf"
 
 # global arg to local arg
 ARG BASE_URL
 
+# Set this to "true" to disable Nginx listening on IPv6
+ENV DISABLE_IPV6=false
+
 COPY --chown=nginx:nginx --from=builder /app/dist /usr/share/nginx/html${BASE_URL%/}
 COPY --chown=nginx:nginx nginx.conf /etc/nginx/nginx.conf
+COPY --chown=nginx:nginx --chmod=755 nginx-ipv6.sh /docker-entrypoint.d/99-disable-ipv6.sh
 RUN mkdir -p /etc/nginx/tmp && chown -R nginx:nginx /etc/nginx/tmp
 
 EXPOSE 8080

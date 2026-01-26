@@ -1,12 +1,46 @@
-<p align="center"><img src="public/images/favicon.svg" width="80"></p>
+<p align="center"><img src="public/images/favicon-no-bg.svg" width="80"></p>
 <h1 align="center">BentoPDF</h1>
 
 **BentoPDF** is a powerful, privacy-first, client-side PDF toolkit that is self hostable and allows you to manipulate, edit, merge, and process PDF files directly in your browser. No server-side processing is required, ensuring your files remain secure and private.
 
-![Docker Pulls](https://img.shields.io/docker/pulls/bentopdf/bentopdf) [![Ko-fi](https://img.shields.io/badge/Buy%20me%20a%20Coffee-yellow?logo=kofi&style=flat-square)](https://ko-fi.com/alio0) ![GitHub Stars](https://img.shields.io/github/stars/alam00000/bentopdf?style=social)
+![Docker Pulls](https://img.shields.io/docker/pulls/bentopdfteam/bentopdf) [![Ko-fi](https://img.shields.io/badge/Buy%20me%20a%20Coffee-yellow?logo=kofi&style=flat-square)](https://ko-fi.com/alio01) ![GitHub Stars](https://img.shields.io/github/stars/alam00000/bentopdf?style=social)
 [![Sponsor me on GitHub](https://img.shields.io/badge/Sponsor-%E2%9D%A4-ff69b4)](https://github.com/sponsors/alam00000)
 
 ![BentoPDF Tools](public/images/bentopdf-tools.png)
+
+---
+
+## Table of Contents
+
+- [Join Us on Discord](#-join-us-on-discord)
+- [Documentation](#-documentation)
+- [Licensing](#-licensing)
+- [Stargazers over time](#-stargazers-over-time)
+- [Thank You to Our Sponsors](#-thank-you-to-our-sponsors)
+- [Why BentoPDF?](#-why-bentopdf)
+- [Features / Tools Supported](#️-features--tools-supported)
+  - [Organize & Manage PDFs](#organize--manage-pdfs)
+  - [Edit & Modify PDFs](#edit--modify-pdfs)
+  - [Convert to PDF](#convert-to-pdf)
+  - [Convert from PDF](#convert-from-pdf)
+  - [Secure & Optimize PDFs](#secure--optimize-pdfs)
+- [Translations](#-translations)
+- [Getting Started](#-getting-started)
+  - [Prerequisites](#prerequisites)
+  - [Quick Start](#-quick-start)
+  - [Static Hosting](#static-hosting-using-netlify-vercel-and-github-pages)
+  - [Self-Hosting Locally](#-self-hosting-locally)
+  - [Docker Compose / Podman Compose](#-run-with-docker-compose--podman-compose-recommended)
+  - [Podman Quadlet](#-podman-quadlet-systemd-integration)
+  - [Simple Mode](#-simple-mode-for-internal-use)
+  - [Security Features](#-security-features)
+  - [Digital Signature CORS Proxy](#digital-signature-cors-proxy-required)
+  - [Version Management](#-version-management)
+  - [Development Setup](#-development-setup)
+- [Tech Stack & Background](#️-tech-stack--background)
+- [Roadmap](#️-roadmap)
+- [Contributing](#-contributing)
+- [Special Thanks](#special-thanks)
 
 ---
 
@@ -18,20 +52,56 @@ Have questions, feature requests, or want to chat with the community? Join our D
 
 ---
 
+## 📚 Documentation
+
+[![Documentation](https://img.shields.io/badge/Docs-VitePress-646cff?style=for-the-badge&logo=vite&logoColor=white)](https://bentopdf.com/docs/)
+
+Visit our [Documentation](https://bentopdf.com/docs/) for:
+
+- **Getting Started** guide
+- **Tools Reference** (50+ tools)
+- **Self-Hosting** guides (Docker, Vercel, Netlify, Cloudflare, AWS, Hostinger, Nginx, Apache)
+- **Contributing** guide
+- **Commercial License** details
+
+---
+
 ## 📜 Licensing
 
-BentoPDF is dual-licensed:
+BentoPDF is **dual-licensed** to fit your needs:
 
-- **AGPL-3.0** for open-source projects where you share your full source code publicly
-- **Commercial License** for proprietary/closed-source applications - **[Get Lifetime License for $49](https://ko-fi.com/s/f32ca4cb75)** (a one-time lifetime purchase, includes all feature updates forever)
+| License        | Best For                                     | Price              |
+| -------------- | -------------------------------------------- | ------------------ |
+| **AGPL-3.0**   | Open-source projects with public source code | **Free**           |
+| **Commercial** | Proprietary / closed-source applications     | **$49** (lifetime) |
 
-For more details, see our [Licensing Page](https://bentopdf.com/licensing.html)
+<p align="center">
+  <a href="https://buy.polar.sh/polar_cl_ThDfffbl733x7oAodcIryCzhlO57ZtcWPq6HJ1qMChd">
+    <img src="https://img.shields.io/badge/🚀_Get_Commercial_License-$49_Lifetime-6366f1?style=for-the-badge&labelColor=1f2937" alt="Get Commercial License">
+  </a>
+</p>
+
+> **One-time purchase** · **Unlimited devices & users** · **Lifetime updates** · **No AGPL obligations**
+
+📖 For more details, see our [Licensing Page](https://bentopdf.com/licensing.html)
 
 <hr>
 
 ## ⭐ Stargazers over time
 
 [![Star History Chart](https://api.star-history.com/svg?repos=alam00000/bentopdf&type=Date)](https://star-history.com/#alam00000/bentopdf&Date)
+
+---
+
+## 💖 Thank You to Our Sponsors
+
+We're incredibly grateful to all our sponsors and supporters who help keep BentoPDF free and open source!
+
+[![Sponsor me on GitHub](https://img.shields.io/badge/Become%20a%20Sponsor-%E2%9D%A4-ff69b4?style=for-the-badge)](https://github.com/sponsors/alam00000)
+[![Buy me a Coffee](https://img.shields.io/badge/Buy%20me%20a%20Coffee-yellow?style=for-the-badge&logo=kofi)](https://ko-fi.com/alio01)
+
+<!-- sponsors -->
+<!-- sponsors -->
 
 ---
 
@@ -50,67 +120,93 @@ BentoPDF offers a comprehensive suite of tools to handle all your PDF needs.
 
 ### Organize & Manage PDFs
 
-| Tool Name                 | Description                                                                |
-| :------------------------ | :------------------------------------------------------------------------- |
-| **Merge PDFs**            | Combine multiple PDF files into one.                                       |
-| **Split PDFs**            | Extract specific pages or divide a document into smaller files.            |
-| **Organize Pages**        | Reorder, duplicate, or delete pages with a simple drag-and-drop interface. |
-| **Extract Pages**         | Save a specific range of pages as a new PDF.                               |
-| **Delete Pages**          | Remove unwanted pages from your document.                                  |
-| **Rotate PDF**            | Rotate individual or all pages in a document.                              |
-| **N-Up PDF**              | Combine multiple pages onto a single page.                                 |
-| **View PDF**              | A powerful, integrated PDF viewer.                                         |
-| **Alternate & Mix pages** | Merge pages by alternating pages from each PDF.                            |
-| **Posterize PDF**         | Split a PDF into multiple smaller pages for print.                         |
-| **PDF Multi Tool**        | Merge, Split, Organize, Delete, Rotate, Add Blank Pages, Extract and Duplicate in an unified interface. |
-| **Add Attachments**       | Embed one or more files into your PDF.                                     |
-| **Extract Attachments**   | Extract all embedded files from PDF(s) as a ZIP.                           |
-| **Edit Attachments**      | View or remove attachments in your PDF.                                    |
-| **Divide Pages**          | Divide pages horizontally or vertically.                                   |
-| **Combine to Single Page**| Stitch all pages into one continuous scroll.                               |
-| **Add Blank Page**        | Insert an empty page anywhere in your PDF.                                 |
-| **Reverse Pages**         | Flip the order of all pages in your document.                              |
-| **View Metadata**         | Inspect the hidden properties of your PDF.                                 |
-| **PDFs to ZIP**           | Package multiple PDF files into a ZIP archive.                             |
-| **Compare PDFs**          | Compare two PDFs side by side.                                             |
+| Tool Name                    | Description                                                                                             |
+| :--------------------------- | :------------------------------------------------------------------------------------------------------ |
+| **Merge PDFs**               | Combine multiple PDF files into one. Preserves Bookmarks.                                               |
+| **Split PDFs**               | Extract specific pages or divide a document into smaller files.                                         |
+| **Organize Pages**           | Reorder, duplicate, or delete pages with a simple drag-and-drop interface.                              |
+| **Extract Pages**            | Save a specific range of pages as a new PDF.                                                            |
+| **Delete Pages**             | Remove unwanted pages from your document.                                                               |
+| **Rotate PDF**               | Rotate individual or all pages in a document.                                                           |
+| **Rotate by Custom Degrees** | Rotate pages by any custom angle.                                                                       |
+| **N-Up PDF**                 | Combine multiple pages onto a single page.                                                              |
+| **View PDF**                 | A powerful, integrated PDF viewer.                                                                      |
+| **Alternate & Mix Pages**    | Merge pages by alternating pages from each PDF. Preserves Bookmarks.                                    |
+| **Posterize PDF**            | Split a PDF into multiple smaller pages for print.                                                      |
+| **PDF Multi Tool**           | Merge, Split, Organize, Delete, Rotate, Add Blank Pages, Extract and Duplicate in an unified interface. |
+| **PDF Booklet**              | Rearrange pages for double-sided booklet printing. Fold and staple to create a booklet.                 |
+| **Add Attachments**          | Embed one or more files into your PDF.                                                                  |
+| **Extract Attachments**      | Extract all embedded files from PDF(s) as a ZIP.                                                        |
+| **Edit Attachments**         | View or remove attachments in your PDF.                                                                 |
+| **Divide Pages**             | Divide pages horizontally or vertically.                                                                |
+| **Combine to Single Page**   | Stitch all pages into one continuous scroll.                                                            |
+| **Add Blank Page**           | Insert an empty page anywhere in your PDF.                                                              |
+| **Reverse Pages**            | Flip the order of all pages in your document.                                                           |
+| **View Metadata**            | Inspect the hidden properties of your PDF.                                                              |
+| **PDFs to ZIP**              | Package multiple PDF files into a ZIP archive.                                                          |
+| **Compare PDFs**             | Compare two PDFs side by side.                                                                          |
 
 ### Edit & Modify PDFs
 
-| Tool Name              | Description                                                 |
-| :--------------------- | :---------------------------------------------------------- |
-| **PDF Editor**         | A comprehensive editor to modify your PDFs.                 |
+| Tool Name                 | Description                                                                                                                                                                                     |
+| :------------------------ | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **PDF Editor**            | Annotate, highlight, redact, comment, add shapes/images, search, and view PDFs.                                                                                                                 |
 | **Create Fillable Forms** | Create professional fillable PDF forms with text fields, checkboxes, dropdowns, radio buttons, signatures, and more. Fully compliant with PDF standards for compatibility with all PDF viewers. |
-| **Add Page Numbers**   | Easily add page numbers with customizable formatting.       |
-| **Add Watermark**      | Add text or image watermarks to protect your documents.     |
-| **Header & Footer**    | Add customizable headers and footers.                       |
-| **Crop PDF**           | Crop specific pages or the entire document.                 |
-| **Invert Colors**      | Invert the colors of your PDF pages for better readability. |
-| **Change Background**  | Modify the background color of your PDF.                    |
-| **Change Text Color**  | Change the color of text content within the PDF.            |
-| **Fill Forms**         | Fill out PDF forms directly in your browser.                |
-| **Flatten PDF**        | Flatten form fields and annotations into static content.    |
-| **Remove Annotations** | Remove comments, highlights, and other annotations.         |
-| **Remove Blank Pages** | Auto detect and remove blank pages in a PDF.                |
-| **Edit Bookmarks** | Add, Edit, Create, Import and Export PDF Bookmarks.                |
-| **Add Stamps**         | Add image stamps to your PDF using the annotation toolbar.    |
-| **Table of Contents**  | Generate a table of contents page from PDF bookmarks.         |
-| **Redact Content**     | Permanently remove sensitive content from your PDFs.        |
+| **PDF Form Filler**       | Fill in forms directly in the browser. Also supports XFA forms.                                                                                                                                 |
+| **Add Page Numbers**      | Easily add page numbers with customizable formatting.                                                                                                                                           |
+| **Add Watermark**         | Add text or image watermarks to protect your documents.                                                                                                                                         |
+| **Header & Footer**       | Add customizable headers and footers.                                                                                                                                                           |
+| **Crop PDF**              | Crop specific pages or the entire document.                                                                                                                                                     |
+| **Deskew PDF**            | Automatically straighten tilted scanned pages using OpenCV.                                                                                                                                     |
+| **Font to Outline**       | Convert all fonts to vector outlines for consistent rendering across all devices.                                                                                                               |
+| **Invert Colors**         | Invert the colors of your PDF pages for better readability.                                                                                                                                     |
+| **Change Background**     | Modify the background color of your PDF.                                                                                                                                                        |
+| **Change Text Color**     | Change the color of text content within the PDF.                                                                                                                                                |
+| **Flatten PDF**           | Flatten form fields and annotations into static content.                                                                                                                                        |
+| **Remove Annotations**    | Remove comments, highlights, and other annotations.                                                                                                                                             |
+| **Remove Blank Pages**    | Auto detect and remove blank pages in a PDF.                                                                                                                                                    |
+| **Edit Bookmarks**        | Add, Edit, Create, Import and Export PDF Bookmarks.                                                                                                                                             |
+| **Add Stamps**            | Add image stamps to your PDF using the annotation toolbar.                                                                                                                                      |
+| **Table of Contents**     | Generate a table of contents page from PDF bookmarks.                                                                                                                                           |
+| **Redact Content**        | Permanently remove sensitive content from your PDFs.                                                                                                                                            |
 
 ### Convert to PDF
 
-| Tool Name           | Description                                                     |
-| :------------------ | :-------------------------------------------------------------- |
-| **Image to PDF**    | Convert JPG, PNG, WebP, SVG, BMP, HEIC, and TIFF images to PDF. |
-| **JPG to PDF**      | Convert JPG images to PDF.                                        |
-| **PNG to PDF**      | Convert PNG images to PDF.                                        |
-| **WebP to PDF**     | Convert WebP images to PDF.                                       |
-| **SVG to PDF**      | Convert SVG images to PDF.                                        |
-| **BMP to PDF**      | Convert BMP images to PDF.                                        |
-| **HEIC to PDF**     | Convert HEIC images to PDF.                                       |
-| **TIFF to PDF**     | Convert TIFF images to PDF.                                       |
-| **Markdown to PDF** | Convert `.md` files into professional PDF documents.            |
-| **Text to PDF**     | Convert plain text files into a PDF.                            |
-| **JSON to PDF**     | Convert JSON to PDF.                                             |
+| Tool Name             | Description                                                                                            |
+| :-------------------- | :----------------------------------------------------------------------------------------------------- |
+| **Image to PDF**      | Convert JPG, PNG, BMP, GIF, TIFF, PNM, PGM, PBM, PPM, PAM, JXR, JPX, JP2, PSD, SVG, HEIC, WebP to PDF. |
+| **JPG to PDF**        | Convert JPG, JPEG, and JPEG2000 (JP2/JPX) images to PDF.                                               |
+| **PNG to PDF**        | Convert PNG images to PDF.                                                                             |
+| **WebP to PDF**       | Convert WebP images to PDF.                                                                            |
+| **SVG to PDF**        | Convert SVG images to PDF.                                                                             |
+| **BMP to PDF**        | Convert BMP images to PDF.                                                                             |
+| **HEIC to PDF**       | Convert HEIC images to PDF.                                                                            |
+| **TIFF to PDF**       | Convert TIFF images to PDF.                                                                            |
+| **PSD to PDF**        | Convert Adobe Photoshop (PSD) files to PDF.                                                            |
+| **Word to PDF**       | Convert Word documents (DOCX, DOC, ODT, RTF) to PDF.                                                   |
+| **Excel to PDF**      | Convert Excel spreadsheets (XLSX, XLS, ODS, CSV) to PDF.                                               |
+| **PowerPoint to PDF** | Convert PowerPoint presentations (PPTX, PPT, ODP) to PDF.                                              |
+| **ODT to PDF**        | Convert OpenDocument Text files to PDF.                                                                |
+| **ODS to PDF**        | Convert OpenDocument Spreadsheet (ODS) files to PDF.                                                   |
+| **ODP to PDF**        | Convert OpenDocument Presentation (ODP) files to PDF.                                                  |
+| **ODG to PDF**        | Convert OpenDocument Graphics (ODG) files to PDF.                                                      |
+| **RTF to PDF**        | Convert Rich Text Format documents to PDF.                                                             |
+| **CSV to PDF**        | Convert CSV spreadsheet files to PDF.                                                                  |
+| **Markdown to PDF**   | Write or paste Markdown and export it as a beautifully formatted PDF.                                  |
+| **Text to PDF**       | Convert plain text files into a PDF.                                                                   |
+| **JSON to PDF**       | Convert JSON files to PDF.                                                                             |
+| **XML to PDF**        | Convert XML documents to PDF.                                                                          |
+| **EPUB to PDF**       | Convert EPUB e-books to PDF.                                                                           |
+| **MOBI to PDF**       | Convert MOBI e-books to PDF.                                                                           |
+| **FB2 to PDF**        | Convert FictionBook (FB2) e-books to PDF.                                                              |
+| **CBZ to PDF**        | Convert comic book archives (CBZ/CBR) to PDF.                                                          |
+| **XPS to PDF**        | Convert XPS/OXPS documents to PDF.                                                                     |
+| **Email to PDF**      | Convert email files (EML, MSG) to PDF. Supports Outlook exports.                                       |
+| **Pages to PDF**      | Convert Apple Pages documents to PDF.                                                                  |
+| **WPD to PDF**        | Convert WordPerfect documents (WPD) to PDF.                                                            |
+| **WPS to PDF**        | Convert WPS Office documents to PDF.                                                                   |
+| **PUB to PDF**        | Convert Microsoft Publisher (PUB) files to PDF.                                                        |
+| **VSD to PDF**        | Convert Microsoft Visio (VSD, VSDX) files to PDF.                                                      |
 
 ### Convert from PDF
 
@@ -122,28 +218,35 @@ BentoPDF offers a comprehensive suite of tools to handle all your PDF needs.
 | **PDF to WebP**      | Convert each PDF page into a WebP image.                                       |
 | **PDF to BMP**       | Convert each PDF page into a BMP image.                                        |
 | **PDF to TIFF**      | Convert each PDF page into a TIFF image.                                       |
+| **PDF to SVG**       | Convert each page into a scalable vector graphic (SVG) for perfect quality.    |
 | **PDF to Greyscale** | Convert a color PDF into a black-and-white version.                            |
-| **OCR PDF**          | Make scanned PDFs searchable and copyable using Optical Character Recognition. |
+| **PDF to Text**      | Extract text from PDF files and save as plain text (.txt).                     |
 | **PDF to JSON**      | Convert PDF files to JSON format.                                              |
+| **PDF to CSV**       | Extract tables from PDF and convert to CSV format.                             |
+| **PDF to Excel**     | Extract tables from PDF and convert to Excel (XLSX) format.                    |
+| **Extract Tables**   | Extract tables from PDF files and export as CSV, JSON, or Markdown.            |
+| **OCR PDF**          | Make scanned PDFs searchable and copyable using Optical Character Recognition. |
 
 ### Secure & Optimize PDFs
 
-| Tool Name              | Description                                                        |
-| :--------------------- | :----------------------------------------------------------------- |
-| **Compress PDF**       | Reduce file size while maintaining quality.                        |
-| **Repair PDF**         | Attempt to repair and recover data from a corrupted PDF.           |
-| **Encrypt PDF**        | Add a password to protect your PDF from unauthorized access.       |
-| **Decrypt PDF**        | Remove password protection from a PDF (password required).         |
-| **Change Permissions** | Set or modify user permissions for printing, copying, and editing. |
-| **Sign PDF**           | Add your digital signature to a document.                          |
-| **Redact Content**     | Permanently remove sensitive content from your PDFs.               |
-| **Edit Metadata**      | View and modify PDF metadata (author, title, keywords, etc.).      |
-| **Remove Metadata**    | Strip all metadata from your PDF for privacy.                      |
-| **Linearize PDF**      | Optimize PDF for fast web view.                                    |
-| **Sanitize PDF**       | Remove potentially unwanted or malicous files from PDF.            |
-| **Fix Page Size**      | Standardize all pages to a uniform size.                           |
-| **Page Dimensions**    | Analyze page size, orientation, and units.                         |
-| **Remove Restrictions**| Remove password protection and security restrictions associated with digitally signed PDF files. |
+| Tool Name               | Description                                                                                                |
+| :---------------------- | :--------------------------------------------------------------------------------------------------------- |
+| **Compress PDF**        | Reduce file size while maintaining quality.                                                                |
+| **Repair PDF**          | Attempt to repair and recover data from a corrupted PDF.                                                   |
+| **Encrypt PDF**         | Add a password to protect your PDF from unauthorized access.                                               |
+| **Decrypt PDF**         | Remove password protection from a PDF (password required).                                                 |
+| **Change Permissions**  | Set or modify user permissions for printing, copying, and editing.                                         |
+| **Sign PDF**            | Draw, type, or upload your signature.                                                                      |
+| **Digital Signature**   | Add cryptographic digital signatures using X.509 certificates (PFX/PEM). Private key never leaves browser. |
+| **Validate Signature**  | Verify digital signatures, check certificate validity, and confirm document integrity.                     |
+| **Redact Content**      | Permanently remove sensitive content from your PDFs.                                                       |
+| **Edit Metadata**       | View and modify PDF metadata (author, title, keywords, etc.).                                              |
+| **Remove Metadata**     | Strip all metadata from your PDF for privacy.                                                              |
+| **Linearize PDF**       | Optimize PDF for fast web viewing.                                                                         |
+| **Sanitize PDF**        | Remove metadata, annotations, scripts, and more.                                                           |
+| **Fix Page Size**       | Standardize all pages to a uniform size.                                                                   |
+| **Page Dimensions**     | Analyze page size, orientation, and units.                                                                 |
+| **Remove Restrictions** | Remove password protection and security restrictions associated with digitally signed PDF files.           |
 
 ---
 
@@ -151,11 +254,18 @@ BentoPDF offers a comprehensive suite of tools to handle all your PDF needs.
 
 BentoPDF is available in multiple languages:
 
-| Language | Status |
-|----------|--------|
-| English  | [![English](https://img.shields.io/badge/Complete-green?style=flat-square)](public/locales/en/common.json) |
-| German   | [![German](https://img.shields.io/badge/In_Progress-yellow?style=flat-square)](public/locales/de/common.json) |
-| Vietnamese | [![Vietnamese](https://img.shields.io/badge/Complete-green?style=flat-square)](public/locales/vi/common.json) |
+| Language            | Status                                                                                                                    |
+| ------------------- | ------------------------------------------------------------------------------------------------------------------------- |
+| English             | [![English](https://img.shields.io/badge/Complete-green?style=flat-square)](public/locales/en/common.json)                |
+| Chinese             | [![Chinese](https://img.shields.io/badge/Complete-green?style=flat-square)](public/locales/zh/common.json)                |
+| Traditional Chinese | [![Traditional Chinese](https://img.shields.io/badge/Complete-green?style=flat-square)](public/locales/zh-TW/common.json) |
+| French              | [![French](https://img.shields.io/badge/Complete-green?style=flat-square)](public/locales/fr/common.json)                 |
+| German              | [![German](https://img.shields.io/badge/Complete-green?style=flat-square)](public/locales/de/common.json)                 |
+| Indonesian          | [![Indonesian](https://img.shields.io/badge/Complete-green?style=flat-square)](public/locales/id/common.json)             |
+| Italian             | [![Italian](https://img.shields.io/badge/Complete-green?style=flat-square)](public/locales/it/common.json)                |
+| Portuguese          | [![Portuguese](https://img.shields.io/badge/Complete-green?style=flat-square)](public/locales/pt/common.json)             |
+| Turkish             | [![Turkish](https://img.shields.io/badge/Complete-green?style=flat-square)](public/locales/tr/common.json)                |
+| Vietnamese          | [![Vietnamese](https://img.shields.io/badge/Complete-green?style=flat-square)](public/locales/vi/common.json)             |
 
 Want to help translate BentoPDF into your language? Check out our [Translation Guide](TRANSLATION.md)!
 
@@ -171,22 +281,9 @@ You can run BentoPDF locally for development or personal use.
 - [npm](https://www.npmjs.com/) (or yarn/pnpm)
 - [Docker](https://www.docker.com/) & [Docker Compose](https://docs.docker.com/compose/install/) (for containerized setup)
 
-### 🚀 Quick Start with Docker
+### 🚀 Quick Start
 
-[![Deploy on Zeabur](https://zeabur.com/button.svg)](https://zeabur.com/templates/K4AU2B)
-
-You can run BentoPDF directly from Docker Hub or GitHub Container Registry without cloning the repository:
-
-You can also watch the video on how to set it up 👉
-[BentoPDF Docker Setup](https://drive.google.com/file/d/1C4eJ2nqeaH__1Tlad-xuBHaF2Ha4fSBf/view?usp=drive_link)
-
-**Using Docker Hub:**
-
-```bash
-docker run -p 3000:8080 bentopdf/bentopdf:latest
-```
-
-**Using GitHub Container Registry:**
+Run BentoPDF instantly from GitHub Container Registry (Recommended):
 
 ```bash
 docker run -p 3000:8080 ghcr.io/alam00000/bentopdf:latest
@@ -194,9 +291,36 @@ docker run -p 3000:8080 ghcr.io/alam00000/bentopdf:latest
 
 Open your browser at: http://localhost:3000
 
-This is the fastest way to try BentoPDF without setting up a development environment.
+<details>
+<summary><b>Alternative: Using Docker Hub or Podman</b></summary>
 
-### 🏠 Self-Hosting
+**Docker Hub:**
+
+```bash
+docker run -p 3000:8080 bentopdfteam/bentopdf:latest
+```
+
+**Podman (GHCR):**
+
+```bash
+podman run -p 3000:8080 ghcr.io/alam00000/bentopdf:latest
+```
+
+**Podman (Docker Hub):**
+
+```bash
+podman run -p 3000:8080 docker.io/bentopdfteam/bentopdf:latest
+```
+
+> **Note:** All `docker` commands in this documentation work with Podman by replacing `docker` with `podman`.
+
+</details>
+
+### Static Hosting using Netlify, Vercel, and GitHub Pages
+
+It is very straightforward to host your own instance of BentoPDF using a static web page hosting service. Plus, services such as Netlify, Vercel, and GitHub Pages all offer a free tier for getting started. See [Static Hosting](https://github.com/alam00000/bentopdf/blob/main/STATIC-HOSTING.md) for details.
+
+### 🏠 Self-Hosting Locally
 
 Since BentoPDF is fully client-side, all processing happens in the user's browser and no server-side processing is required. This means you can host BentoPDF as simple static files on any web server or hosting platform.
 
@@ -208,7 +332,7 @@ The easiest way to self-host is to download the pre-built distribution file from
 2. Download the latest `dist-{version}.zip` file
 3. Extract the zip file
 4. Serve the extracted folder with your preferred web server
-   
+
 **Serve the extracted folder (requires Node.js):**
 
 ```bash
@@ -248,6 +372,53 @@ npm run preview
 
 ```
 
+**Compression Modes:**
+
+BentoPDF supports different compression modes for optimized builds:
+
+```bash
+# Gzip only (smallest Docker image size)
+npm run build:gzip
+docker build --build-arg COMPRESSION_MODE=g -t bentopdf:gzip .
+
+# Brotli only (best compression ratio)
+npm run build:brotli
+docker build --build-arg COMPRESSION_MODE=b -t bentopdf:brotli .
+
+# No compression (fastest build time)
+npm run build:original
+docker build --build-arg COMPRESSION_MODE=o -t bentopdf:original .
+
+# All formats (default, maximum browser compatibility)
+npm run build:all
+docker build --build-arg COMPRESSION_MODE=all -t bentopdf:all .
+```
+
+| Mode  | Files Kept  | Use Case                          |
+| ----- | ----------- | --------------------------------- |
+| `g`   | `.gz` only  | Standard nginx or minimal size    |
+| `b`   | `.br` only  | Modern CDN with Brotli support    |
+| `o`   | originals   | Development or custom compression |
+| `all` | all formats | Maximum compatibility (default)   |
+
+**CDN Optimization:**
+
+BentoPDF can use jsDelivr CDN to serve large WASM files (LibreOffice, Ghostscript, PyMuPDF) for improved performance and reduced bandwidth costs:
+
+```bash
+# Production build with CDN (Recommended)
+VITE_USE_CDN=true npm run build
+
+# Standard build with local files only
+npm run build
+```
+
+**How it works:**
+
+- When `VITE_USE_CDN=true`: Browser loads WASM files from jsDelivr CDN (fast, global delivery)
+- Local files are **always included** as automatic fallback
+- If CDN fails then it falls back to local files
+
 **Subdirectory Hosting:**
 
 BentoPDF can also be hosted from a subdirectory (e.g., `example.com/tools/bentopdf/`):
@@ -269,7 +440,7 @@ cp -r dist/* serve-test/tools/bentopdf/
 npx serve serve-test
 ```
 
-The website can be accessible at: ```http://localhost:3000/tools/bentopdf/```
+The website can be accessible at: `http://localhost:3000/tools/bentopdf/`
 
 The `npm run package` command creates a `dist-{version}.zip` file that you can use for self-hosting.
 
@@ -299,11 +470,12 @@ docker build \
 docker run -p 3000:8080 bentopdf-simple
 ```
 
-> **Important**: 
+> **Important**:
+>
 > - Always include trailing slashes in `BASE_URL` (e.g., `/bentopdf/` not `/bentopdf`)
 > - The default value is `/` for root deployment
 
-### 🚀 Run with Docker Compose (Recommended)
+### 🚀 Run with Docker Compose / Podman Compose (Recommended)
 
 For a more robust setup with auto-restart capabilities:
 
@@ -312,7 +484,8 @@ For a more robust setup with auto-restart capabilities:
 ```yaml
 services:
   bentopdf:
-    image: bentopdf/bentopdf:latest
+    image: ghcr.io/alam00000/bentopdf:latest # Recommended
+    # image: bentopdfteam/bentopdf:latest     # Alternative: Docker Hub
     container_name: bentopdf
     ports:
       - '3000:8080'
@@ -322,10 +495,47 @@ services:
 2. **Start the application**:
 
 ```bash
+# Docker Compose
 docker-compose up -d
+
+# Podman Compose
+podman-compose up -d
 ```
 
 The application will be available at `http://localhost:3000`.
+
+### 🐧 Podman Quadlet (Systemd Integration)
+
+For Linux production deployments, you can run BentoPDF as a systemd service using [Podman Quadlet](https://docs.podman.io/en/latest/markdown/podman-systemd.unit.5.html).
+
+Create `~/.config/containers/systemd/bentopdf.container`:
+
+```ini
+[Unit]
+Description=BentoPDF - Privacy-first PDF toolkit
+After=network-online.target
+
+[Container]
+Image=ghcr.io/alam00000/bentopdf:latest
+ContainerName=bentopdf
+PublishPort=3000:8080
+AutoUpdate=registry
+
+[Service]
+Restart=always
+
+[Install]
+WantedBy=default.target
+```
+
+Then enable and start:
+
+```bash
+systemctl --user daemon-reload
+systemctl --user enable --now bentopdf
+```
+
+For detailed Quadlet configuration, see [Self-Hosting Docker Guide](https://bentopdf.com/docs/self-hosting/docker).
 
 ### 🏢 Simple Mode for Internal Use
 
@@ -357,21 +567,108 @@ docker run -p 8080:8080 bentopdf
 
 For detailed security configuration, see [SECURITY.md](SECURITY.md).
 
+### Digital Signature CORS Proxy (Required)
+
+The **Digital Signature** tool uses a signing library that may need to fetch certificate chain data from certificate authority provider. Since many certificate servers don't include CORS headers, a proxy is required for this feature to work in the browser.
+
+**When is the proxy needed?**
+
+- Only when using the Digital Signature tool
+- Only if your certificate requires fetching issuer certificates from external URLs
+- Self-signed certificates typically don't need this
+
+**Deploying the CORS Proxy (Cloudflare Workers):**
+
+1. **Navigate to the cloudflare directory:**
+
+   ```bash
+   cd cloudflare
+   ```
+
+2. **Login to Cloudflare (if not already):**
+
+   ```bash
+   npx wrangler login
+   ```
+
+3. **Deploy the worker:**
+
+   ```bash
+   npx wrangler deploy
+   ```
+
+4. **Note your worker URL** (e.g., `https://bentopdf-cors-proxy.your-subdomain.workers.dev`)
+
+5. **Set the environment variable when building:**
+   ```bash
+   VITE_CORS_PROXY_URL=https://your-worker-url.workers.dev npm run build
+   ```
+
+#### Production Security Features
+
+The CORS proxy includes several security measures:
+
+| Feature                 | Description                                                               |
+| ----------------------- | ------------------------------------------------------------------------- |
+| **URL Restrictions**    | Only allows certificate URLs (`.crt`, `.cer`, `.pem`, `/certs/`, `/ocsp`) |
+| **Private IP Blocking** | Blocks requests to localhost, 10.x, 192.168.x, 172.16-31.x                |
+| **File Size Limit**     | Rejects files larger than 10MB                                            |
+| **Rate Limiting**       | 60 requests per IP per minute (requires KV)                               |
+| **HMAC Signatures**     | Optional client-side signing (limited protection)                         |
+
+#### Enabling Rate Limiting (Recommended)
+
+Rate limiting requires Cloudflare KV storage:
+
+```bash
+cd cloudflare
+
+# Create KV namespace
+npx wrangler kv namespace create "RATE_LIMIT_KV"
+
+# Copy the returned ID and add to wrangler.toml:
+# [[kv_namespaces]]
+# binding = "RATE_LIMIT_KV"
+# id = "YOUR_ID_HERE"
+
+# Redeploy
+npx wrangler deploy
+```
+
+**Free tier limits:** 100,000 reads/day, 1,000 writes/day (~300-500 signatures/day)
+
+#### HMAC Signature Verification (Optional)
+
+> **⚠️ Security Warning:** Client-side secrets can be extracted from bundled JavaScript. For production deployments with sensitive requirements, use your own backend server to proxy requests instead of embedding secrets in frontend code.
+
+BentoPDF uses client-side HMAC as a deterrent against casual abuse, but accepts this tradeoff due to its fully client-side architecture. To enable:
+
+```bash
+# Generate a secret
+openssl rand -hex 32
+
+# Set on Cloudflare Worker
+npx wrangler secret put PROXY_SECRET
+
+# Set in build environment
+VITE_CORS_PROXY_SECRET=your-secret npm run build
+```
+
 ### 📦 Version Management
 
-BentoPDF supports semantic versioning with multiple Docker tags available on both Docker Hub and GitHub Container Registry:
+BentoPDF supports semantic versioning with multiple container tags available:
 
-**Docker Hub:**
-
-- **Latest**: `bentopdf/bentopdf:latest`
-- **Specific Version**: `bentopdf/bentopdf:1.0.0`
-- **Version with Prefix**: `bentopdf/bentopdf:v1.0.0`
-
-**GitHub Container Registry:**
+**GitHub Container Registry (Recommended):**
 
 - **Latest**: `ghcr.io/alam00000/bentopdf:latest`
 - **Specific Version**: `ghcr.io/alam00000/bentopdf:1.0.0`
 - **Version with Prefix**: `ghcr.io/alam00000/bentopdf:v1.0.0`
+
+**Docker Hub:**
+
+- **Latest**: `bentopdfteam/bentopdf:latest`
+- **Specific Version**: `bentopdfteam/bentopdf:1.0.0`
+- **Version with Prefix**: `bentopdfteam/bentopdf:v1.0.0`
 
 #### Quick Release
 
@@ -476,6 +773,33 @@ We welcome contributions from the community! Here's how you can get started:
 
 Have an idea for a new tool or an improvement? [Open an issue](https://github.com/alam00000/bentopdf/issues) to discuss it first.
 
+### 📖 Contributing to Documentation
+
+Our documentation is built with [VitePress](https://vitepress.dev/). Here's how to contribute:
+
+```bash
+# Install dependencies
+npm install
+
+# Start docs dev server
+npm run docs:dev
+
+# Build docs for production
+npm run docs:build
+
+# Preview the built docs
+npm run docs:preview
+```
+
+Documentation files are in the `docs/` folder:
+
+- `docs/index.md` - Home page
+- `docs/getting-started.md` - Getting started guide
+- `docs/tools/` - Tools reference
+- `docs/self-hosting/` - Self-hosting guides (Docker, Vercel, Netlify, Hostinger, etc.)
+- `docs/contributing.md` - Contributing guide
+- `docs/licensing.md` - Commercial license info
+
 ---
 
 ## Special Thanks
@@ -491,5 +815,8 @@ BentoPDF wouldn't be possible without the amazing open-source tools and librarie
 - **[Tailwind CSS](https://tailwindcss.com/)** – For rapid, flexible, and beautiful UI styling.
 - **[qpdf](https://github.com/qpdf/qpdf)** and **[qpdf-wasm](https://github.com/neslinesli93/qpdf-wasm)**– A powerful command-line tool and library for inspecting, repairing, and transforming PDF file ported to wasm
 - **[cpdf](https://www.coherentpdf.com/)** – For content preserving pdf operations.
+- **[LibreOffice](https://www.libreoffice.org/)** – For powerful document conversion capabilities.
+- **[PyMuPDF](https://github.com/pymupdf/PyMuPDF)** – For high-performance PDF manipulation and data extraction.
+- **[Ghostscript(GhostPDL)](https://github.com/ArtifexSoftware/ghostpdl)** – Needs no Introduction.
 
 Your work inspires and empowers developers everywhere. Thank you for making open-source amazing!

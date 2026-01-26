@@ -12,6 +12,9 @@ dist
 dist-ssr
 *.local
 .npm-cache
+.env
+.env.production
+.env.local
 
 # Editor directories and files
 .vscode/*
@@ -27,3 +30,9 @@ dist-ssr
 coverage/
 *.lcov
 
+#backup
+.seo-backup
+libreoffice-wasm-package
+
+# helm chart
+bentopdf-*.tgz

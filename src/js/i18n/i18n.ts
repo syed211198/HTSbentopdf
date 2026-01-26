@@ -48,6 +48,7 @@ export const getLanguageFromUrl = (): SupportedLanguage => {
 
   const langMatch = path.match(
     /^\/(en|fr|es|de|zh|zh-TW|vi|tr|id|it|pt|nl)(?:\/|$)/
+    /^\/(en|fr|es|de|zh|zh-TW|vi|tr|id|it|pt)(?:\/|$)/
   );
   if (
     langMatch &&
