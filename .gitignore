@@ -36,3 +36,6 @@ libreoffice-wasm-package
 
 # helm chart
 bentopdf-*.tgz
+
+# test 
+dist-test
