@@ -15,6 +15,7 @@ export const supportedLanguages = [
   'id',
   'it',
   'pt',
+  'nl',
 ] as const;
 export type SupportedLanguage = (typeof supportedLanguages)[number];
 
@@ -30,6 +31,7 @@ export const languageNames: Record<SupportedLanguage, string> = {
   id: 'Bahasa Indonesia',
   it: 'Italiano',
   pt: 'Português',
+  nl: 'Nederlands',
 };
 
 export const getLanguageFromUrl = (): SupportedLanguage => {
@@ -45,6 +47,7 @@ export const getLanguageFromUrl = (): SupportedLanguage => {
   }
 
   const langMatch = path.match(
+    /^\/(en|fr|es|de|zh|zh-TW|vi|tr|id|it|pt|nl)(?:\/|$)/
     /^\/(en|fr|es|de|zh|zh-TW|vi|tr|id|it|pt)(?:\/|$)/
   );
   if (
@@ -211,7 +214,7 @@ export const rewriteLinks = (): void => {
     }
 
     const langPrefixRegex = new RegExp(
-      `^(${basePath.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})?/(en|fr|es|de|zh|zh-TW|vi|tr|id|it|pt)(/|$)`
+      `^(${basePath.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})?/(en|fr|es|de|zh|zh-TW|vi|tr|id|it|pt|nl)(/|$)`
     );
     if (langPrefixRegex.test(href)) {
       return;
