@@ -22,7 +22,7 @@
   },
   "compressPdf": {
     "name": "PDF Comprimeren",
-    "subtitle": "De bestandsgrootte van je PDF verkleinen."
+    "subtitle": "De bestandsgrootte van je PDF verkleinen.",
     "algorithmLabel": "Compressie-algoritme",
     "condense": "Condense (Aanbevolen)",
     "photon": "Photon (Voor PDF's met veel foto's)",
