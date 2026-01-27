@@ -3,7 +3,7 @@
 ARG BASE_URL=
 
 # Build stage
-FROM node:20-alpine AS builder
+FROM public.ecr.aws/docker/library/node:20-alpine AS builder
 WORKDIR /app
 COPY package*.json ./
 COPY vendor ./vendor
@@ -31,7 +31,7 @@ ENV NODE_OPTIONS="--max-old-space-size=3072"
 RUN npm run build:with-docs
 
 # Production stage
-FROM nginxinc/nginx-unprivileged:stable-alpine-slim
+FROM quay.io/nginx/nginx-unprivileged:stable-alpine-slim
 
 LABEL org.opencontainers.image.source="https://github.com/alam00000/bentopdf"
 LABEL org.opencontainers.image.url="https://github.com/alam00000/bentopdf"
