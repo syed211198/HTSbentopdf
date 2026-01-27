@@ -22,19 +22,11 @@ ENV SIMPLE_MODE=$SIMPLE_MODE
 ARG COMPRESSION_MODE=all
 ENV COMPRESSION_MODE=$COMPRESSION_MODE
 
-# global arg to local arg
+# global arg to local arg - BASE_URL is read from env by vite.config.ts
 ARG BASE_URL
 ENV BASE_URL=$BASE_URL
 
-RUN if [ -z "$BASE_URL" ]; then \
-    npm run build -- --mode production && \
-    npm run docs:build && \
-    node scripts/include-docs-in-dist.js; \
-    else \
-    npm run build -- --base=${BASE_URL} --mode production && \
-    npm run docs:build && \
-    node scripts/include-docs-in-dist.js; \
-    fi
+RUN npm run build:with-docs
 
 # Production stage
 FROM nginxinc/nginx-unprivileged:stable-alpine-slim

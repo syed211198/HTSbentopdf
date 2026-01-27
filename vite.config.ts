@@ -546,6 +546,7 @@ export default defineConfig(() => {
             'src/pages/font-to-outline.html'
           ),
           'deskew-pdf': resolve(__dirname, 'src/pages/deskew-pdf.html'),
+          'wasm-settings': resolve(__dirname, 'src/pages/wasm-settings.html'),
         },
       },
     },
