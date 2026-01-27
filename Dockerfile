@@ -27,9 +27,13 @@ ARG BASE_URL
 ENV BASE_URL=$BASE_URL
 
 RUN if [ -z "$BASE_URL" ]; then \
-    npm run build -- --mode production; \
+    npm run build -- --mode production && \
+    npm run docs:build && \
+    node scripts/include-docs-in-dist.js; \
     else \
-    npm run build -- --base=${BASE_URL} --mode production; \
+    npm run build -- --base=${BASE_URL} --mode production && \
+    npm run docs:build && \
+    node scripts/include-docs-in-dist.js; \
     fi
 
 # Production stage
