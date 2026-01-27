@@ -26,7 +26,7 @@ ENV COMPRESSION_MODE=$COMPRESSION_MODE
 ARG BASE_URL
 ENV BASE_URL=$BASE_URL
 
-ENV NODE_OPTIONS="--max-old-space-size=4096"
+ENV NODE_OPTIONS="--max-old-space-size=3072"
 
 RUN npm run build:with-docs
 
