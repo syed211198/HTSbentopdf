@@ -146,12 +146,20 @@ async function cacheFirstStrategyWithDedup(request, isCDN) {
     const networkResponse = await fetch(request);
 
     if (networkResponse && networkResponse.status === 200) {
-      const cache = await caches.open(CACHE_NAME);
-
-      await removeDuplicateCache(cache, fileName, isCDN);
-
-      await cache.put(request, networkResponse.clone());
-      // console.log(`💾 [Cached from ${isCDN ? 'CDN' : 'local'}] Saved:`, fileName);
+      const clone = networkResponse.clone();
+      const buffer = await clone.arrayBuffer();
+      if (buffer.byteLength > 0) {
+        const cache = await caches.open(CACHE_NAME);
+        await removeDuplicateCache(cache, fileName, isCDN);
+        await cache.put(
+          request,
+          new Response(buffer, {
+            status: networkResponse.status,
+            statusText: networkResponse.statusText,
+            headers: networkResponse.headers,
+          })
+        );
+      }
     }
 
     return networkResponse;
@@ -166,9 +174,19 @@ async function cacheFirstStrategyWithDedup(request, isCDN) {
         try {
           const fallbackResponse = await fetch(localUrl);
           if (fallbackResponse && fallbackResponse.status === 200) {
-            const cache = await caches.open(CACHE_NAME);
-            await cache.put(localUrl, fallbackResponse.clone());
-            // console.log('✅ [Fallback Success] Cached local version:', fileName);
+            const fbClone = fallbackResponse.clone();
+            const fbBuffer = await fbClone.arrayBuffer();
+            if (fbBuffer.byteLength > 0) {
+              const cache = await caches.open(CACHE_NAME);
+              await cache.put(
+                localUrl,
+                new Response(fbBuffer, {
+                  status: fallbackResponse.status,
+                  statusText: fallbackResponse.statusText,
+                  headers: fallbackResponse.headers,
+                })
+              );
+            }
             return fallbackResponse;
           }
         } catch (fallbackError) {
@@ -187,8 +205,13 @@ async function findCachedFile(fileName, requestUrl) {
   const cache = await caches.open(CACHE_NAME);
 
   const exactMatch = await cache.match(requestUrl);
-  if (exactMatch && exactMatch.headers.get('content-length') !== '0') {
-    return exactMatch;
+  if (exactMatch) {
+    const clone = exactMatch.clone();
+    const buffer = await clone.arrayBuffer();
+    if (buffer.byteLength > 0) {
+      return exactMatch;
+    }
+    await cache.delete(requestUrl);
   }
 
   const requests = await cache.keys();
@@ -234,8 +257,19 @@ async function networkFirstStrategy(request) {
     const networkResponse = await fetch(request);
 
     if (networkResponse && networkResponse.status === 200) {
-      const cache = await caches.open(CACHE_NAME);
-      cache.put(request, networkResponse.clone());
+      const clone = networkResponse.clone();
+      const buffer = await clone.arrayBuffer();
+      if (buffer.byteLength > 0) {
+        const cache = await caches.open(CACHE_NAME);
+        cache.put(
+          request,
+          new Response(buffer, {
+            status: networkResponse.status,
+            statusText: networkResponse.statusText,
+            headers: networkResponse.headers,
+          })
+        );
+      }
     }
 
     return networkResponse;
