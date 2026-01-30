@@ -33,6 +33,38 @@ export function getCachedGsModule(): GhostscriptModule | null {
   return cachedGsModule;
 }
 
+export async function loadGsModule(): Promise<GhostscriptModule> {
+  const gsBaseUrl = getWasmBaseUrl('ghostscript')!;
+  const normalizedUrl = gsBaseUrl.endsWith('/') ? gsBaseUrl : `${gsBaseUrl}/`;
+
+  const gsJsUrl = `${normalizedUrl}gs.js`;
+  const response = await fetch(gsJsUrl);
+  if (!response.ok) {
+    throw new Error(`Failed to fetch gs.js: HTTP ${response.status}`);
+  }
+  const jsText = await response.text();
+  const blob = new Blob([jsText], { type: 'application/javascript' });
+  const blobUrl = URL.createObjectURL(blob);
+
+  try {
+    const gsModule = await import(/* @vite-ignore */ blobUrl);
+    const ModuleFactory = gsModule.default;
+
+    return (await ModuleFactory({
+      locateFile: (path: string) => {
+        if (path.endsWith('.wasm')) {
+          return `${normalizedUrl}gs.wasm`;
+        }
+        return `${normalizedUrl}${path}`;
+      },
+      print: (text: string) => console.log('[GS]', text),
+      printErr: (text: string) => console.error('[GS Error]', text),
+    })) as GhostscriptModule;
+  } finally {
+    URL.revokeObjectURL(blobUrl);
+  }
+}
+
 export async function convertToPdfA(
   pdfData: Uint8Array,
   level: PdfALevel = 'PDF/A-2b',
@@ -51,35 +83,7 @@ export async function convertToPdfA(
   if (cachedGsModule) {
     gs = cachedGsModule;
   } else {
-    const gsBaseUrl = getWasmBaseUrl('ghostscript')!;
-    let packageBaseUrl = gsBaseUrl;
-    if (packageBaseUrl.endsWith('/assets/')) {
-      packageBaseUrl = packageBaseUrl.slice(0, -8);
-    } else if (packageBaseUrl.endsWith('/assets')) {
-      packageBaseUrl = packageBaseUrl.slice(0, -7);
-    }
-    const normalizedPkgUrl = packageBaseUrl.endsWith('/')
-      ? packageBaseUrl
-      : `${packageBaseUrl}/`;
-    const normalizedAssetsUrl = gsBaseUrl.endsWith('/')
-      ? gsBaseUrl
-      : `${gsBaseUrl}/`;
-
-    const libUrl = `${normalizedPkgUrl}dist/index.js`;
-    const module = await import(/* @vite-ignore */ libUrl);
-    const loadWASM = module.loadGhostscriptWASM || module.default;
-
-    gs = (await loadWASM({
-      baseUrl: normalizedAssetsUrl,
-      locateFile: (path: string) => {
-        if (path.endsWith('.wasm')) {
-          return `${normalizedAssetsUrl}gs.wasm`;
-        }
-        return path;
-      },
-      print: (text: string) => console.log('[GS]', text),
-      printErr: (text: string) => console.error('[GS Error]', text),
-    })) as GhostscriptModule;
+    gs = await loadGsModule();
     cachedGsModule = gs;
   }
 
@@ -404,35 +408,7 @@ export async function convertFontsToOutlines(
   if (cachedGsModule) {
     gs = cachedGsModule;
   } else {
-    const gsBaseUrl = getWasmBaseUrl('ghostscript')!;
-    let packageBaseUrl = gsBaseUrl;
-    if (packageBaseUrl.endsWith('/assets/')) {
-      packageBaseUrl = packageBaseUrl.slice(0, -8);
-    } else if (packageBaseUrl.endsWith('/assets')) {
-      packageBaseUrl = packageBaseUrl.slice(0, -7);
-    }
-    const normalizedPkgUrl = packageBaseUrl.endsWith('/')
-      ? packageBaseUrl
-      : `${packageBaseUrl}/`;
-    const normalizedAssetsUrl = gsBaseUrl.endsWith('/')
-      ? gsBaseUrl
-      : `${gsBaseUrl}/`;
-
-    const libUrl = `${normalizedPkgUrl}dist/index.js`;
-    const module = await import(/* @vite-ignore */ libUrl);
-    const loadWASM = module.loadGhostscriptWASM || module.default;
-
-    gs = (await loadWASM({
-      baseUrl: normalizedAssetsUrl,
-      locateFile: (path: string) => {
-        if (path.endsWith('.wasm')) {
-          return `${normalizedAssetsUrl}gs.wasm`;
-        }
-        return path;
-      },
-      print: (text: string) => console.log('[GS]', text),
-      printErr: (text: string) => console.error('[GS Error]', text),
-    })) as GhostscriptModule;
+    gs = await loadGsModule();
     cachedGsModule = gs;
   }
 
