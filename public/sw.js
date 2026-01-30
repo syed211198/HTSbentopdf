@@ -5,7 +5,7 @@
  * Version: 1.1.0
  */
 
-const CACHE_VERSION = 'bentopdf-v8';
+const CACHE_VERSION = 'bentopdf-v9';
 const CACHE_NAME = `${CACHE_VERSION}-static`;
 
 const getBasePath = () => {
@@ -118,7 +118,9 @@ self.addEventListener('fetch', (event) => {
     event.respondWith(cacheFirstStrategyWithDedup(event.request, isCDN));
   } else if (
     isLocal &&
-    (url.pathname.endsWith('.html') || url.pathname === '/')
+    (url.pathname.endsWith('.html') ||
+      url.pathname === '/' ||
+      /^\/(en|fr|es|de|zh|zh-TW|vi|tr|id|it|pt|nl)(\/|$)/.test(url.pathname))
   ) {
     event.respondWith(networkFirstStrategy(event.request));
   }
@@ -133,7 +135,7 @@ async function cacheFirstStrategyWithDedup(request, isCDN) {
   const fileName = url.pathname.split('/').pop();
 
   try {
-    const cachedResponse = await findCachedFile(fileName);
+    const cachedResponse = await findCachedFile(fileName, request.url);
     if (cachedResponse) {
       // console.log('⚡ [Cache HIT] Instant load:', fileName);
       return cachedResponse;
@@ -181,14 +183,27 @@ async function cacheFirstStrategyWithDedup(request, isCDN) {
   }
 }
 
-async function findCachedFile(fileName) {
+async function findCachedFile(fileName, requestUrl) {
   const cache = await caches.open(CACHE_NAME);
-  const requests = await cache.keys();
 
+  const exactMatch = await cache.match(requestUrl);
+  if (exactMatch && exactMatch.headers.get('content-length') !== '0') {
+    return exactMatch;
+  }
+
+  const requests = await cache.keys();
   for (const req of requests) {
     const reqUrl = new URL(req.url);
     if (reqUrl.pathname.endsWith(fileName)) {
-      return await cache.match(req);
+      const response = await cache.match(req);
+      if (response) {
+        const clone = response.clone();
+        const buffer = await clone.arrayBuffer();
+        if (buffer.byteLength > 0) {
+          return response;
+        }
+        await cache.delete(req);
+      }
     }
   }
   return null;
@@ -283,18 +298,18 @@ function shouldCache(pathname, isCDN = false) {
 async function cacheInBatches(cache, urls, batchSize = 5) {
   for (let i = 0; i < urls.length; i += batchSize) {
     const batch = urls.slice(i, i + batchSize);
-    // console.log(`[ServiceWorker] Caching batch ${Math.floor(i / batchSize) + 1}/${Math.ceil(urls.length / batchSize)}`);
 
     await Promise.all(
       batch.map(async (url) => {
         try {
-          await cache.add(url);
-          const fileName = url.split('/').pop();
-          const fileSize =
-            fileName.includes('.wasm') || fileName.includes('.whl')
-              ? '(large file)'
-              : '';
-          // console.log(`  ✓ Cached: ${fileName} ${fileSize}`);
+          const response = await fetch(url);
+          if (response.ok && response.status === 200) {
+            const clone = response.clone();
+            const buffer = await clone.arrayBuffer();
+            if (buffer.byteLength > 0) {
+              await cache.put(url, response);
+            }
+          }
         } catch (error) {
           console.warn('[ServiceWorker] Failed to cache:', url, error.message);
         }
