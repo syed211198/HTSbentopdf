@@ -52,15 +52,28 @@ export async function convertToPdfA(
     gs = cachedGsModule;
   } else {
     const gsBaseUrl = getWasmBaseUrl('ghostscript')!;
-    const libUrl = `${gsBaseUrl}dist/index.js`;
+    let packageBaseUrl = gsBaseUrl;
+    if (packageBaseUrl.endsWith('/assets/')) {
+      packageBaseUrl = packageBaseUrl.slice(0, -8);
+    } else if (packageBaseUrl.endsWith('/assets')) {
+      packageBaseUrl = packageBaseUrl.slice(0, -7);
+    }
+    const normalizedPkgUrl = packageBaseUrl.endsWith('/')
+      ? packageBaseUrl
+      : `${packageBaseUrl}/`;
+    const normalizedAssetsUrl = gsBaseUrl.endsWith('/')
+      ? gsBaseUrl
+      : `${gsBaseUrl}/`;
+
+    const libUrl = `${normalizedPkgUrl}dist/index.js`;
     const module = await import(/* @vite-ignore */ libUrl);
     const loadWASM = module.loadGhostscriptWASM || module.default;
 
     gs = (await loadWASM({
-      baseUrl: `${gsBaseUrl}assets/`,
+      baseUrl: normalizedAssetsUrl,
       locateFile: (path: string) => {
         if (path.endsWith('.wasm')) {
-          return gsBaseUrl + 'assets/gs.wasm';
+          return `${normalizedAssetsUrl}gs.wasm`;
         }
         return path;
       },
@@ -88,12 +101,12 @@ export async function convertToPdfA(
 
   try {
     const iccFileName = 'sRGB_IEC61966-2-1_no_black_scaling.icc';
-    const iccLocalPath = `${import.meta.env.BASE_URL}ghostscript-wasm/${iccFileName}`;
-    const response = await fetch(iccLocalPath);
+    const iccUrl = `${import.meta.env.BASE_URL}${iccFileName}`;
+    const response = await fetch(iccUrl);
 
     if (!response.ok) {
       throw new Error(
-        `Failed to fetch ICC profile from ${iccLocalPath}: HTTP ${response.status}`
+        `Failed to fetch ICC profile from ${iccUrl}: HTTP ${response.status}`
       );
     }
 
@@ -392,15 +405,28 @@ export async function convertFontsToOutlines(
     gs = cachedGsModule;
   } else {
     const gsBaseUrl = getWasmBaseUrl('ghostscript')!;
-    const libUrl = `${gsBaseUrl}dist/index.js`;
+    let packageBaseUrl = gsBaseUrl;
+    if (packageBaseUrl.endsWith('/assets/')) {
+      packageBaseUrl = packageBaseUrl.slice(0, -8);
+    } else if (packageBaseUrl.endsWith('/assets')) {
+      packageBaseUrl = packageBaseUrl.slice(0, -7);
+    }
+    const normalizedPkgUrl = packageBaseUrl.endsWith('/')
+      ? packageBaseUrl
+      : `${packageBaseUrl}/`;
+    const normalizedAssetsUrl = gsBaseUrl.endsWith('/')
+      ? gsBaseUrl
+      : `${gsBaseUrl}/`;
+
+    const libUrl = `${normalizedPkgUrl}dist/index.js`;
     const module = await import(/* @vite-ignore */ libUrl);
     const loadWASM = module.loadGhostscriptWASM || module.default;
 
     gs = (await loadWASM({
-      baseUrl: `${gsBaseUrl}assets/`,
+      baseUrl: normalizedAssetsUrl,
       locateFile: (path: string) => {
         if (path.endsWith('.wasm')) {
-          return gsBaseUrl + 'assets/gs.wasm';
+          return `${normalizedAssetsUrl}gs.wasm`;
         }
         return path;
       },
