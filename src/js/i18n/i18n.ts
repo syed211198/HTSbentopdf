@@ -119,7 +119,7 @@ export const changeLanguage = (lang: SupportedLanguage): void => {
 
   let pagePathWithoutLang = relativePath;
   const langPrefixMatch = relativePath.match(
-    /^\/(en|fr|es|de|zh|zh-TW|vi|tr|id|it|pt|nl)(\/.*)?$/
+    /^\/(en|fr|es|de|zh|zh-TW|vi|tr|id|it|pt|nl|be)(\/.*)?$/
   );
   if (langPrefixMatch) {
     pagePathWithoutLang = langPrefixMatch[2] || '/';
