@@ -1,38 +1,62 @@
 import i18next from 'i18next';
-import LanguageDetector from 'i18next-browser-languagedetector';
 import HttpBackend from 'i18next-http-backend';
 
 // Supported languages
 export const supportedLanguages = [
   'en',
+  'be',
+  'fr',
   'de',
+  'es',
   'zh',
+  'zh-TW',
   'vi',
   'tr',
   'id',
   'it',
+  'pt',
+  'nl',
 ] as const;
 export type SupportedLanguage = (typeof supportedLanguages)[number];
 
 export const languageNames: Record<SupportedLanguage, string> = {
   en: 'English',
+  be: 'Беларуская',
+  fr: 'Français',
   de: 'Deutsch',
+  es: 'Español',
   zh: '中文',
+  'zh-TW': '繁體中文（台灣）',
   vi: 'Tiếng Việt',
   tr: 'Türkçe',
   id: 'Bahasa Indonesia',
   it: 'Italiano',
+  pt: 'Português',
+  nl: 'Nederlands',
 };
 
 export const getLanguageFromUrl = (): SupportedLanguage => {
-  const path = window.location.pathname;
-  const langMatch = path.match(/^\/(en|de|zh|vi|tr|id|it)(?:\/|$)/);
+  const basePath = import.meta.env.BASE_URL.replace(/\/$/, '');
+  let path = window.location.pathname;
+
+  if (basePath && basePath !== '/' && path.startsWith(basePath)) {
+    path = path.slice(basePath.length) || '/';
+  }
+
+  if (!path.startsWith('/')) {
+    path = '/' + path;
+  }
+
+  const langMatch = path.match(
+    /^\/(en|fr|es|de|zh|zh-TW|vi|tr|id|it|pt|nl|be)(?:\/|$)/
+  );
   if (
     langMatch &&
     supportedLanguages.includes(langMatch[1] as SupportedLanguage)
   ) {
     return langMatch[1] as SupportedLanguage;
   }
+
   const storedLang = localStorage.getItem('i18nextLng');
   if (
     storedLang &&
@@ -51,27 +75,24 @@ export const initI18n = async (): Promise<typeof i18next> => {
 
   const currentLang = getLanguageFromUrl();
 
-  await i18next
-    .use(HttpBackend)
-    .use(LanguageDetector)
-    .init({
-      lng: currentLang,
-      fallbackLng: 'en',
-      supportedLngs: supportedLanguages as unknown as string[],
-      ns: ['common', 'tools'],
-      defaultNS: 'common',
-      backend: {
-        loadPath: `${import.meta.env.BASE_URL.replace(/\/?$/, '/')}locales/{{lng}}/{{ns}}.json`,
-      },
-      detection: {
-        order: ['path', 'localStorage', 'navigator'],
-        lookupFromPathIndex: 0,
-        caches: ['localStorage'],
-      },
-      interpolation: {
-        escapeValue: false,
-      },
-    });
+  localStorage.setItem('i18nextLng', currentLang);
+
+  await i18next.use(HttpBackend).init({
+    lng: currentLang,
+    fallbackLng: 'en',
+    supportedLngs: supportedLanguages as unknown as string[],
+    ns: ['common', 'tools'],
+    defaultNS: 'common',
+    preload: [currentLang],
+    backend: {
+      loadPath: `${import.meta.env.BASE_URL.replace(/\/?$/, '/')}locales/{{lng}}/{{ns}}.json`,
+    },
+    interpolation: {
+      escapeValue: false,
+    },
+  });
+
+  await i18next.loadNamespaces('tools');
 
   initialized = true;
   return i18next;
@@ -83,18 +104,46 @@ export const t = (key: string, options?: Record<string, unknown>): string => {
 
 export const changeLanguage = (lang: SupportedLanguage): void => {
   if (!supportedLanguages.includes(lang)) return;
+  localStorage.setItem('i18nextLng', lang);
 
-  const currentPath = window.location.pathname;
-  const currentLang = getLanguageFromUrl();
+  const basePath = import.meta.env.BASE_URL.replace(/\/$/, '');
+  let relativePath = window.location.pathname;
+
+  if (basePath && basePath !== '/' && relativePath.startsWith(basePath)) {
+    relativePath = relativePath.slice(basePath.length) || '/';
+  }
+
+  if (!relativePath.startsWith('/')) {
+    relativePath = '/' + relativePath;
+  }
+
+  let pagePathWithoutLang = relativePath;
+  const langPrefixMatch = relativePath.match(
+    /^\/(en|fr|es|de|zh|zh-TW|vi|tr|id|it|pt|nl)(\/.*)?$/
+  );
+  if (langPrefixMatch) {
+    pagePathWithoutLang = langPrefixMatch[2] || '/';
+  }
+
+  if (!pagePathWithoutLang.startsWith('/')) {
+    pagePathWithoutLang = '/' + pagePathWithoutLang;
+  }
+
+  let newRelativePath: string;
+  if (lang === 'en') {
+    newRelativePath = pagePathWithoutLang;
+  } else {
+    newRelativePath = `/${lang}${pagePathWithoutLang}`;
+  }
 
   let newPath: string;
-  if (currentPath.match(/^\/(en|de|zh|vi|tr|id|it)\//)) {
-    newPath = currentPath.replace(/^\/(en|de|zh|vi|tr|id|it)\//, `/${lang}/`);
-  } else if (currentPath.match(/^\/(en|de|zh|vi|tr|id|it)$/)) {
-    newPath = `/${lang}`;
+  if (basePath && basePath !== '/') {
+    newPath = basePath + newRelativePath;
   } else {
-    newPath = `/${lang}${currentPath}`;
+    newPath = newRelativePath;
   }
+
+  newPath = newPath.replace(/\/+/g, '/');
 
   const newUrl = newPath + window.location.search + window.location.hash;
   window.location.href = newUrl;
@@ -139,13 +188,16 @@ export const rewriteLinks = (): void => {
   const currentLang = getLanguageFromUrl();
   if (currentLang === 'en') return;
 
+  const basePath = import.meta.env.BASE_URL.replace(/\/$/, '');
   const links = document.querySelectorAll('a[href]');
+
   links.forEach((link) => {
     const href = link.getAttribute('href');
     if (!href) return;
 
     if (
       href.startsWith('http') ||
+      href.startsWith('//') ||
       href.startsWith('mailto:') ||
       href.startsWith('tel:') ||
       href.startsWith('#') ||
@@ -154,19 +206,38 @@ export const rewriteLinks = (): void => {
       return;
     }
 
-    if (href.match(/^\/(en|de|zh|vi|tr|id|it)\//)) {
+    if (href.includes('/assets/')) {
       return;
     }
+
+    const langPrefixRegex = new RegExp(
+      `^(${basePath.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})?/?(en|fr|es|de|zh|zh-TW|vi|tr|id|it|pt|nl|be)(/|$)`
+    );
+    if (langPrefixRegex.test(href)) {
+      return;
+    }
+
     let newHref: string;
-    if (href.startsWith('/')) {
-      newHref = `/${currentLang}${href}`;
-    } else if (href.startsWith('./')) {
-      newHref = href.replace('./', `/${currentLang}/`);
-    } else if (href === '/' || href === '') {
-      newHref = `/${currentLang}/`;
+    if (basePath && basePath !== '/' && href.startsWith(basePath)) {
+      const pathAfterBase = href.slice(basePath.length);
+      newHref = `${basePath}/${currentLang}${pathAfterBase}`;
+    } else if (href.startsWith('/')) {
+      if (basePath && basePath !== '/') {
+        newHref = `${basePath}/${currentLang}${href}`;
+      } else {
+        newHref = `/${currentLang}${href}`;
+      }
+    } else if (href === '' || href === 'index.html') {
+      if (basePath && basePath !== '/') {
+        newHref = `${basePath}/${currentLang}/`;
+      } else {
+        newHref = `/${currentLang}/`;
+      }
     } else {
       newHref = `/${currentLang}/${href}`;
     }
+
+    newHref = newHref.replace(/([^:])\/+/g, '$1/');
 
     link.setAttribute('href', newHref);
   });

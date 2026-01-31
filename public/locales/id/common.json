@@ -66,7 +66,8 @@
     "pdfOrImages": "PDF atau Gambar",
     "filesNeverLeave": "File Anda tidak pernah meninggalkan perangkat Anda.",
     "addMore": "Tambah Lebih Banyak File",
-    "clearAll": "Hapus Semua"
+    "clearAll": "Hapus Semua",
+    "clearFiles": "Hapus file"
   },
   "loader": {
     "processing": "Memproses..."
@@ -183,7 +184,7 @@
     "buyMeCoffee": "Beli Kopi untuk Saya"
   },
   "footer": {
-    "copyright": "© 2025 BentoPDF. Hak cipta dilindungi.",
+    "copyright": "© 2026 BentoPDF. Hak cipta dilindungi.",
     "version": "Versi",
     "company": "Perusahaan",
     "aboutUs": "Tentang Kami",
@@ -226,7 +227,8 @@
     "error": "Kesalahan",
     "success": "Berhasil",
     "file": "File",
-    "files": "File"
+    "files": "File",
+    "close": "Tutup"
   },
   "about": {
     "hero": {
