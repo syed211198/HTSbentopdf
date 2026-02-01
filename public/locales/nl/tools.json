@@ -98,6 +98,37 @@
     "name": "Kleuren Omkeren",
     "subtitle": "Maak een \"donkere modus\"-versie van je PDF."
   },
+  "scannerEffect": {
+    "name": "Scannereffect",
+    "subtitle": "Laat je PDF eruitzien als een gescand document.",
+    "scanSettings": "Scaninstellingen",
+    "colorspace": "Kleurruimte",
+    "gray": "Grijswaarden",
+    "border": "Rand",
+    "rotate": "Roteren",
+    "rotateVariance": "Rotatievariatie",
+    "brightness": "Helderheid",
+    "contrast": "Contrast",
+    "blur": "Vervaging",
+    "noise": "Ruis",
+    "yellowish": "Geelheid",
+    "resolution": "Resolutie",
+    "processButton": "Scannereffect toepassen"
+  },
+  "adjustColors": {
+    "name": "Kleuren aanpassen",
+    "subtitle": "Pas helderheid, contrast, verzadiging en meer aan in uw PDF.",
+    "colorSettings": "Kleurinstellingen",
+    "brightness": "Helderheid",
+    "contrast": "Contrast",
+    "saturation": "Verzadiging",
+    "hueShift": "Tintrotatie",
+    "temperature": "Temperatuur",
+    "tint": "Tint",
+    "gamma": "Gamma",
+    "sepia": "Sepia",
+    "processButton": "Kleuraanpassingen toepassen"
+  },
   "backgroundColor": {
     "name": "Achtergrondkleur",
     "subtitle": "Wijzig de achtergrondkleur van je PDF."
