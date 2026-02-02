@@ -74,39 +74,25 @@ function initializePage() {
   loadConfiguration();
 
   function loadConfiguration() {
+    const packages: { name: WasmPackage; input: HTMLInputElement }[] = [
+      { name: 'pymupdf', input: pymupdfUrl },
+      { name: 'ghostscript', input: ghostscriptUrl },
+      { name: 'cpdf', input: cpdfUrl },
+    ];
+
     const config = WasmProvider.getAllProviders();
 
-    if (config.pymupdf) {
-      pymupdfUrl.value = config.pymupdf;
-      if (
-        !WasmProvider.isUserConfigured('pymupdf') &&
-        WasmProvider.hasEnvDefault('pymupdf')
-      ) {
-        pymupdfUrl.placeholder = config.pymupdf;
-      }
-      updateStatus('pymupdf', true);
-    }
+    for (const { name, input } of packages) {
+      const url = config[name];
+      if (!url) continue;
 
-    if (config.ghostscript) {
-      ghostscriptUrl.value = config.ghostscript;
-      if (
-        !WasmProvider.isUserConfigured('ghostscript') &&
-        WasmProvider.hasEnvDefault('ghostscript')
-      ) {
-        ghostscriptUrl.placeholder = config.ghostscript;
+      if (WasmProvider.isUserConfigured(name)) {
+        input.value = url;
+      } else {
+        input.value = '';
+        input.placeholder = `Using default: ${url}`;
       }
-      updateStatus('ghostscript', true);
-    }
-
-    if (config.cpdf) {
-      cpdfUrl.value = config.cpdf;
-      if (
-        !WasmProvider.isUserConfigured('cpdf') &&
-        WasmProvider.hasEnvDefault('cpdf')
-      ) {
-        cpdfUrl.placeholder = config.cpdf;
-      }
-      updateStatus('cpdf', true);
+      updateStatus(name, true);
     }
   }
 

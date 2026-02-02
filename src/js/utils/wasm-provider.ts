@@ -14,15 +14,11 @@ const CDN_DEFAULTS: Record<WasmPackage, string> = {
   cpdf: 'https://cdn.jsdelivr.net/npm/coherentpdf/dist/',
 };
 
-function envOrDefault(
-  envVar: string | undefined,
-  fallback: string
-): string | undefined {
-  if (envVar !== undefined && envVar !== null) return envVar || undefined;
-  return fallback;
+function envOrDefault(envVar: string | undefined, fallback: string): string {
+  return envVar || fallback;
 }
 
-const ENV_DEFAULTS: Record<WasmPackage, string | undefined> = {
+const ENV_DEFAULTS: Record<WasmPackage, string> = {
   pymupdf: envOrDefault(
     import.meta.env.VITE_WASM_PYMUPDF_URL,
     CDN_DEFAULTS.pymupdf
