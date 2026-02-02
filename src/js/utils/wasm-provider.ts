@@ -8,10 +8,30 @@ interface WasmProviderConfig {
 
 const STORAGE_KEY = 'bentopdf:wasm-providers';
 
+const CDN_DEFAULTS: Record<WasmPackage, string> = {
+  pymupdf: 'https://cdn.jsdelivr.net/npm/@bentopdf/pymupdf-wasm@0.11.14/',
+  ghostscript: 'https://cdn.jsdelivr.net/npm/@bentopdf/gs-wasm/assets/',
+  cpdf: 'https://cdn.jsdelivr.net/npm/coherentpdf/dist/',
+};
+
+function envOrDefault(
+  envVar: string | undefined,
+  fallback: string
+): string | undefined {
+  if (envVar !== undefined && envVar !== null) return envVar || undefined;
+  return fallback;
+}
+
 const ENV_DEFAULTS: Record<WasmPackage, string | undefined> = {
-  pymupdf: import.meta.env.VITE_WASM_PYMUPDF_URL || undefined,
-  ghostscript: import.meta.env.VITE_WASM_GS_URL || undefined,
-  cpdf: import.meta.env.VITE_WASM_CPDF_URL || undefined,
+  pymupdf: envOrDefault(
+    import.meta.env.VITE_WASM_PYMUPDF_URL,
+    CDN_DEFAULTS.pymupdf
+  ),
+  ghostscript: envOrDefault(
+    import.meta.env.VITE_WASM_GS_URL,
+    CDN_DEFAULTS.ghostscript
+  ),
+  cpdf: envOrDefault(import.meta.env.VITE_WASM_CPDF_URL, CDN_DEFAULTS.cpdf),
 };
 
 class WasmProviderManager {
