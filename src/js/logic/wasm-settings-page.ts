@@ -78,16 +78,34 @@ function initializePage() {
 
     if (config.pymupdf) {
       pymupdfUrl.value = config.pymupdf;
+      if (
+        !WasmProvider.isUserConfigured('pymupdf') &&
+        WasmProvider.hasEnvDefault('pymupdf')
+      ) {
+        pymupdfUrl.placeholder = config.pymupdf;
+      }
       updateStatus('pymupdf', true);
     }
 
     if (config.ghostscript) {
       ghostscriptUrl.value = config.ghostscript;
+      if (
+        !WasmProvider.isUserConfigured('ghostscript') &&
+        WasmProvider.hasEnvDefault('ghostscript')
+      ) {
+        ghostscriptUrl.placeholder = config.ghostscript;
+      }
       updateStatus('ghostscript', true);
     }
 
     if (config.cpdf) {
       cpdfUrl.value = config.cpdf;
+      if (
+        !WasmProvider.isUserConfigured('cpdf') &&
+        WasmProvider.hasEnvDefault('cpdf')
+      ) {
+        cpdfUrl.placeholder = config.cpdf;
+      }
       updateStatus('cpdf', true);
     }
   }
@@ -110,8 +128,12 @@ function initializePage() {
       statusEl.textContent = 'Testing...';
       statusEl.className =
         'text-xs px-2 py-1 rounded-full bg-yellow-600/30 text-yellow-300';
-    } else if (configured) {
-      statusEl.textContent = 'Configured';
+    } else if (configured && WasmProvider.isUserConfigured(packageName)) {
+      statusEl.textContent = 'Custom Override';
+      statusEl.className =
+        'text-xs px-2 py-1 rounded-full bg-blue-600/30 text-blue-300';
+    } else if (configured || WasmProvider.hasEnvDefault(packageName)) {
+      statusEl.textContent = 'Pre-configured';
       statusEl.className =
         'text-xs px-2 py-1 rounded-full bg-green-600/30 text-green-300';
     } else {
@@ -202,17 +224,25 @@ function initializePage() {
     clearPyMuPDFCache();
     clearGhostscriptCache();
 
-    pymupdfUrl.value = '';
-    ghostscriptUrl.value = '';
-    cpdfUrl.value = '';
+    const defaults = WasmProvider.getAllProviders();
+    pymupdfUrl.value = defaults.pymupdf || '';
+    ghostscriptUrl.value = defaults.ghostscript || '';
+    cpdfUrl.value = defaults.cpdf || '';
 
-    updateStatus('pymupdf', false);
-    updateStatus('ghostscript', false);
-    updateStatus('cpdf', false);
+    updateStatus('pymupdf', WasmProvider.isConfigured('pymupdf'));
+    updateStatus('ghostscript', WasmProvider.isConfigured('ghostscript'));
+    updateStatus('cpdf', WasmProvider.isConfigured('cpdf'));
+
+    const hasDefaults =
+      WasmProvider.hasEnvDefault('pymupdf') ||
+      WasmProvider.hasEnvDefault('ghostscript') ||
+      WasmProvider.hasEnvDefault('cpdf');
 
     showAlert(
-      'Cleared',
-      'All configurations and cached modules have been cleared.',
+      'Reset',
+      hasDefaults
+        ? 'Custom overrides cleared. Pre-configured defaults are active.'
+        : 'All configurations and cached modules have been cleared.',
       'success'
     );
   });
