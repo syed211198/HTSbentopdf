@@ -8,7 +8,7 @@
 
 **BentoPDF** is a powerful, privacy-first, client-side PDF toolkit that is self hostable and allows you to manipulate, edit, merge, and process PDF files directly in your browser. No server-side processing is required, ensuring your files remain secure and private.
 
-![Docker Pulls](https://img.shields.io/docker/pulls/bentopdfteam/bentopdf) [![Ko-fi](https://img.shields.io/badge/Buy%20me%20a%20Coffee-yellow?logo=kofi&style=flat-square)](https://ko-fi.com/alio01) ![GitHub Stars](https://img.shields.io/github/stars/alam00000/bentopdf?style=social)
+[![Docker Downloads](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fghcr-badge.elias.eu.org%2Fapi%2Falam00000%2Fbentopdf%2Fbentopdf&query=%24.downloadCount&logo=docker&label=Docker%20Downloads&color=blue)](https://github.com/alam00000/bentopdf/pkgs/container/bentopdf) [![Ko-fi](https://img.shields.io/badge/Buy%20me%20a%20Coffee-yellow?logo=kofi&style=flat-square)](https://ko-fi.com/alio01) ![GitHub Stars](https://img.shields.io/github/stars/alam00000/bentopdf?style=social)
 [![Sponsor me on GitHub](https://img.shields.io/badge/Sponsor-%E2%9D%A4-ff69b4)](https://github.com/sponsors/alam00000)
 
 ![BentoPDF Tools](public/images/bentopdf-tools.png)
