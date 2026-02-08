@@ -527,21 +527,21 @@ function buildFileList(
   onRemove: (index: number) => void
 ) {
   const list = document.createElement('div');
-  list.className = 'flex flex-col gap-1 mb-2';
+  list.className = 'flex flex-col gap-1.5 mb-2';
 
   filenames.forEach((name, i) => {
     const row = document.createElement('div');
     row.className =
-      'flex items-center justify-between bg-gray-900 rounded px-2 py-1';
+      'flex items-center justify-between bg-gray-900 rounded-lg px-3 py-2';
 
     const nameEl = document.createElement('span');
-    nameEl.className = 'text-xs text-white truncate flex-1 mr-2';
+    nameEl.className = 'text-sm text-white truncate flex-1 mr-2';
     nameEl.textContent = name;
     row.appendChild(nameEl);
 
     const removeBtn = document.createElement('button');
     removeBtn.className =
-      'text-gray-500 hover:text-red-400 text-xs flex-shrink-0';
+      'text-gray-500 hover:text-red-400 text-lg leading-none flex-shrink-0';
     removeBtn.innerHTML = '&times;';
     removeBtn.addEventListener('click', () => onRemove(i));
     row.appendChild(removeBtn);
@@ -1112,6 +1112,10 @@ function showNodeSettings(node: BaseWorkflowNode) {
       { label: 'Aggressive', value: 'aggressive' },
       { label: 'Extreme', value: 'extreme' },
     ],
+    redactMode: [
+      { label: 'Search Text', value: 'text' },
+      { label: 'Area (Coordinates)', value: 'area' },
+    ],
   };
 
   const booleanControls = new Set([
@@ -1147,22 +1151,36 @@ function showNodeSettings(node: BaseWorkflowNode) {
     'backgroundColor',
     'separatorColor',
     'fontColor',
+    'fillColor',
   ]);
 
   const controlHints: Record<string, string> = {
     pages: 'e.g. 1-3, 5, 7-9',
     whitelist: 'Limit recognized characters (leave empty for all)',
     afterPage: 'Insert blank pages after this page number',
+    x0: 'Left edge in points (1 inch = 72 pts)',
+    y0: 'Top edge in points',
+    x1: 'Right edge in points',
+    y1: 'Bottom edge in points',
   };
 
   const inputClass =
     'w-full bg-gray-900 border border-gray-600 text-white rounded-md px-2 py-1.5 text-xs focus:border-indigo-500 focus:outline-none';
 
+  const conditionalVisibility: Record<string, Record<string, string[]>> = {
+    redactMode: {
+      text: ['text'],
+      area: ['x0', 'y0', 'x1', 'y1'],
+    },
+  };
+
+  const controlWrappers: Record<string, HTMLElement> = {};
   const hasAdvanced = controlEntries.some(([key]) => advancedControls.has(key));
   const advancedWrappers: HTMLElement[] = [];
 
   for (const [key, control] of controlEntries) {
     const wrapper = document.createElement('div');
+    controlWrappers[key] = wrapper;
     const ctrl = control as { value?: unknown; type?: string };
     const currentValue = String(ctrl.value ?? '');
 
@@ -1271,6 +1289,9 @@ function showNodeSettings(node: BaseWorkflowNode) {
       }
       select.addEventListener('change', () => {
         (ctrl as { value: string }).value = select.value;
+        if (conditionalVisibility[key]) {
+          applyConditionalVisibility(key, select.value);
+        }
       });
       wrapper.appendChild(select);
     } else if (booleanControls.has(key)) {
@@ -1296,8 +1317,7 @@ function showNodeSettings(node: BaseWorkflowNode) {
       const colorInput = document.createElement('input');
       colorInput.type = 'color';
       colorInput.value = currentValue || '#000000';
-      colorInput.className =
-        'w-8 h-8 rounded border border-gray-600 bg-transparent cursor-pointer';
+      colorInput.className = 'w-8 h-8 rounded bg-transparent cursor-pointer';
       const hexInput = document.createElement('input');
       hexInput.type = 'text';
       hexInput.value = currentValue || '#000000';
@@ -1350,6 +1370,33 @@ function showNodeSettings(node: BaseWorkflowNode) {
       advancedWrappers.push(wrapper);
     } else {
       content.appendChild(wrapper);
+    }
+  }
+
+  function applyConditionalVisibility(
+    dropdownKey: string,
+    selectedValue: string
+  ) {
+    const mapping = conditionalVisibility[dropdownKey];
+    if (!mapping) return;
+    const allControlled = new Set(Object.values(mapping).flat());
+    for (const controlKey of allControlled) {
+      const el = controlWrappers[controlKey];
+      if (el) el.style.display = 'none';
+    }
+    const visible = mapping[selectedValue] ?? [];
+    for (const controlKey of visible) {
+      const el = controlWrappers[controlKey];
+      if (el) el.style.display = '';
+    }
+  }
+
+  for (const [dropdownKey, mapping] of Object.entries(conditionalVisibility)) {
+    const ctrl = controlEntries.find(([k]) => k === dropdownKey)?.[1] as
+      | { value?: unknown }
+      | undefined;
+    if (ctrl) {
+      applyConditionalVisibility(dropdownKey, String(ctrl.value ?? ''));
     }
   }
 

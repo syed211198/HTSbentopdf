@@ -34,6 +34,7 @@ import { SanitizeNode } from './sanitize-node';
 import { EncryptNode } from './encrypt-node';
 import { DecryptNode } from './decrypt-node';
 import { DigitalSignNode } from './digital-sign-node';
+import { RedactNode } from './redact-node';
 import { RepairNode } from './repair-node';
 import { PdfToTextNode } from './pdf-to-text-node';
 import { PdfToDocxNode } from './pdf-to-docx-node';
@@ -499,6 +500,13 @@ export const nodeRegistry: Record<string, NodeRegistryEntry> = {
     icon: 'ph-certificate',
     description: 'Apply a digital signature to PDF',
     factory: () => new DigitalSignNode(),
+  },
+  RedactNode: {
+    label: 'Redact',
+    category: 'Secure PDF',
+    icon: 'ph-eye-slash',
+    description: 'Redact text from PDF',
+    factory: () => new RedactNode(),
   },
   DownloadNode: {
     label: 'Download',
