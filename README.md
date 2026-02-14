@@ -190,6 +190,14 @@ BentoPDF offers a comprehensive suite of tools to handle all your PDF needs.
 | **Add Stamps**            | Add image stamps to your PDF using the annotation toolbar.                                                                                                                                      |
 | **Table of Contents**     | Generate a table of contents page from PDF bookmarks.                                                                                                                                           |
 | **Redact Content**        | Permanently remove sensitive content from your PDFs.                                                                                                                                            |
+| **Scanner Effect**        | Make your PDF look like a scanned document.                                                                                                                                                     |
+| **Adjust Colors**         | Fine-tune brightness, contrast, saturation and more.                                                                                                                                            |
+
+### Automate
+
+| Tool Name                | Description                                                      |
+| :----------------------- | :--------------------------------------------------------------- |
+| **PDF Workflow Builder** | Build custom PDF processing pipelines with a visual node editor. |
 
 ### Convert to PDF
 
