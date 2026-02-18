@@ -5,11 +5,11 @@ image:
   # Image built from this repo's `Dockerfile` (nginx serving static frontend).
   repository: ghcr.io/alam00000/bentopdf-simple
   pullPolicy: IfNotPresent
-  tag: ""
+  tag: ''
 
 imagePullSecrets: []
-nameOverride: ""
-fullnameOverride: ""
+nameOverride: ''
+fullnameOverride: ''
 
 podAnnotations: {}
 podLabels: {}
@@ -25,7 +25,7 @@ env: []
 
 ingress:
   enabled: false
-  className: ""
+  className: ''
   annotations: {}
   hosts:
     - host: bentopdf.local
@@ -37,10 +37,10 @@ ingress:
 # Gateway API (optional)
 gateway:
   enabled: false
-  name: "" # default: release fullname + "-gateway" suffix
-  namespace: "" # to override the namespace
+  name: '' # default: release fullname + "-gateway" suffix
+  namespace: '' # to override the namespace
   annotations: {}
-  gatewayClassName: "" # required when enabled=true
+  gatewayClassName: '' # required when enabled=true
   listeners:
     - name: http
       protocol: HTTP
@@ -50,14 +50,13 @@ gateway:
           from: Same # Allow routes from the same namespace
 
 httpRoute:
-  enabled: false
-  annotations: {}
-  # parentRefs: # Omit entirely to use default (auto-references gateway in same namespace)
-  #   - name: "" # default: gateway.name or {release-name}-gateway
-  #     namespace: "" # to override the namespace
-  #     sectionName: "http"
+  enabled: true
+  parentRefs:
+    - name: existing-gateway
+      namespace: gateway-namespace
+      sectionName: http
   hostnames:
-    - bentopdf.local
+    - pdfs.example.com
   rules:
     - matches:
         - path:
