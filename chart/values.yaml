@@ -9,7 +9,6 @@ image:
 
 imagePullSecrets: []
 nameOverride: ''
-fullnameOverride: ''
 
 podAnnotations: {}
 podLabels: {}
@@ -37,7 +36,7 @@ ingress:
 # Gateway API (optional)
 gateway:
   enabled: false
-  name: '' # default: release fullname + "-gateway" suffix
+  name: '' # default: release name + "-gateway" suffix
   namespace: '' # to override the namespace
   annotations: {}
   gatewayClassName: '' # required when enabled=true
@@ -50,18 +49,17 @@ gateway:
           from: Same # Allow routes from the same namespace
 
 httpRoute:
-  enabled: true
-  parentRefs:
-    - name: existing-gateway
-      namespace: gateway-namespace
-      sectionName: http
+  enabled: false
+  annotations: {}
+  # parentRefs: # Omit entirely to use default (auto-references gateway in same namespace)
+  #   - name: "" # default: gateway.name or {release-name}-gateway
+  #     namespace: "" # to override the namespace
+  #     sectionName: "http"
   hostnames:
-    - pdfs.example.com
+    - bentopdf.local
   rules:
     - matches:
         - path:
-            type: PathPrefix
-            value: /
 
 resources: {}
 

@@ -1,7 +1,8 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "bentopdf.fullname" . }}
+  name: {{ include "bentopdf.name" . }}
+  namespace: {{ .Release.Namespace }}
   labels:
     {{- include "bentopdf.labels" . | nindent 4 }}
 spec:
