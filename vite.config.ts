@@ -14,19 +14,20 @@ import type { OutputBundle } from 'rollup';
 
 const SUPPORTED_LANGUAGES = [
   'en',
+  'ar',
   'be',
+  'da',
   'de',
   'es',
+  'fr',
+  'id',
+  'it',
+  'nl',
+  'pt',
+  'tr',
+  'vi',
   'zh',
   'zh-TW',
-  'vi',
-  'it',
-  'id',
-  'tr',
-  'fr',
-  'pt',
-  'nl',
-  'da',
 ] as const;
 const LANG_REGEX = new RegExp(
   `^/(${SUPPORTED_LANGUAGES.join('|')})(?:/(.*))?$`
