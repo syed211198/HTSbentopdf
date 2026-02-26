@@ -70,7 +70,8 @@
   },
   "addWatermark": {
     "name": "Adicionar Marca d'Água",
-    "subtitle": "Carimbe texto ou uma imagem sobre as páginas do seu PDF."
+    "subtitle": "Carimbe texto ou uma imagem sobre as páginas do seu PDF.",
+    "applyToAllPages": "Aplicar a todas as páginas"
   },
   "headerFooter": {
     "name": "Cabeçalho e Rodapé",
