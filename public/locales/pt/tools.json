@@ -507,7 +507,7 @@
     "subtitle": "Extrai tabelas do PDF e converte em CSV."
   },
   "pdfToExcel": {
-    "name": "PDF to Excel",
+    "name": "PDF para Excel",
     "subtitle": "Extrai tabelas do PDF e converte em Excel (XLSX)."
   },
   "pdfToText": {
