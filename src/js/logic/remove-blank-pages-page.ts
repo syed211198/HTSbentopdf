@@ -1,6 +1,7 @@
 import { PDFDocument } from 'pdf-lib';
 import * as pdfjsLib from 'pdfjs-dist';
 import { createIcons, icons } from 'lucide';
+import { initPagePreview } from '../utils/page-preview.js';
 
 pdfjsLib.GlobalWorkerOptions.workerSrc = new URL(
   'pdfjs-dist/build/pdf.worker.min.mjs',
@@ -161,7 +162,7 @@ async function isPageBlank(
 }
 
 async function generateThumbnail(page: any): Promise<string> {
-  const viewport = page.getViewport({ scale: 1.5 });
+  const viewport = page.getViewport({ scale: 1 });
   const canvas = document.createElement('canvas');
   const ctx = canvas.getContext('2d');
   if (!ctx) return '';
@@ -211,6 +212,10 @@ async function detectBlankPages() {
     // Show preview panel
     updatePreviewPanel();
     document.getElementById('preview-panel')?.classList.remove('hidden');
+
+    const previewContainer = document.getElementById('blank-pages-preview');
+    if (previewContainer) initPagePreview(previewContainer, pdfDoc);
+
     hideLoader();
   } catch (e) {
     console.error(e);
@@ -231,17 +236,18 @@ function updatePreviewPanel() {
   pageState.detectedBlankPages.forEach((pageIndex) => {
     const thumbnail = pageState.pageThumbnails.get(pageIndex) || '';
     const div = document.createElement('div');
-    div.className = 'relative cursor-pointer group';
+    div.className =
+      'relative cursor-pointer flex flex-col items-center gap-1 p-2 border-2 border-red-500 rounded-lg bg-gray-700 transition-colors group';
     div.dataset.pageIndex = String(pageIndex);
     div.dataset.selected = 'true';
 
     div.innerHTML = `
-            <div class="relative border-2 border-red-500 rounded-lg overflow-hidden transition-all">
-                <img src="${thumbnail}" alt="Page ${pageIndex + 1}" class="w-full h-auto">
-                <div class="absolute bottom-0 left-0 right-0 bg-black/70 text-white text-xs text-center py-1">
-                    Page ${pageIndex + 1}
+            <div class="relative">
+                <img src="${thumbnail}" alt="Page ${pageIndex + 1}" class="rounded-md shadow-md max-w-full h-auto">
+                <div class="absolute top-1 left-1 bg-indigo-600 text-white text-xs px-2 py-1 rounded-md font-semibold shadow-lg z-10 pointer-events-none">
+                    ${pageIndex + 1}
                 </div>
-                <div class="absolute top-1 right-1 bg-red-500 rounded-full w-5 h-5 flex items-center justify-center check-mark">
+                <div class="absolute top-1 right-1 bg-red-500 rounded-full w-5 h-5 flex items-center justify-center check-mark z-10">
                     <i data-lucide="check" class="w-3 h-3 text-white"></i>
                 </div>
             </div>
@@ -256,18 +262,17 @@ function updatePreviewPanel() {
 
 function togglePageSelection(div: HTMLElement, pageIndex: number) {
   const isSelected = div.dataset.selected === 'true';
-  const border = div.querySelector('.border-2') as HTMLElement;
   const checkMark = div.querySelector('.check-mark') as HTMLElement;
 
   if (isSelected) {
     div.dataset.selected = 'false';
-    border?.classList.remove('border-red-500');
-    border?.classList.add('border-gray-500', 'opacity-50');
+    div.classList.remove('border-red-500');
+    div.classList.add('border-gray-600', 'opacity-50');
     checkMark?.classList.add('hidden');
   } else {
     div.dataset.selected = 'true';
-    border?.classList.add('border-red-500');
-    border?.classList.remove('border-gray-500', 'opacity-50');
+    div.classList.add('border-red-500');
+    div.classList.remove('border-gray-600', 'opacity-50');
     checkMark?.classList.remove('hidden');
   }
 }
