@@ -119,7 +119,7 @@ Open `public/locales/es/common.json` and translate all the values:
 "inicio": "Inicio"
 ```
 
-Then do the same for `public/locales/fr/tools.json` to translate all tool names and descriptions.
+Then do the same for `public/locales/es/tools.json` to translate all tool names and descriptions.
 
 ### Step 3: Register the Language
 
