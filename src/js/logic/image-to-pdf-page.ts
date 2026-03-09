@@ -1,321 +1,299 @@
 import { createIcons, icons } from 'lucide';
 import { showAlert, showLoader, hideLoader } from '../ui.js';
-import { downloadFile, readFileAsArrayBuffer, formatBytes } from '../utils/helpers.js';
-import { PDFDocument as PDFLibDocument } from 'pdf-lib';
+import { downloadFile, formatBytes } from '../utils/helpers.js';
+import { isWasmAvailable, getWasmBaseUrl } from '../config/wasm-cdn-config.js';
+import { showWasmRequiredDialog } from '../utils/wasm-provider.js';
+import { loadPyMuPDF, isPyMuPDFAvailable } from '../utils/pymupdf-loader.js';
+import heic2any from 'heic2any';
+import {
+  getSelectedQuality,
+  compressImageFile,
+} from '../utils/image-compress.js';
+
+const SUPPORTED_FORMATS =
+  '.jpg,.jpeg,.png,.bmp,.gif,.tiff,.tif,.pnm,.pgm,.pbm,.ppm,.pam,.jxr,.jpx,.jp2,.psd,.svg,.heic,.heif,.webp';
+const SUPPORTED_FORMATS_DISPLAY =
+  'JPG, PNG, BMP, GIF, TIFF, PNM, PGM, PBM, PPM, PAM, JXR, JPX, JP2, PSD, SVG, HEIC, WebP';
 
 let files: File[] = [];
+let pymupdf: any = null;
 
 if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initializePage);
+  document.addEventListener('DOMContentLoaded', initializePage);
 } else {
-    initializePage();
+  initializePage();
 }
 
 function initializePage() {
-    createIcons({ icons });
+  createIcons({ icons });
 
-    const fileInput = document.getElementById('file-input') as HTMLInputElement;
-    const dropZone = document.getElementById('drop-zone');
-    const addMoreBtn = document.getElementById('add-more-btn');
-    const clearFilesBtn = document.getElementById('clear-files-btn');
-    const processBtn = document.getElementById('process-btn');
+  const fileInput = document.getElementById('file-input') as HTMLInputElement;
+  const dropZone = document.getElementById('drop-zone');
+  const addMoreBtn = document.getElementById('add-more-btn');
+  const clearFilesBtn = document.getElementById('clear-files-btn');
+  const processBtn = document.getElementById('process-btn');
+  const formatDisplay = document.getElementById('supported-formats');
 
-    if (fileInput) {
-        fileInput.addEventListener('change', handleFileUpload);
-    }
+  if (formatDisplay) {
+    formatDisplay.textContent = SUPPORTED_FORMATS_DISPLAY;
+  }
 
-    if (dropZone) {
-        dropZone.addEventListener('dragover', (e) => {
-            e.preventDefault();
-            dropZone.classList.add('bg-gray-700');
-        });
+  if (fileInput) {
+    fileInput.accept = SUPPORTED_FORMATS;
+    fileInput.addEventListener('change', handleFileUpload);
+  }
 
-        dropZone.addEventListener('dragleave', () => {
-            dropZone.classList.remove('bg-gray-700');
-        });
-
-        dropZone.addEventListener('drop', (e) => {
-            e.preventDefault();
-            dropZone.classList.remove('bg-gray-700');
-            const droppedFiles = e.dataTransfer?.files;
-            if (droppedFiles && droppedFiles.length > 0) {
-                handleFiles(droppedFiles);
-            }
-        });
-
-        // Clear value on click to allow re-selecting the same file
-        fileInput?.addEventListener('click', () => {
-            if (fileInput) fileInput.value = '';
-        });
-    }
-
-    if (addMoreBtn) {
-        addMoreBtn.addEventListener('click', () => {
-            fileInput?.click();
-        });
-    }
-
-    if (clearFilesBtn) {
-        clearFilesBtn.addEventListener('click', () => {
-            files = [];
-            updateUI();
-        });
-    }
-
-    if (processBtn) {
-        processBtn.addEventListener('click', convertToPdf);
-    }
-
-    document.getElementById('back-to-tools')?.addEventListener('click', () => {
-        window.location.href = import.meta.env.BASE_URL;
+  if (dropZone) {
+    dropZone.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      dropZone.classList.add('bg-gray-700');
     });
+
+    dropZone.addEventListener('dragleave', () => {
+      dropZone.classList.remove('bg-gray-700');
+    });
+
+    dropZone.addEventListener('drop', (e) => {
+      e.preventDefault();
+      dropZone.classList.remove('bg-gray-700');
+      const droppedFiles = e.dataTransfer?.files;
+      if (droppedFiles && droppedFiles.length > 0) {
+        handleFiles(droppedFiles);
+      }
+    });
+
+    fileInput?.addEventListener('click', () => {
+      if (fileInput) fileInput.value = '';
+    });
+  }
+
+  if (addMoreBtn) {
+    addMoreBtn.addEventListener('click', () => {
+      fileInput?.click();
+    });
+  }
+
+  if (clearFilesBtn) {
+    clearFilesBtn.addEventListener('click', () => {
+      files = [];
+      updateUI();
+    });
+  }
+
+  if (processBtn) {
+    processBtn.addEventListener('click', convertToPdf);
+  }
+
+  document.getElementById('back-to-tools')?.addEventListener('click', () => {
+    window.location.href = import.meta.env.BASE_URL;
+  });
 }
 
 function handleFileUpload(e: Event) {
-    const input = e.target as HTMLInputElement;
-    if (input.files && input.files.length > 0) {
-        handleFiles(input.files);
-    }
+  const input = e.target as HTMLInputElement;
+  if (input.files && input.files.length > 0) {
+    handleFiles(input.files);
+  }
+}
+
+function getFileExtension(filename: string): string {
+  return '.' + filename.split('.').pop()?.toLowerCase() || '';
+}
+
+function isValidImageFile(file: File): boolean {
+  const ext = getFileExtension(file.name);
+  const validExtensions = SUPPORTED_FORMATS.split(',');
+  return validExtensions.includes(ext) || file.type.startsWith('image/');
 }
 
 function handleFiles(newFiles: FileList) {
-    const validFiles = Array.from(newFiles).filter(file =>
-        file.type.startsWith('image/')
+  const validFiles = Array.from(newFiles).filter(isValidImageFile);
+
+  if (validFiles.length < newFiles.length) {
+    showAlert(
+      'Invalid Files',
+      'Some files were skipped. Only supported image formats are allowed.'
     );
+  }
 
-    if (validFiles.length < newFiles.length) {
-        showAlert('Invalid Files', 'Some files were skipped. Only image files are allowed.');
-    }
-
-    if (validFiles.length > 0) {
-        files = [...files, ...validFiles];
-        updateUI();
-    }
+  if (validFiles.length > 0) {
+    files = [...files, ...validFiles];
+    updateUI();
+  }
 }
 
 const resetState = () => {
-    files = [];
-    updateUI();
+  files = [];
+  updateUI();
 };
 
 function updateUI() {
-    const fileDisplayArea = document.getElementById('file-display-area');
-    const fileControls = document.getElementById('file-controls');
-    const optionsDiv = document.getElementById('jpg-to-pdf-options');
+  const fileDisplayArea = document.getElementById('file-display-area');
+  const fileControls = document.getElementById('file-controls');
+  const optionsDiv = document.getElementById('jpg-to-pdf-options');
 
-    if (!fileDisplayArea || !fileControls || !optionsDiv) return;
+  if (!fileDisplayArea || !fileControls || !optionsDiv) return;
 
-    fileDisplayArea.innerHTML = '';
+  fileDisplayArea.innerHTML = '';
 
-    if (files.length > 0) {
-        fileControls.classList.remove('hidden');
-        optionsDiv.classList.remove('hidden');
+  if (files.length > 0) {
+    fileControls.classList.remove('hidden');
+    optionsDiv.classList.remove('hidden');
 
-        files.forEach((file, index) => {
-            const fileDiv = document.createElement('div');
-            fileDiv.className = 'flex items-center justify-between bg-gray-700 p-3 rounded-lg text-sm';
+    files.forEach((file, index) => {
+      const fileDiv = document.createElement('div');
+      fileDiv.className =
+        'flex items-center justify-between bg-gray-700 p-3 rounded-lg text-sm';
 
-            const infoContainer = document.createElement('div');
-            infoContainer.className = 'flex items-center gap-2 overflow-hidden';
+      const infoContainer = document.createElement('div');
+      infoContainer.className = 'flex items-center gap-2 overflow-hidden';
 
-            const nameSpan = document.createElement('span');
-            nameSpan.className = 'truncate font-medium text-gray-200';
-            nameSpan.textContent = file.name;
+      const nameSpan = document.createElement('span');
+      nameSpan.className = 'truncate font-medium text-gray-200';
+      nameSpan.textContent = file.name;
 
-            const sizeSpan = document.createElement('span');
-            sizeSpan.className = 'flex-shrink-0 text-gray-400 text-xs';
-            sizeSpan.textContent = `(${formatBytes(file.size)})`;
+      const sizeSpan = document.createElement('span');
+      sizeSpan.className = 'flex-shrink-0 text-gray-400 text-xs';
+      sizeSpan.textContent = `(${formatBytes(file.size)})`;
 
-            infoContainer.append(nameSpan, sizeSpan);
+      infoContainer.append(nameSpan, sizeSpan);
 
-            const removeBtn = document.createElement('button');
-            removeBtn.className = 'ml-4 text-red-400 hover:text-red-300 flex-shrink-0';
-            removeBtn.innerHTML = '<i data-lucide="trash-2" class="w-4 h-4"></i>';
-            removeBtn.onclick = () => {
-                files = files.filter((_, i) => i !== index);
-                updateUI();
-            };
+      const removeBtn = document.createElement('button');
+      removeBtn.className =
+        'ml-4 text-red-400 hover:text-red-300 flex-shrink-0';
+      removeBtn.innerHTML = '<i data-lucide="trash-2" class="w-4 h-4"></i>';
+      removeBtn.onclick = () => {
+        files = files.filter((_, i) => i !== index);
+        updateUI();
+      };
 
-            fileDiv.append(infoContainer, removeBtn);
-            fileDisplayArea.appendChild(fileDiv);
-        });
-        createIcons({ icons });
-    } else {
-        fileControls.classList.add('hidden');
-        optionsDiv.classList.add('hidden');
-    }
-}
-
-function sanitizeImageAsJpeg(imageBytes: any) {
-    return new Promise((resolve, reject) => {
-        const blob = new Blob([imageBytes]);
-        const imageUrl = URL.createObjectURL(blob);
-        const img = new Image();
-
-        img.onload = () => {
-            const canvas = document.createElement('canvas');
-            canvas.width = img.naturalWidth;
-            canvas.height = img.naturalHeight;
-            const ctx = canvas.getContext('2d');
-            if (!ctx) {
-                URL.revokeObjectURL(imageUrl);
-                return reject(new Error('Could not get canvas context'));
-            }
-            ctx.drawImage(img, 0, 0);
-
-            canvas.toBlob(
-                async (jpegBlob) => {
-                    if (!jpegBlob) {
-                        return reject(new Error('Canvas toBlob conversion failed.'));
-                    }
-                    const arrayBuffer = await jpegBlob.arrayBuffer();
-                    resolve(new Uint8Array(arrayBuffer));
-                },
-                'image/jpeg',
-                0.9
-            );
-            URL.revokeObjectURL(imageUrl);
-        };
-
-        img.onerror = () => {
-            URL.revokeObjectURL(imageUrl);
-            reject(
-                new Error(
-                    'The provided file could not be loaded as an image. It may be corrupted.'
-                )
-            );
-        };
-
-        img.src = imageUrl;
+      fileDiv.append(infoContainer, removeBtn);
+      fileDisplayArea.appendChild(fileDiv);
     });
+    createIcons({ icons });
+  } else {
+    fileControls.classList.add('hidden');
+    optionsDiv.classList.add('hidden');
+  }
 }
 
-// Special handler for SVG files - must read as text
-function svgToPng(svgText: string): Promise<Uint8Array> {
-    return new Promise((resolve, reject) => {
+async function ensurePyMuPDF(): Promise<any> {
+  if (!pymupdf) {
+    pymupdf = await loadPyMuPDF();
+  }
+  return pymupdf;
+}
+
+async function preprocessFile(file: File): Promise<File> {
+  const ext = getFileExtension(file.name);
+
+  if (ext === '.heic' || ext === '.heif') {
+    try {
+      const conversionResult = await heic2any({
+        blob: file,
+        toType: 'image/png',
+        quality: 0.9,
+      });
+
+      const blob = Array.isArray(conversionResult)
+        ? conversionResult[0]
+        : conversionResult;
+      return new File([blob], file.name.replace(/\.(heic|heif)$/i, '.png'), {
+        type: 'image/png',
+      });
+    } catch (e) {
+      console.error(`Failed to convert HEIC: ${file.name}`, e);
+      throw new Error(`Failed to process HEIC file: ${file.name}`);
+    }
+  }
+
+  if (ext === '.webp') {
+    try {
+      return await new Promise<File>((resolve, reject) => {
         const img = new Image();
-        const svgBlob = new Blob([svgText], { type: 'image/svg+xml;charset=utf-8' });
-        const url = URL.createObjectURL(svgBlob);
+        const url = URL.createObjectURL(file);
 
         img.onload = () => {
-            const canvas = document.createElement('canvas');
-            const width = img.naturalWidth || img.width || 800;
-            const height = img.naturalHeight || img.height || 600;
-
-            canvas.width = width;
-            canvas.height = height;
-
-            const ctx = canvas.getContext('2d');
-            if (!ctx) {
-                URL.revokeObjectURL(url);
-                return reject(new Error('Could not get canvas context'));
+          const canvas = document.createElement('canvas');
+          canvas.width = img.width;
+          canvas.height = img.height;
+          const ctx = canvas.getContext('2d');
+          if (!ctx) {
+            URL.revokeObjectURL(url);
+            reject(new Error('Canvas context failed'));
+            return;
+          }
+          ctx.drawImage(img, 0, 0);
+          canvas.toBlob((blob) => {
+            URL.revokeObjectURL(url);
+            if (blob) {
+              resolve(
+                new File([blob], file.name.replace(/\.webp$/i, '.png'), {
+                  type: 'image/png',
+                })
+              );
+            } else {
+              reject(new Error('Canvas toBlob failed'));
             }
-
-            ctx.fillStyle = 'white';
-            ctx.fillRect(0, 0, width, height);
-            ctx.drawImage(img, 0, 0, width, height);
-
-            canvas.toBlob(
-                async (pngBlob) => {
-                    URL.revokeObjectURL(url);
-                    if (!pngBlob) {
-                        return reject(new Error('Canvas toBlob conversion failed.'));
-                    }
-                    const arrayBuffer = await pngBlob.arrayBuffer();
-                    resolve(new Uint8Array(arrayBuffer));
-                },
-                'image/png'
-            );
+          }, 'image/png');
         };
 
         img.onerror = () => {
-            URL.revokeObjectURL(url);
-            reject(new Error('Failed to load SVG image'));
+          URL.revokeObjectURL(url);
+          reject(new Error('Failed to load WebP image'));
         };
 
         img.src = url;
-    });
+      });
+    } catch (e) {
+      console.error(`Failed to convert WebP: ${file.name}`, e);
+      throw new Error(`Failed to process WebP file: ${file.name}`);
+    }
+  }
+
+  return file;
 }
 
 async function convertToPdf() {
-    if (files.length === 0) {
-        showAlert('No Files', 'Please select at least one image file.');
-        return;
+  if (files.length === 0) {
+    showAlert('No Files', 'Please select at least one image file.');
+    return;
+  }
+
+  showLoader('Processing images...');
+
+  try {
+    const quality = getSelectedQuality();
+    const processedFiles: File[] = [];
+    for (const file of files) {
+      try {
+        const processed = await preprocessFile(file);
+        const compressed = await compressImageFile(processed, quality);
+        processedFiles.push(compressed);
+      } catch (error: any) {
+        console.warn(error);
+        throw error;
+      }
     }
 
-    showLoader('Creating PDF from images...');
+    showLoader('Loading engine...');
+    const mupdf = await ensurePyMuPDF();
 
-    try {
-        const pdfDoc = await PDFLibDocument.create();
+    showLoader('Converting images to PDF...');
+    const pdfBlob = await mupdf.imagesToPdf(processedFiles);
 
-        for (const file of files) {
-            try {
-                const isSvg = file.type === 'image/svg+xml' || file.name.toLowerCase().endsWith('.svg');
+    downloadFile(pdfBlob, 'images_to_pdf.pdf');
 
-                if (isSvg) {
-                    // Handle SVG files - read as text
-                    const svgText = await file.text();
-                    const pngBytes = await svgToPng(svgText);
-                    const pngImage = await pdfDoc.embedPng(pngBytes);
-
-                    const page = pdfDoc.addPage([pngImage.width, pngImage.height]);
-                    page.drawImage(pngImage, {
-                        x: 0,
-                        y: 0,
-                        width: pngImage.width,
-                        height: pngImage.height,
-                    });
-                } else if (file.type === 'image/png') {
-                    // Handle PNG files
-                    const originalBytes = await readFileAsArrayBuffer(file);
-                    const pngImage = await pdfDoc.embedPng(originalBytes as Uint8Array);
-
-                    const page = pdfDoc.addPage([pngImage.width, pngImage.height]);
-                    page.drawImage(pngImage, {
-                        x: 0,
-                        y: 0,
-                        width: pngImage.width,
-                        height: pngImage.height,
-                    });
-                } else {
-                    // Handle JPG/other raster images
-                    const originalBytes = await readFileAsArrayBuffer(file);
-                    let jpgImage;
-
-                    try {
-                        jpgImage = await pdfDoc.embedJpg(originalBytes as Uint8Array);
-                    } catch (e) {
-                        // Fallback: convert to JPEG via canvas
-                        const sanitizedBytes = await sanitizeImageAsJpeg(originalBytes);
-                        jpgImage = await pdfDoc.embedJpg(sanitizedBytes as Uint8Array);
-                    }
-
-                    const page = pdfDoc.addPage([jpgImage.width, jpgImage.height]);
-                    page.drawImage(jpgImage, {
-                        x: 0,
-                        y: 0,
-                        width: jpgImage.width,
-                        height: jpgImage.height,
-                    });
-                }
-            } catch (error) {
-                console.error(`Failed to process ${file.name}:`, error);
-                throw new Error(`Could not process "${file.name}". The file may be corrupted.`);
-            }
-        }
-
-        const pdfBytes = await pdfDoc.save();
-        downloadFile(
-            new Blob([new Uint8Array(pdfBytes)], { type: 'application/pdf' }),
-            'from_images.pdf'
-        );
-        showAlert('Success', 'PDF created successfully!', 'success', () => {
-            resetState();
-        });
-    } catch (e: any) {
-        console.error(e);
-        showAlert('Conversion Error', e.message);
-    } finally {
-        hideLoader();
-    }
+    showAlert('Success', 'PDF created successfully!', 'success', () => {
+      resetState();
+    });
+  } catch (e: any) {
+    console.error('[ImageToPDF]', e);
+    showAlert(
+      'Conversion Error',
+      e.message || 'Failed to convert images to PDF.'
+    );
+  } finally {
+    hideLoader();
+  }
 }
