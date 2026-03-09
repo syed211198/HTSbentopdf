@@ -496,9 +496,7 @@ export async function extractPageModel(
   page: pdfjsLib.PDFPageProxy,
   viewport: pdfjsLib.PageViewport
 ): Promise<ComparePageModel> {
-  const textContent = await page.getTextContent({
-    disableCombineTextItems: true,
-  });
+  const textContent = await page.getTextContent();
   const styles = textContent.styles ?? {};
   const rawItems = sortCompareTextItems(
     textContent.items
