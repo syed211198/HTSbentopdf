@@ -29,7 +29,7 @@ export function getStandardPageName(width: any, height: any) {
 }
 
 export function convertPoints(points: any, unit: any) {
-  let result = 0;
+  let result: number;
   switch (unit) {
     case 'in':
       result = points / 72;
