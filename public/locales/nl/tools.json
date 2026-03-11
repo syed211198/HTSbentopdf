@@ -292,7 +292,7 @@
   },
   "comparePdfs": {
     "name": "PDF's Vergelijken",
-    "subtitle": "Twee PDF's zij-aan-zij vergelijken."
+    "subtitle": "Twee PDF's zij-aan-zij vergelijken.",
     "firstPdf": "Eerste PDF",
     "secondPdf": "Twede PDF",
     "clickOrDrop": "Klikken of neerslepen",
