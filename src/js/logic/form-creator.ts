@@ -705,6 +705,17 @@ function renderField(field: FormField): void {
     };
     handle.className += ` ${positions[pos]}`;
     handle.dataset.position = pos;
+    const cursorMap: Record<string, string> = {
+      nw: 'nwse-resize',
+      ne: 'nesw-resize',
+      sw: 'nesw-resize',
+      se: 'nwse-resize',
+      n: 'ns-resize',
+      s: 'ns-resize',
+      e: 'ew-resize',
+      w: 'ew-resize',
+    };
+    handle.style.cursor = cursorMap[pos] || 'pointer';
 
     handle.addEventListener('mousedown', (e) => {
       e.stopPropagation();
@@ -744,6 +755,50 @@ function startResize(e: MouseEvent, field: FormField, pos: string): void {
   e.preventDefault();
 }
 
+function applyResizeWithConstraints(
+  field: FormField,
+  pos: string,
+  dx: number,
+  dy: number
+): void {
+  const isSquareField = field.type === 'checkbox' || field.type === 'radio';
+  const minWidth = isSquareField ? 12 : 50;
+  const minHeight = isSquareField ? 12 : 20;
+
+  if (pos.includes('e')) {
+    field.width = Math.max(minWidth, startWidth + dx);
+  }
+  if (pos.includes('w')) {
+    const newWidth = Math.max(minWidth, startWidth - dx);
+    const widthDiff = startWidth - newWidth;
+    field.width = newWidth;
+    field.x = startLeft + widthDiff;
+  }
+  if (pos.includes('s')) {
+    field.height = Math.max(minHeight, startHeight + dy);
+  }
+  if (pos.includes('n')) {
+    const newHeight = Math.max(minHeight, startHeight - dy);
+    const heightDiff = startHeight - newHeight;
+    field.height = newHeight;
+    field.y = startTop + heightDiff;
+  }
+
+  if (isSquareField) {
+    const size = Math.max(minWidth, Math.min(field.width, field.height));
+
+    if (pos.includes('w')) {
+      field.x = startLeft + (startWidth - size);
+    }
+    if (pos.includes('n')) {
+      field.y = startTop + (startHeight - size);
+    }
+
+    field.width = size;
+    field.height = size;
+  }
+}
+
 // Mouse move for dragging and resizing
 document.addEventListener('mousemove', (e) => {
   if (draggedElement && !resizing) {
@@ -770,24 +825,7 @@ document.addEventListener('mousemove', (e) => {
     const dy = e.clientY - startY;
     const fieldWrapper = document.getElementById(resizeField.id);
 
-    if (resizePos!.includes('e')) {
-      resizeField.width = Math.max(50, startWidth + dx);
-    }
-    if (resizePos!.includes('w')) {
-      const newWidth = Math.max(50, startWidth - dx);
-      const widthDiff = startWidth - newWidth;
-      resizeField.width = newWidth;
-      resizeField.x = startLeft + widthDiff;
-    }
-    if (resizePos!.includes('s')) {
-      resizeField.height = Math.max(20, startHeight + dy);
-    }
-    if (resizePos!.includes('n')) {
-      const newHeight = Math.max(20, startHeight - dy);
-      const heightDiff = startHeight - newHeight;
-      resizeField.height = newHeight;
-      resizeField.y = startTop + heightDiff;
-    }
+    applyResizeWithConstraints(resizeField, resizePos!, dx, dy);
 
     if (fieldWrapper) {
       const container = fieldWrapper.querySelector(
@@ -827,24 +865,7 @@ document.addEventListener(
       const dy = touch.clientY - startY;
       const fieldWrapper = document.getElementById(resizeField.id);
 
-      if (resizePos!.includes('e')) {
-        resizeField.width = Math.max(50, startWidth + dx);
-      }
-      if (resizePos!.includes('w')) {
-        const newWidth = Math.max(50, startWidth - dx);
-        const widthDiff = startWidth - newWidth;
-        resizeField.width = newWidth;
-        resizeField.x = startLeft + widthDiff;
-      }
-      if (resizePos!.includes('s')) {
-        resizeField.height = Math.max(20, startHeight + dy);
-      }
-      if (resizePos!.includes('n')) {
-        const newHeight = Math.max(20, startHeight - dy);
-        const heightDiff = startHeight - newHeight;
-        resizeField.height = newHeight;
-        resizeField.y = startTop + heightDiff;
-      }
+      applyResizeWithConstraints(resizeField, resizePos!, dx, dy);
 
       if (fieldWrapper) {
         const container = fieldWrapper.querySelector(
