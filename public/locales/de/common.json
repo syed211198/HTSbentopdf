@@ -192,7 +192,7 @@
     },
     "browserBased": {
       "question": "Wie schützt mich die browserbasierte Verarbeitung?",
-      "answer": "Durch die vollständige Ausführung in deinem Browser stellt BentoPDF sicher, dass Ihre Dateien nie dein Gerät verlässt. Dies eliminiert die Risiken von Server-Hacks, Datenschutzverletzungen oder unbefugtem Zugriff. Deine Dateien gehören dir — Immer."
+      "answer": "Durch die vollständige Ausführung in deinem Browser stellt BentoPDF sicher, dass deine Dateien nie dein Gerät verlassen. Dies eliminiert die Risiken von Server-Hacks, Datenschutzverletzungen oder unbefugtem Zugriff. Deine Dateien gehören dir — Immer."
     },
     "analytics": {
       "question": "Verwendt ihr Cookies oder Analysen, um mich zu verfolgen?",
