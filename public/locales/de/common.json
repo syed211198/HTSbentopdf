@@ -132,7 +132,7 @@
       "unreliable": "Diese Tastenkombination funktioniert möglicherweise nicht zuverlässig oder könnte mit Browser-/Systemfunktionen in Konflikt geraten.",
       "useAnyway": "Möchtest du diese trotzdem verwenden?",
       "resetTitle": "Tastenkombinationen zurücksetzen",
-      "resetMessage": "Bist du dir sicher, dass du alle Tastenkombinationen auf die Standardwerte zurücksetzen möchteest?<br><br>Diese Aktion kann nicht rückgängig gemacht werden.",
+      "resetMessage": "Bist du dir sicher, dass du alle Tastenkombinationen auf die Standardwerte zurücksetzen möchtest?<br><br>Diese Aktion kann nicht rückgängig gemacht werden.",
       "importSuccessTitle": "Import erfolgreich",
       "importSuccessMessage": "Tastenkombinationen erfolgreich importiert!",
       "importFailTitle": "Import fehlgeschlagen",
