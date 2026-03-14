@@ -86,9 +86,14 @@
     "name": "Số trang",
     "subtitle": "Chèn số trang vào tài liệu của bạn."
   },
+  "batesNumbering": {
+    "name": "Đánh số Bates",
+    "subtitle": "Thêm số Bates tuần tự trên một hoặc nhiều tệp PDF."
+  },
   "addWatermark": {
     "name": "Thêm Watermark",
-    "subtitle": "Đóng dấu văn bản hoặc hình ảnh lên các trang PDF của bạn."
+    "subtitle": "Đóng dấu văn bản hoặc hình ảnh lên các trang PDF của bạn.",
+    "applyToAllPages": "Áp dụng cho tất cả các trang"
   },
   "headerFooter": {
     "name": "Đầu trang & Chân trang",
@@ -97,6 +102,37 @@
   "invertColors": {
     "name": "Đảo ngược màu",
     "subtitle": "Tạo phiên bản \"chế độ tối\" cho PDF của bạn."
+  },
+  "scannerEffect": {
+    "name": "Hiệu ứng máy quét",
+    "subtitle": "Làm cho PDF trông giống như tài liệu đã quét.",
+    "scanSettings": "Cài đặt quét",
+    "colorspace": "Không gian màu",
+    "gray": "Thang xám",
+    "border": "Viền",
+    "rotate": "Xoay",
+    "rotateVariance": "Biên độ xoay",
+    "brightness": "Độ sáng",
+    "contrast": "Độ tương phản",
+    "blur": "Làm mờ",
+    "noise": "Nhiễu",
+    "yellowish": "Ngả vàng",
+    "resolution": "Độ phân giải",
+    "processButton": "Áp dụng hiệu ứng máy quét"
+  },
+  "adjustColors": {
+    "name": "Điều chỉnh màu sắc",
+    "subtitle": "Tinh chỉnh độ sáng, tương phản, độ bão hòa và nhiều hơn nữa.",
+    "colorSettings": "Cài đặt màu sắc",
+    "brightness": "Độ sáng",
+    "contrast": "Tương phản",
+    "saturation": "Độ bão hòa",
+    "hueShift": "Dịch chuyển sắc độ",
+    "temperature": "Nhiệt độ màu",
+    "tint": "Sắc thái",
+    "gamma": "Gamma",
+    "sepia": "Sepia",
+    "processButton": "Áp dụng điều chỉnh màu"
   },
   "backgroundColor": {
     "name": "Màu nền",
@@ -127,7 +163,8 @@
   },
   "removeBlankPages": {
     "name": "Xóa trang trống",
-    "subtitle": "Tự động phát hiện và xóa trang trống."
+    "subtitle": "Tự động phát hiện và xóa trang trống.",
+    "sensitivityHint": "Cao hơn = nghiêm ngặt hơn, chỉ các trang hoàn toàn trống. Thấp hơn = cho phép trang có một số nội dung."
   },
   "imageToPdf": {
     "name": "Hình ảnh sang PDF",
@@ -255,7 +292,47 @@
   },
   "comparePdfs": {
     "name": "So sánh PDF",
-    "subtitle": "So sánh hai PDF cạnh nhau."
+    "subtitle": "So sánh hai PDF cạnh nhau.",
+    "firstPdf": "PDF thứ nhất",
+    "secondPdf": "PDF thứ hai",
+    "clickOrDrop": "Nhấp hoặc thả",
+    "page": "Trang",
+    "overlay": "Chồng lớp",
+    "sideBySide": "Cạnh nhau",
+    "flicker": "Nhấp nháy",
+    "syncScroll": "Đồng bộ cuộn",
+    "export": "Xuất",
+    "exportAsPdf": "Xuất dưới dạng PDF",
+    "splitView": "Chế độ chia đôi",
+    "alternating": "Luân phiên",
+    "leftDocument": "Tài liệu bên trái",
+    "rightDocument": "Tài liệu bên phải",
+    "original": "Bản gốc",
+    "modified": "Đã sửa đổi",
+    "searchChanges": "Tìm kiếm thay đổi...",
+    "deleted": "Đã xóa",
+    "added": "Đã thêm",
+    "prevPage": "Trang trước",
+    "nextPage": "Trang sau",
+    "prevChange": "Thay đổi trước",
+    "nextChange": "Thay đổi sau",
+    "uploadTwoPdfs": "Tải lên hai PDF để xem sự khác biệt.",
+    "noDifferences": "Không phát hiện khác biệt trên trang này.",
+    "noMatchingChanges": "Không có thay đổi nào khớp với bộ lọc hiện tại.",
+    "pageNotExist": "Trang {{page}} không tồn tại trong PDF này.",
+    "noPairedPage": "Không có trang ghép cho phía này.",
+    "buildingModel": "Đang xây dựng mô hình ghép trang...",
+    "indexingPdf": "Đang lập chỉ mục PDF {{num}}, trang {{page}} trên {{total}}...",
+    "loadingComparison": "Đang tải so sánh {{current}} trên {{total}}...",
+    "runningOcr": "Đang chạy OCR trên trang {{page}}...",
+    "preparingExport": "Đang chuẩn bị xuất PDF...",
+    "renderingPage": "Đang kết xuất trang {{current}} trên {{total}}...",
+    "exportError": "Lỗi xuất",
+    "exportFailed": "Không thể xuất PDF so sánh.",
+    "loadingFile": "Đang tải {{name}}...",
+    "invalidFile": "Tệp không hợp lệ",
+    "invalidFileMsg": "Vui lòng chọn tệp PDF hợp lệ.",
+    "loadError": "Không thể tải PDF. Có thể tệp bị hỏng hoặc được bảo vệ bằng mật khẩu."
   },
   "posterizePdf": {
     "name": "Posterize PDF",
@@ -529,5 +606,66 @@
   "deskewPdf": {
     "name": "Chỉnh nghiêng PDF",
     "subtitle": "Tự động làm thẳng các trang quét bị nghiêng bằng OpenCV."
+  },
+  "pdfToWord": {
+    "name": "PDF sang Word",
+    "subtitle": "Chuyển đổi tệp PDF thành tài liệu Word có thể chỉnh sửa."
+  },
+  "extractImages": {
+    "name": "Trích xuất hình ảnh",
+    "subtitle": "Trích xuất tất cả hình ảnh nhúng từ tệp PDF của bạn."
+  },
+  "pdfToMarkdown": {
+    "name": "PDF sang Markdown",
+    "subtitle": "Chuyển đổi văn bản và bảng PDF sang định dạng Markdown."
+  },
+  "preparePdfForAi": {
+    "name": "Chuẩn bị PDF cho AI",
+    "subtitle": "Trích xuất nội dung PDF dưới dạng JSON LlamaIndex cho quy trình RAG/LLM."
+  },
+  "pdfOcg": {
+    "name": "Lớp PDF (OCG)",
+    "subtitle": "Xem, chuyển đổi, thêm và xóa các lớp OCG trong PDF của bạn."
+  },
+  "pdfToPdfa": {
+    "name": "PDF sang PDF/A",
+    "subtitle": "Chuyển đổi PDF sang PDF/A để lưu trữ lâu dài."
+  },
+  "rasterizePdf": {
+    "name": "Rasterize PDF",
+    "subtitle": "Chuyển đổi PDF thành PDF dựa trên hình ảnh. Làm phẳng các lớp và xóa văn bản có thể chọn."
+  },
+  "pdfWorkflow": {
+    "name": "Trình xây dựng quy trình PDF",
+    "subtitle": "Xây dựng quy trình xử lý PDF tùy chỉnh bằng trình chỉnh sửa nút trực quan.",
+    "nodes": "Nút",
+    "searchNodes": "Tìm kiếm nút...",
+    "run": "Chạy",
+    "clear": "Xóa",
+    "save": "Lưu",
+    "load": "Tải",
+    "export": "Xuất",
+    "import": "Nhập",
+    "ready": "Sẵn sàng",
+    "settings": "Cài đặt",
+    "processing": "Đang xử lý...",
+    "saveTemplate": "Lưu mẫu",
+    "templateName": "Tên mẫu",
+    "templatePlaceholder": "ví dụ: Quy trình hóa đơn",
+    "cancel": "Hủy",
+    "loadTemplate": "Tải mẫu",
+    "noTemplates": "Chưa có mẫu nào được lưu.",
+    "ok": "OK",
+    "workflowCompleted": "Quy trình đã hoàn tất",
+    "errorDuringExecution": "Lỗi trong quá trình thực thi",
+    "addNodeError": "Thêm ít nhất một nút để chạy quy trình.",
+    "needInputOutput": "Quy trình của bạn cần ít nhất một nút đầu vào và một nút đầu ra để chạy.",
+    "enterName": "Vui lòng nhập tên.",
+    "templateExists": "Đã tồn tại mẫu có tên này.",
+    "templateSaved": "Đã lưu mẫu \"{{name}}\".",
+    "templateLoaded": "Đã tải mẫu \"{{name}}\".",
+    "failedLoadTemplate": "Không thể tải mẫu.",
+    "noSettings": "Không có cài đặt nào có thể cấu hình cho nút này.",
+    "advancedSettings": "Cài đặt nâng cao"
   }
 }

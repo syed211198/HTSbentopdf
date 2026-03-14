@@ -1,8 +1,15 @@
 // This file centralizes the definition of all available tools, organized by category.
-export const categories = [
+const baseCategories = [
   {
     name: 'Popular Tools',
     tools: [
+      {
+        href: import.meta.env.BASE_URL + 'pdf-workflow.html',
+        name: 'PDF Workflow Builder',
+        icon: 'ph-tree-structure',
+        subtitle:
+          'Build custom PDF processing pipelines with a visual node editor.',
+      },
       {
         href: import.meta.env.BASE_URL + 'pdf-multi-tool.html',
         name: 'PDF Multi Tool',
@@ -102,6 +109,12 @@ export const categories = [
         subtitle: 'Insert page numbers into your document.',
       },
       {
+        href: import.meta.env.BASE_URL + 'bates-numbering.html',
+        name: 'Bates Numbering',
+        icon: 'ph-hash',
+        subtitle: 'Add sequential Bates numbers across one or more PDF files.',
+      },
+      {
         href: import.meta.env.BASE_URL + 'add-watermark.html',
         name: 'Add Watermark',
         icon: 'ph-drop',
@@ -118,6 +131,18 @@ export const categories = [
         name: 'Invert Colors',
         icon: 'ph-circle-half',
         subtitle: 'Create a "dark mode" version of your PDF.',
+      },
+      {
+        href: import.meta.env.BASE_URL + 'scanner-effect.html',
+        name: 'Scanner Effect',
+        icon: 'ph-scan',
+        subtitle: 'Make your PDF look like a scanned document.',
+      },
+      {
+        href: import.meta.env.BASE_URL + 'adjust-colors.html',
+        name: 'Adjust Colors',
+        icon: 'ph-sliders-horizontal',
+        subtitle: 'Fine-tune brightness, contrast, saturation and more.',
       },
       {
         href: import.meta.env.BASE_URL + 'background-color.html',
@@ -763,3 +788,16 @@ export const categories = [
     ],
   },
 ];
+
+const getToolIdFromHref = (href: string): string => {
+  const match = href.match(/\/([^/]+)\.html$/);
+  return match?.[1] ?? href;
+};
+
+export const categories = baseCategories.map((category) => ({
+  ...category,
+  tools: category.tools.map((tool) => ({
+    ...tool,
+    id: getToolIdFromHref(tool.href),
+  })),
+}));

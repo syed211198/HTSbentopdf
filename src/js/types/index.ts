@@ -47,3 +47,7 @@ export * from './sign-pdf-type.ts';
 export * from './add-watermark-type.ts';
 export * from './email-to-pdf-type.ts';
 export * from './bookmark-pdf-type.ts';
+export * from './scanner-effect-type.ts';
+export * from './adjust-colors-type.ts';
+export * from './bates-numbering-type.ts';
+export * from './page-preview-type.ts';

@@ -66,7 +66,34 @@
     "pdfOrImages": "PDFs oder Bilder",
     "filesNeverLeave": "Deine Dateien verlassen nie dein Gerät.",
     "addMore": "Weitere Dateien hinzufügen",
-    "clearAll": "Alle löschen"
+    "clearAll": "Alle löschen",
+    "clearFiles": "Dateien löschen",
+    "hints": {
+      "singlePdf": "Eine einzelne PDF-Datei",
+      "pdfFile": "PDF-Datei",
+      "multiplePdfs2": "Mehrere PDF-Dateien (mindestens 2)",
+      "bmpImages": "BMP-Bilder",
+      "oneOrMorePdfs": "Eine oder mehrere PDF-Dateien",
+      "pdfDocuments": "PDF-Dokumente",
+      "oneOrMoreCsv": "Eine oder mehrere CSV-Dateien",
+      "multiplePdfsSupported": "Mehrere PDF-Dateien unterstützt",
+      "singleOrMultiplePdfs": "Einzelne oder mehrere PDF-Dateien unterstützt",
+      "singlePdfFile": "Einzelne PDF-Datei",
+      "pdfWithForms": "PDF-Datei mit Formularfeldern",
+      "heicImages": "HEIC/HEIF-Bilder",
+      "jpgImages": "JPG, JPEG, JP2, JPX Bilder",
+      "pdfsOrImages": "PDFs oder Bilder",
+      "oneOrMoreOdt": "Eine oder mehrere ODT-Dateien",
+      "singlePdfOnly": "Nur eine einzelne PDF-Datei",
+      "pdfFiles": "PDF-Dateien",
+      "multiplePdfs": "Mehrere PDF-Dateien",
+      "pngImages": "PNG-Bilder",
+      "pdfFilesOneOrMore": "PDF-Dateien (eine oder mehrere)",
+      "oneOrMoreRtf": "Eine oder mehrere RTF-Dateien",
+      "svgGraphics": "SVG-Grafiken",
+      "tiffImages": "TIFF-Bilder",
+      "webpImages": "WebP-Bilder"
+    }
   },
   "loader": {
     "processing": "Verarbeite..."
@@ -226,7 +253,8 @@
     "error": "Fehler",
     "success": "Erfolgreich",
     "file": "Datei",
-    "files": "Dateien"
+    "files": "Dateien",
+    "close": "Schließen"
   },
   "about": {
     "hero": {
@@ -319,5 +347,18 @@
     "errorRendering": "Fehler beim Rendern der Seitenvorschau",
     "error": "Fehler",
     "failedToLoad": "Laden fehlgeschlagen"
+  },
+  "howItWorks": {
+    "title": "So funktioniert's",
+    "step1": "Klicken oder Datei hierher ziehen",
+    "step2": "Klicken Sie auf die Verarbeitungsschaltfläche",
+    "step3": "Speichern Sie Ihre verarbeitete Datei sofort"
+  },
+  "relatedTools": {
+    "title": "Verwandte PDF-Tools"
+  },
+  "simpleMode": {
+    "title": "PDF-Werkzeuge",
+    "subtitle": "Wählen Sie ein Werkzeug aus, um zu beginnen"
   }
 }

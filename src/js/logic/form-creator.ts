@@ -6,15 +6,33 @@ import {
   PDFName,
   PDFString,
   PageSizes,
-  PDFBool,
   PDFDict,
   PDFArray,
   PDFRadioGroup,
 } from 'pdf-lib';
+
+type FormFieldAction = NonNullable<FormField['action']>;
+type FormFieldVisibilityAction = NonNullable<FormField['visibilityAction']>;
+type LucideWindow = Window & {
+  lucide?: {
+    createIcons(): void;
+  };
+};
+type PdfViewerApplicationLike = {
+  pdfViewer?: {
+    pagesCount: number;
+  };
+};
+type PdfViewerWindow = Window & {
+  PDFViewerApplication?: PdfViewerApplicationLike;
+};
+
 import { initializeGlobalShortcuts } from '../utils/shortcuts-init.js';
 import { downloadFile, hexToRgb, getPDFDocument } from '../utils/helpers.js';
 import { createIcons, icons } from 'lucide';
 import * as pdfjsLib from 'pdfjs-dist';
+import type { PDFDocumentProxy } from 'pdfjs-dist';
+import * as bwipjs from 'bwip-js/browser';
 import 'pdfjs-dist/web/pdf_viewer.css';
 
 // Initialize PDF.js worker
@@ -23,7 +41,13 @@ pdfjsLib.GlobalWorkerOptions.workerSrc = new URL(
   import.meta.url
 ).toString();
 
-import { FormField, PageData } from '../types/index.js';
+import {
+  ExtractExistingFieldsResult,
+  FormCreatorFieldType,
+  FormField,
+  PageData,
+} from '@/types';
+import { extractExistingFields as extractExistingPdfFields } from './form-creator-extraction.js';
 
 let fields: FormField[] = [];
 let selectedField: FormField | null = null;
@@ -33,11 +57,12 @@ const existingRadioGroups: Set<string> = new Set();
 let draggedElement: HTMLElement | null = null;
 let offsetX = 0;
 let offsetY = 0;
+let pendingFieldExtraction = false;
 
 let pages: PageData[] = [];
 let currentPageIndex = 0;
 let uploadedPdfDoc: PDFDocument | null = null;
-let uploadedPdfjsDoc: any = null;
+let uploadedPdfjsDoc: PDFDocumentProxy | null = null;
 let pageSize: { width: number; height: number } = { width: 612, height: 792 };
 let currentScale = 1.333;
 let pdfViewerOffset = { x: 0, y: 0 };
@@ -332,8 +357,9 @@ toolItems.forEach((item) => {
     ) {
       const x = touch.clientX - canvasRect.left - 75;
       const y = touch.clientY - canvasRect.top - 15;
-      const type = (item as HTMLElement).dataset.type || 'text';
-      createField(type as any, x, y);
+      const type = ((item as HTMLElement).dataset.type ||
+        'text') as FormCreatorFieldType;
+      createField(type, x, y);
     }
   });
 });
@@ -352,8 +378,9 @@ canvas.addEventListener('drop', (e) => {
   const rect = canvas.getBoundingClientRect();
   const x = e.clientX - rect.left - 75;
   const y = e.clientY - rect.top - 15;
-  const type = e.dataTransfer?.getData('text/plain') || 'text';
-  createField(type as any, x, y);
+  const type = (e.dataTransfer?.getData('text/plain') ||
+    'text') as FormCreatorFieldType;
+  createField(type, x, y);
 });
 
 canvas.addEventListener('click', (e) => {
@@ -361,7 +388,7 @@ canvas.addEventListener('click', (e) => {
     const rect = canvas.getBoundingClientRect();
     const x = e.clientX - rect.left - 75;
     const y = e.clientY - rect.top - 15;
-    createField(selectedToolType as any, x, y);
+    createField(selectedToolType as FormCreatorFieldType, x, y);
 
     toolItems.forEach((item) =>
       item.classList.remove('ring-2', 'ring-indigo-400', 'bg-indigo-600')
@@ -384,8 +411,18 @@ function createField(type: FormField['type'], x: number, y: number): void {
     type: type,
     x: Math.max(0, Math.min(x, 816 - 150)),
     y: Math.max(0, Math.min(y, 1056 - 30)),
-    width: type === 'checkbox' || type === 'radio' ? 30 : 150,
-    height: type === 'checkbox' || type === 'radio' ? 30 : 30,
+    width:
+      type === 'checkbox' || type === 'radio'
+        ? 30
+        : type === 'barcode'
+          ? 150
+          : 150,
+    height:
+      type === 'checkbox' || type === 'radio'
+        ? 30
+        : type === 'barcode'
+          ? 150
+          : 30,
     name: `${type.charAt(0).toUpperCase() + type.slice(1)}_${fieldCounter}`,
     defaultValue: '',
     fontSize: 12,
@@ -417,6 +454,8 @@ function createField(type: FormField['type'], x: number, y: number): void {
     multiline: type === 'text' ? false : undefined,
     borderColor: '#000000',
     hideBorder: false,
+    barcodeFormat: type === 'barcode' ? 'qrcode' : undefined,
+    barcodeValue: type === 'barcode' ? 'https://example.com' : undefined,
   };
 
   fields.push(field);
@@ -564,17 +603,47 @@ function renderField(field: FormField): void {
       'w-full h-full flex items-center justify-center bg-gray-50 text-gray-400';
     contentEl.innerHTML =
       '<div class="flex flex-col items-center"><i data-lucide="pen-tool" class="w-6 h-6 mb-1"></i><span class="text-[10px]">Sign Here</span></div>';
-    setTimeout(() => (window as any).lucide?.createIcons(), 0);
+    setTimeout(() => (window as LucideWindow).lucide?.createIcons(), 0);
   } else if (field.type === 'date') {
     contentEl.className =
       'w-full h-full flex items-center justify-center bg-white text-gray-600 border border-gray-300';
     contentEl.innerHTML = `<div class="flex items-center gap-2 px-2"><i data-lucide="calendar" class="w-4 h-4"></i><span class="text-sm date-format-text">${field.dateFormat || 'mm/dd/yyyy'}</span></div>`;
-    setTimeout(() => (window as any).lucide?.createIcons(), 0);
+    setTimeout(() => (window as LucideWindow).lucide?.createIcons(), 0);
   } else if (field.type === 'image') {
     contentEl.className =
       'w-full h-full flex items-center justify-center bg-gray-100 text-gray-500 border border-gray-300';
     contentEl.innerHTML = `<div class="flex flex-col items-center text-center p-1"><i data-lucide="image" class="w-6 h-6 mb-1"></i><span class="text-[10px] leading-tight">${field.label || 'Click to Upload Image'}</span></div>`;
-    setTimeout(() => (window as any).lucide?.createIcons(), 0);
+    setTimeout(() => (window as LucideWindow).lucide?.createIcons(), 0);
+  } else if (field.type === 'barcode') {
+    contentEl.className =
+      'w-full h-full flex items-center justify-center bg-white';
+    if (field.barcodeValue) {
+      try {
+        const offscreen = document.createElement('canvas');
+        bwipjs.toCanvas(offscreen, {
+          bcid: field.barcodeFormat || 'qrcode',
+          text: field.barcodeValue,
+          scale: 2,
+          includetext:
+            field.barcodeFormat !== 'qrcode' &&
+            field.barcodeFormat !== 'datamatrix',
+        });
+        const img = document.createElement('img');
+        img.src = offscreen.toDataURL('image/png');
+        img.className = 'max-w-full max-h-full object-contain';
+        contentEl.appendChild(img);
+      } catch (error) {
+        console.warn(
+          `Failed to render barcode preview for field "${field.name}":`,
+          error
+        );
+        contentEl.innerHTML = `<div class="flex flex-col items-center text-center p-1 text-gray-400"><i data-lucide="qr-code" class="w-6 h-6 mb-1"></i><span class="text-[10px] leading-tight">Invalid data</span></div>`;
+        setTimeout(() => (window as LucideWindow).lucide?.createIcons(), 0);
+      }
+    } else {
+      contentEl.innerHTML = `<div class="flex flex-col items-center text-center p-1 text-gray-400"><i data-lucide="qr-code" class="w-6 h-6 mb-1"></i><span class="text-[10px] leading-tight">Barcode</span></div>`;
+      setTimeout(() => (window as LucideWindow).lucide?.createIcons(), 0);
+    }
   }
 
   fieldContainer.appendChild(contentEl);
@@ -659,6 +728,17 @@ function renderField(field: FormField): void {
     };
     handle.className += ` ${positions[pos]}`;
     handle.dataset.position = pos;
+    const cursorMap: Record<string, string> = {
+      nw: 'nwse-resize',
+      ne: 'nesw-resize',
+      sw: 'nesw-resize',
+      se: 'nwse-resize',
+      n: 'ns-resize',
+      s: 'ns-resize',
+      e: 'ew-resize',
+      w: 'ew-resize',
+    };
+    handle.style.cursor = cursorMap[pos] || 'pointer';
 
     handle.addEventListener('mousedown', (e) => {
       e.stopPropagation();
@@ -698,6 +778,50 @@ function startResize(e: MouseEvent, field: FormField, pos: string): void {
   e.preventDefault();
 }
 
+function applyResizeWithConstraints(
+  field: FormField,
+  pos: string,
+  dx: number,
+  dy: number
+): void {
+  const isSquareField = field.type === 'checkbox' || field.type === 'radio';
+  const minWidth = isSquareField ? 12 : 50;
+  const minHeight = isSquareField ? 12 : 20;
+
+  if (pos.includes('e')) {
+    field.width = Math.max(minWidth, startWidth + dx);
+  }
+  if (pos.includes('w')) {
+    const newWidth = Math.max(minWidth, startWidth - dx);
+    const widthDiff = startWidth - newWidth;
+    field.width = newWidth;
+    field.x = startLeft + widthDiff;
+  }
+  if (pos.includes('s')) {
+    field.height = Math.max(minHeight, startHeight + dy);
+  }
+  if (pos.includes('n')) {
+    const newHeight = Math.max(minHeight, startHeight - dy);
+    const heightDiff = startHeight - newHeight;
+    field.height = newHeight;
+    field.y = startTop + heightDiff;
+  }
+
+  if (isSquareField) {
+    const size = Math.max(minWidth, Math.min(field.width, field.height));
+
+    if (pos.includes('w')) {
+      field.x = startLeft + (startWidth - size);
+    }
+    if (pos.includes('n')) {
+      field.y = startTop + (startHeight - size);
+    }
+
+    field.width = size;
+    field.height = size;
+  }
+}
+
 // Mouse move for dragging and resizing
 document.addEventListener('mousemove', (e) => {
   if (draggedElement && !resizing) {
@@ -724,24 +848,7 @@ document.addEventListener('mousemove', (e) => {
     const dy = e.clientY - startY;
     const fieldWrapper = document.getElementById(resizeField.id);
 
-    if (resizePos!.includes('e')) {
-      resizeField.width = Math.max(50, startWidth + dx);
-    }
-    if (resizePos!.includes('w')) {
-      const newWidth = Math.max(50, startWidth - dx);
-      const widthDiff = startWidth - newWidth;
-      resizeField.width = newWidth;
-      resizeField.x = startLeft + widthDiff;
-    }
-    if (resizePos!.includes('s')) {
-      resizeField.height = Math.max(20, startHeight + dy);
-    }
-    if (resizePos!.includes('n')) {
-      const newHeight = Math.max(20, startHeight - dy);
-      const heightDiff = startHeight - newHeight;
-      resizeField.height = newHeight;
-      resizeField.y = startTop + heightDiff;
-    }
+    applyResizeWithConstraints(resizeField, resizePos!, dx, dy);
 
     if (fieldWrapper) {
       const container = fieldWrapper.querySelector(
@@ -781,24 +888,7 @@ document.addEventListener(
       const dy = touch.clientY - startY;
       const fieldWrapper = document.getElementById(resizeField.id);
 
-      if (resizePos!.includes('e')) {
-        resizeField.width = Math.max(50, startWidth + dx);
-      }
-      if (resizePos!.includes('w')) {
-        const newWidth = Math.max(50, startWidth - dx);
-        const widthDiff = startWidth - newWidth;
-        resizeField.width = newWidth;
-        resizeField.x = startLeft + widthDiff;
-      }
-      if (resizePos!.includes('s')) {
-        resizeField.height = Math.max(20, startHeight + dy);
-      }
-      if (resizePos!.includes('n')) {
-        const newHeight = Math.max(20, startHeight - dy);
-        const heightDiff = startHeight - newHeight;
-        resizeField.height = newHeight;
-        resizeField.y = startTop + heightDiff;
-      }
+      applyResizeWithConstraints(resizeField, resizePos!, dx, dy);
 
       if (fieldWrapper) {
         const container = fieldWrapper.querySelector(
@@ -931,7 +1021,7 @@ function showProperties(field: FormField): void {
         </div>
         <div>
             <label class="block text-xs font-semibold text-gray-300 mb-1">Text Color</label>
-            <input type="color" id="propTextColor" value="${field.textColor}" class="w-full border border-gray-500 rounded px-2 py-1 h-10">
+            <input type="color" id="propTextColor" value="${field.textColor}">
         </div>
         <div>
             <label class="block text-xs font-semibold text-gray-300 mb-1">Alignment</label>
@@ -1114,6 +1204,26 @@ function showProperties(field: FormField): void {
             Clicking this field in the PDF will open a file picker to upload an image.
         </div>
         `;
+  } else if (field.type === 'barcode') {
+    specificProps = `
+        <div>
+            <label class="block text-xs font-semibold text-gray-300 mb-1">Barcode Format</label>
+            <select id="propBarcodeFormat" class="w-full bg-gray-600 border border-gray-500 text-white rounded px-2 py-1 text-sm focus:ring-indigo-500 focus:border-indigo-500">
+                <option value="qrcode" ${field.barcodeFormat === 'qrcode' ? 'selected' : ''}>QR Code</option>
+                <option value="code128" ${field.barcodeFormat === 'code128' ? 'selected' : ''}>Code 128</option>
+                <option value="code39" ${field.barcodeFormat === 'code39' ? 'selected' : ''}>Code 39</option>
+                <option value="ean13" ${field.barcodeFormat === 'ean13' ? 'selected' : ''}>EAN-13</option>
+                <option value="upca" ${field.barcodeFormat === 'upca' ? 'selected' : ''}>UPC-A</option>
+                <option value="datamatrix" ${field.barcodeFormat === 'datamatrix' ? 'selected' : ''}>DataMatrix</option>
+                <option value="pdf417" ${field.barcodeFormat === 'pdf417' ? 'selected' : ''}>PDF417</option>
+            </select>
+        </div>
+        <div>
+            <label class="block text-xs font-semibold text-gray-300 mb-1">Barcode Value</label>
+            <input type="text" id="propBarcodeValue" value="${field.barcodeValue || ''}" class="w-full bg-gray-600 border border-gray-500 text-white rounded px-2 py-1 text-sm focus:ring-indigo-500 focus:border-indigo-500">
+        </div>
+        <div id="barcodeFormatHint" class="text-xs text-gray-400 italic"></div>
+        `;
   }
 
   propertiesPanel.innerHTML = `
@@ -1169,7 +1279,7 @@ function showProperties(field: FormField): void {
       </div>
       <div>
         <label class="block text-xs font-semibold text-gray-300 mb-1">Border Color</label>
-        <input type="color" id="propBorderColor" value="${field.borderColor || '#000000'}" class="w-full border border-gray-500 rounded px-2 py-1 h-10">
+        <input type="color" id="propBorderColor" value="${field.borderColor || '#000000'}">
       </div>
       <div class="flex items-center">
         <input type="checkbox" id="propHideBorder" ${field.hideBorder ? 'checked' : ''} class="mr-2">
@@ -1614,7 +1724,9 @@ function showProperties(field: FormField): void {
     ) as HTMLDivElement;
 
     propAction.addEventListener('change', (e) => {
-      field.action = (e.target as HTMLSelectElement).value as any;
+      const actionValue = (e.target as HTMLSelectElement)
+        .value as FormFieldAction;
+      field.action = actionValue;
 
       // Show/hide containers
       propUrlContainer.classList.add('hidden');
@@ -1660,7 +1772,8 @@ function showProperties(field: FormField): void {
     ) as HTMLSelectElement;
     if (propVisibilityAction) {
       propVisibilityAction.addEventListener('change', (e) => {
-        field.visibilityAction = (e.target as HTMLSelectElement).value as any;
+        field.visibilityAction = (e.target as HTMLSelectElement)
+          .value as FormFieldVisibilityAction;
       });
     }
   } else if (field.type === 'signature') {
@@ -1770,7 +1883,7 @@ function showProperties(field: FormField): void {
             textSpan.textContent = field.dateFormat;
           }
         }
-        setTimeout(() => (window as any).lucide?.createIcons(), 0);
+        setTimeout(() => (window as LucideWindow).lucide?.createIcons(), 0);
       });
     }
 
@@ -1795,6 +1908,56 @@ function showProperties(field: FormField): void {
       field.label = (e.target as HTMLInputElement).value;
       renderField(field);
     });
+  } else if (field.type === 'barcode') {
+    const propBarcodeFormat = document.getElementById(
+      'propBarcodeFormat'
+    ) as HTMLSelectElement;
+    const propBarcodeValue = document.getElementById(
+      'propBarcodeValue'
+    ) as HTMLInputElement;
+
+    const barcodeSampleValues: Record<string, string> = {
+      qrcode: 'https://example.com',
+      code128: 'ABC-123',
+      code39: 'ABC123',
+      ean13: '590123412345',
+      upca: '01234567890',
+      datamatrix: 'https://example.com',
+      pdf417: 'https://example.com',
+    };
+
+    const barcodeFormatHints: Record<string, string> = {
+      qrcode: 'Any text, URL, or data',
+      code128: 'ASCII characters (letters, numbers, symbols)',
+      code39: 'Uppercase A-Z, digits 0-9, and - . $ / + % SPACE',
+      ean13: 'Exactly 12 or 13 digits',
+      upca: 'Exactly 11 or 12 digits',
+      datamatrix: 'Any text, URL, or data',
+      pdf417: 'Any text, URL, or data',
+    };
+
+    const hintEl = document.getElementById('barcodeFormatHint');
+    if (hintEl)
+      hintEl.textContent =
+        barcodeFormatHints[field.barcodeFormat || 'qrcode'] || '';
+
+    if (propBarcodeFormat) {
+      propBarcodeFormat.addEventListener('change', (e) => {
+        const newFormat = (e.target as HTMLSelectElement).value;
+        field.barcodeFormat = newFormat;
+        field.barcodeValue = barcodeSampleValues[newFormat] || 'hello';
+        if (propBarcodeValue) propBarcodeValue.value = field.barcodeValue;
+        if (hintEl) hintEl.textContent = barcodeFormatHints[newFormat] || '';
+        renderField(field);
+      });
+    }
+
+    if (propBarcodeValue) {
+      propBarcodeValue.addEventListener('input', (e) => {
+        field.barcodeValue = (e.target as HTMLInputElement).value;
+        renderField(field);
+      });
+    }
   }
 }
 
@@ -1911,6 +2074,19 @@ downloadBtn.addEventListener('click', async () => {
 
     const form = pdfDoc.getForm();
 
+    if (extractedFieldNames.size > 0) {
+      for (const fieldName of extractedFieldNames) {
+        try {
+          const existingField = form.getFieldMaybe(fieldName);
+          if (existingField) {
+            form.removeField(existingField);
+          }
+        } catch (e) {
+          console.warn(`Failed to remove existing field "${fieldName}":`, e);
+        }
+      }
+    }
+
     const helveticaFont = await pdfDoc.embedFont(StandardFonts.Helvetica);
 
     // Set document metadata for accessibility
@@ -1918,7 +2094,10 @@ downloadBtn.addEventListener('click', async () => {
     pdfDoc.setAuthor('BentoPDF');
     pdfDoc.setLanguage('en-US');
 
-    const radioGroups = new Map<string, any>(); // Track created radio groups
+    const radioGroups = new Map<
+      string,
+      ReturnType<typeof form.createRadioGroup>
+    >();
 
     for (const field of fields) {
       const pageData = pages[field.pageIndex];
@@ -2037,7 +2216,7 @@ downloadBtn.addEventListener('click', async () => {
         }
 
         const borderRgb = hexToRgb(field.borderColor || '#000000');
-        radioGroup.addOptionToPage(field.exportValue || 'Yes', pdfPage as any, {
+        radioGroup.addOptionToPage(field.exportValue || 'Yes', pdfPage, {
           x: x,
           y: y,
           width: width,
@@ -2050,7 +2229,7 @@ downloadBtn.addEventListener('click', async () => {
         if (field.required) radioGroup.enableRequired();
         if (field.readOnly) radioGroup.enableReadOnly();
         if (field.tooltip) {
-          radioGroup.acroField.getWidgets().forEach((widget: any) => {
+          radioGroup.acroField.getWidgets().forEach((widget) => {
             widget.dict.set(PDFName.of('TU'), PDFString.of(field.tooltip));
           });
         }
@@ -2134,7 +2313,7 @@ downloadBtn.addEventListener('click', async () => {
           const widgets = button.acroField.getWidgets();
 
           widgets.forEach((widget) => {
-            let actionDict: any;
+            let actionDict: PDFDict | PDFArray | undefined;
 
             if (field.action === 'reset') {
               actionDict = pdfDoc.context.obj({
@@ -2175,7 +2354,7 @@ downloadBtn.addEventListener('click', async () => {
               });
             } else if (field.action === 'showHide' && field.targetFieldName) {
               const target = field.targetFieldName;
-              let script = '';
+              let script: string;
 
               if (field.visibilityAction === 'show') {
                 script = `var f = this.getField("${target}"); if(f) f.display = display.visible;`;
@@ -2332,6 +2511,32 @@ downloadBtn.addEventListener('click', async () => {
         if (field.tooltip) {
           widgetDict.set(PDFName.of('TU'), PDFString.of(field.tooltip));
         }
+      } else if (field.type === 'barcode') {
+        if (field.barcodeValue) {
+          try {
+            const offscreen = document.createElement('canvas');
+            bwipjs.toCanvas(offscreen, {
+              bcid: field.barcodeFormat || 'qrcode',
+              text: field.barcodeValue,
+              scale: 3,
+              includetext:
+                field.barcodeFormat !== 'qrcode' &&
+                field.barcodeFormat !== 'datamatrix',
+            });
+            const dataUrl = offscreen.toDataURL('image/png');
+            const base64 = dataUrl.split(',')[1];
+            const pngBytes = Uint8Array.from(atob(base64), (c) =>
+              c.charCodeAt(0)
+            );
+            const pngImage = await pdfDoc.embedPng(pngBytes);
+            pdfPage.drawImage(pngImage, { x, y, width, height });
+          } catch (e) {
+            console.warn(
+              `Failed to generate barcode for field "${field.name}":`,
+              e
+            );
+          }
+        }
       }
     }
 
@@ -2429,6 +2634,8 @@ function resetToInitial(): void {
   currentPageIndex = 0;
   uploadedPdfDoc = null;
   selectedField = null;
+  extractedFieldNames.clear();
+  pendingFieldExtraction = false;
 
   canvas.innerHTML = '';
 
@@ -2504,7 +2711,7 @@ async function renderCanvas(): Promise<void> {
 
       iframe.onload = () => {
         try {
-          const viewerWindow = iframe.contentWindow as any;
+          const viewerWindow = iframe.contentWindow as PdfViewerWindow | null;
           if (viewerWindow && viewerWindow.PDFViewerApplication) {
             const app = viewerWindow.PDFViewerApplication;
 
@@ -2563,7 +2770,7 @@ async function renderCanvas(): Promise<void> {
                 clearInterval(checkRender);
 
                 const pageContainer =
-                  viewerWindow.document.querySelector('.page');
+                  viewerWindow.document.querySelector<HTMLElement>('.page');
                 if (pageContainer) {
                   const initialRect = pageContainer.getBoundingClientRect();
 
@@ -2611,6 +2818,32 @@ async function renderCanvas(): Promise<void> {
                         height: currentPage.height,
                       },
                     });
+
+                    if (pendingFieldExtraction && uploadedPdfDoc) {
+                      pendingFieldExtraction = false;
+                      extractExistingFields(uploadedPdfDoc);
+                      extractedFieldNames.forEach((name) =>
+                        existingFieldNames.delete(name)
+                      );
+
+                      const form = uploadedPdfDoc.getForm();
+                      for (const name of extractedFieldNames) {
+                        try {
+                          const existingField = form.getFieldMaybe(name);
+                          if (existingField) {
+                            form.removeField(existingField);
+                          }
+                        } catch (error) {
+                          console.warn(
+                            `Failed to remove extracted field "${name}" after import:`,
+                            error
+                          );
+                        }
+                      }
+
+                      renderCanvas();
+                      updateFieldCount();
+                    }
                   }, 50);
                 }
               }
@@ -2701,6 +2934,35 @@ confirmBlankBtn.addEventListener('click', () => {
   setTimeout(() => createIcons({ icons }), 100);
 });
 
+const extractedFieldNames: Set<string> = new Set();
+
+function extractExistingFields(pdfDoc: PDFDocument): void {
+  try {
+    const extractionResult: ExtractExistingFieldsResult =
+      extractExistingPdfFields({
+        pdfDoc,
+        fieldCounterStart: fieldCounter,
+        metrics: {
+          pdfViewerOffset,
+          pdfViewerScale,
+        },
+      });
+
+    fields.push(...extractionResult.fields);
+    fieldCounter = extractionResult.nextFieldCounter;
+
+    extractionResult.extractedFieldNames.forEach((name) => {
+      extractedFieldNames.add(name);
+    });
+
+    console.log(
+      `Extracted ${extractionResult.extractedFieldNames.size} existing fields for editing`
+    );
+  } catch (error) {
+    console.warn('Error extracting existing fields:', error);
+  }
+}
+
 async function handlePdfUpload(file: File) {
   try {
     const arrayBuffer = await file.arrayBuffer();
@@ -2759,6 +3021,9 @@ async function handlePdfUpload(file: File) {
     }
 
     currentPageIndex = 0;
+
+    pendingFieldExtraction = true;
+
     renderCanvas();
     updatePageNavigation();
 

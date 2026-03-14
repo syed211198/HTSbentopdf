@@ -86,9 +86,14 @@
     "name": "Números de Página",
     "subtitle": "Inserta números de página en tu documento."
   },
+  "batesNumbering": {
+    "name": "Numeración Bates",
+    "subtitle": "Añadir números Bates secuenciales en uno o más archivos PDF."
+  },
   "addWatermark": {
     "name": "Agregar Marca de Agua",
-    "subtitle": "Estampa texto o una imagen sobre tus páginas PDF."
+    "subtitle": "Estampa texto o una imagen sobre tus páginas PDF.",
+    "applyToAllPages": "Aplicar a todas las páginas"
   },
   "headerFooter": {
     "name": "Encabezado y Pie de Página",
@@ -97,6 +102,37 @@
   "invertColors": {
     "name": "Invertir Colores",
     "subtitle": "Crea una versión en \"modo oscuro\" de tu PDF."
+  },
+  "scannerEffect": {
+    "name": "Efecto escáner",
+    "subtitle": "Haz que tu PDF parezca un documento escaneado.",
+    "scanSettings": "Ajustes de escaneo",
+    "colorspace": "Espacio de color",
+    "gray": "Gris",
+    "border": "Borde",
+    "rotate": "Rotar",
+    "rotateVariance": "Variación de rotación",
+    "brightness": "Brillo",
+    "contrast": "Contraste",
+    "blur": "Desenfoque",
+    "noise": "Ruido",
+    "yellowish": "Amarillento",
+    "resolution": "Resolución",
+    "processButton": "Aplicar efecto escáner"
+  },
+  "adjustColors": {
+    "name": "Ajustar colores",
+    "subtitle": "Ajusta brillo, contraste, saturación y más en tu PDF.",
+    "colorSettings": "Configuración de color",
+    "brightness": "Brillo",
+    "contrast": "Contraste",
+    "saturation": "Saturación",
+    "hueShift": "Tono",
+    "temperature": "Temperatura",
+    "tint": "Matiz",
+    "gamma": "Gamma",
+    "sepia": "Sepia",
+    "processButton": "Aplicar ajustes de color"
   },
   "backgroundColor": {
     "name": "Color de Fondo",
@@ -127,7 +163,8 @@
   },
   "removeBlankPages": {
     "name": "Eliminar Páginas en Blanco",
-    "subtitle": "Detecta y elimina automáticamente páginas en blanco."
+    "subtitle": "Detecta y elimina automáticamente páginas en blanco.",
+    "sensitivityHint": "Mayor = más estricto, solo páginas completamente en blanco. Menor = permite páginas con algo de contenido."
   },
   "imageToPdf": {
     "name": "Imágenes a PDF",
@@ -255,7 +292,47 @@
   },
   "comparePdfs": {
     "name": "Comparar PDFs",
-    "subtitle": "Compara dos PDFs lado a lado."
+    "subtitle": "Compara dos PDFs lado a lado.",
+    "firstPdf": "Primer PDF",
+    "secondPdf": "Segundo PDF",
+    "clickOrDrop": "Haz clic o suelta",
+    "page": "Página",
+    "overlay": "Superposición",
+    "sideBySide": "Lado a lado",
+    "flicker": "Parpadeo",
+    "syncScroll": "Sincronizar desplazamiento",
+    "export": "Exportar",
+    "exportAsPdf": "Exportar como PDF",
+    "splitView": "Vista dividida",
+    "alternating": "Alternando",
+    "leftDocument": "Documento izquierdo",
+    "rightDocument": "Documento derecho",
+    "original": "Original",
+    "modified": "Modificado",
+    "searchChanges": "Buscar cambios...",
+    "deleted": "Eliminado",
+    "added": "Añadido",
+    "prevPage": "Página anterior",
+    "nextPage": "Página siguiente",
+    "prevChange": "Cambio anterior",
+    "nextChange": "Cambio siguiente",
+    "uploadTwoPdfs": "Sube dos PDFs para ver las diferencias.",
+    "noDifferences": "No se detectaron diferencias en esta página.",
+    "noMatchingChanges": "Ningún cambio coincide con el filtro actual.",
+    "pageNotExist": "La página {{page}} no existe en este PDF.",
+    "noPairedPage": "No hay una página emparejada para este lado.",
+    "buildingModel": "Creando el modelo de emparejamiento de páginas...",
+    "indexingPdf": "Indexando PDF {{num}}, página {{page}} de {{total}}...",
+    "loadingComparison": "Cargando comparación {{current}} de {{total}}...",
+    "runningOcr": "Ejecutando OCR en la página {{page}}...",
+    "preparingExport": "Preparando la exportación del PDF...",
+    "renderingPage": "Renderizando página {{current}} de {{total}}...",
+    "exportError": "Error de exportación",
+    "exportFailed": "No se pudo exportar el PDF de comparación.",
+    "loadingFile": "Cargando {{name}}...",
+    "invalidFile": "Archivo no válido",
+    "invalidFileMsg": "Selecciona un archivo PDF válido.",
+    "loadError": "No se pudo cargar el PDF. Puede estar dañado o protegido con contraseña."
   },
   "posterizePdf": {
     "name": "Posterizar PDF",
@@ -529,5 +606,66 @@
   "deskewPdf": {
     "name": "Enderezar PDF",
     "subtitle": "Endereza automáticamente páginas escaneadas inclinadas usando OpenCV."
+  },
+  "pdfToWord": {
+    "name": "PDF a Word",
+    "subtitle": "Convertir archivos PDF a documentos Word editables."
+  },
+  "extractImages": {
+    "name": "Extraer imágenes",
+    "subtitle": "Extraer todas las imágenes incrustadas de sus archivos PDF."
+  },
+  "pdfToMarkdown": {
+    "name": "PDF a Markdown",
+    "subtitle": "Convertir texto y tablas de PDF a formato Markdown."
+  },
+  "preparePdfForAi": {
+    "name": "Preparar PDF para IA",
+    "subtitle": "Extraer contenido PDF como JSON de LlamaIndex para pipelines RAG/LLM."
+  },
+  "pdfOcg": {
+    "name": "Capas PDF (OCG)",
+    "subtitle": "Ver, alternar, agregar y eliminar capas OCG en su PDF."
+  },
+  "pdfToPdfa": {
+    "name": "PDF a PDF/A",
+    "subtitle": "Convertir PDF a PDF/A para archivado a largo plazo."
+  },
+  "rasterizePdf": {
+    "name": "Rasterizar PDF",
+    "subtitle": "Convertir PDF a PDF basado en imágenes. Aplanar capas y eliminar texto seleccionable."
+  },
+  "pdfWorkflow": {
+    "name": "Constructor de flujos de trabajo PDF",
+    "subtitle": "Cree pipelines de procesamiento PDF personalizados con un editor visual de nodos.",
+    "nodes": "Nodos",
+    "searchNodes": "Buscar nodos...",
+    "run": "Ejecutar",
+    "clear": "Limpiar",
+    "save": "Guardar",
+    "load": "Cargar",
+    "export": "Exportar",
+    "import": "Importar",
+    "ready": "Listo",
+    "settings": "Configuración",
+    "processing": "Procesando...",
+    "saveTemplate": "Guardar plantilla",
+    "templateName": "Nombre de la plantilla",
+    "templatePlaceholder": "ej. Flujo de trabajo de facturación",
+    "cancel": "Cancelar",
+    "loadTemplate": "Cargar plantilla",
+    "noTemplates": "Aún no hay plantillas guardadas.",
+    "ok": "OK",
+    "workflowCompleted": "Flujo de trabajo completado",
+    "errorDuringExecution": "Error durante la ejecución",
+    "addNodeError": "Agregue al menos un nodo para ejecutar el flujo de trabajo.",
+    "needInputOutput": "Su flujo de trabajo necesita al menos un nodo de entrada y un nodo de salida para ejecutarse.",
+    "enterName": "Por favor, introduzca un nombre.",
+    "templateExists": "Ya existe una plantilla con este nombre.",
+    "templateSaved": "Plantilla \"{{name}}\" guardada.",
+    "templateLoaded": "Plantilla \"{{name}}\" cargada.",
+    "failedLoadTemplate": "Error al cargar la plantilla.",
+    "noSettings": "No hay opciones configurables para este nodo.",
+    "advancedSettings": "Configuración avanzada"
   }
 }

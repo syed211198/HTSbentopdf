@@ -1,6 +1,7 @@
 import { defineConfig, Plugin } from 'vitest/config';
 import type { IncomingMessage, ServerResponse } from 'http';
 import type { Connect } from 'vite';
+import basicSsl from '@vitejs/plugin-basic-ssl';
 import tailwindcss from '@tailwindcss/vite';
 import { nodePolyfills } from 'vite-plugin-node-polyfills';
 import { viteStaticCopy } from 'vite-plugin-static-copy';
@@ -13,16 +14,22 @@ import type { OutputBundle } from 'rollup';
 
 const SUPPORTED_LANGUAGES = [
   'en',
+  'ar',
+  'be',
+  'da',
   'de',
   'es',
+  'fr',
+  'id',
+  'it',
+  'nl',
+  'pt',
+  'sv',
+  'tr',
+  'vi',
   'zh',
   'zh-TW',
-  'vi',
-  'it',
-  'id',
-  'tr',
-  'fr',
-  'pt',
+  'ko',
 ] as const;
 const LANG_REGEX = new RegExp(
   `^/(${SUPPORTED_LANGUAGES.join('|')})(?:/(.*))?$`
@@ -275,34 +282,6 @@ export default defineConfig(() => {
 
   const staticCopyTargets = [
     {
-      src: 'node_modules/@bentopdf/pymupdf-wasm/assets/*.wasm',
-      dest: 'pymupdf-wasm',
-    },
-    {
-      src: 'node_modules/@bentopdf/pymupdf-wasm/assets/*.js',
-      dest: 'pymupdf-wasm',
-    },
-    {
-      src: 'node_modules/@bentopdf/pymupdf-wasm/assets/*.whl',
-      dest: 'pymupdf-wasm',
-    },
-    {
-      src: 'node_modules/@bentopdf/pymupdf-wasm/assets/*.zip',
-      dest: 'pymupdf-wasm',
-    },
-    {
-      src: 'node_modules/@bentopdf/pymupdf-wasm/assets/*.json',
-      dest: 'pymupdf-wasm',
-    },
-    {
-      src: 'node_modules/@bentopdf/gs-wasm/assets/*.wasm',
-      dest: 'ghostscript-wasm',
-    },
-    {
-      src: 'node_modules/@bentopdf/gs-wasm/assets/*.js',
-      dest: 'ghostscript-wasm',
-    },
-    {
       src: 'node_modules/embedpdf-snippet/dist/pdfium.wasm',
       dest: 'embedpdf',
     },
@@ -311,11 +290,15 @@ export default defineConfig(() => {
   return {
     base: (process.env.BASE_URL || '/').replace(/\/?$/, '/'),
     plugins: [
+      // basicSsl(),
       handlebars({
         partialDirectory: resolve(__dirname, 'src/partials'),
         context: {
           baseUrl: (process.env.BASE_URL || '/').replace(/\/?$/, '/'),
           simpleMode: process.env.SIMPLE_MODE === 'true',
+          brandName: process.env.VITE_BRAND_NAME || '',
+          brandLogo: process.env.VITE_BRAND_LOGO || '',
+          footerText: process.env.VITE_FOOTER_TEXT || '',
         },
       }),
       languageRouterPlugin(),
@@ -357,6 +340,7 @@ export default defineConfig(() => {
     ],
     define: {
       __SIMPLE_MODE__: JSON.stringify(process.env.SIMPLE_MODE === 'true'),
+      __BRAND_NAME__: JSON.stringify(process.env.VITE_BRAND_NAME || ''),
     },
     resolve: {
       alias: {
@@ -428,6 +412,9 @@ export default defineConfig(() => {
           'add-watermark': resolve(__dirname, 'src/pages/add-watermark.html'),
           'header-footer': resolve(__dirname, 'src/pages/header-footer.html'),
           'invert-colors': resolve(__dirname, 'src/pages/invert-colors.html'),
+          'scanner-effect': resolve(__dirname, 'src/pages/scanner-effect.html'),
+          'pdf-workflow': resolve(__dirname, 'src/pages/pdf-workflow.html'),
+          'adjust-colors': resolve(__dirname, 'src/pages/adjust-colors.html'),
           'background-color': resolve(
             __dirname,
             'src/pages/background-color.html'
@@ -574,6 +561,11 @@ export default defineConfig(() => {
             'src/pages/font-to-outline.html'
           ),
           'deskew-pdf': resolve(__dirname, 'src/pages/deskew-pdf.html'),
+          'wasm-settings': resolve(__dirname, 'src/pages/wasm-settings.html'),
+          'bates-numbering': resolve(
+            __dirname,
+            'src/pages/bates-numbering.html'
+          ),
         },
       },
     },

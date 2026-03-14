@@ -111,29 +111,21 @@
           class="flex items-center gap-2 text-indigo-400 hover:text-indigo-300 mb-6 font-semibold"
         >
           <i data-lucide="arrow-left" class="cursor-pointer"></i>
-          <span class="cursor-pointer">Back to Tools</span>
+          <span class="cursor-pointer" data-i18n="tools.backToTools"
+            >Back to Tools</span
+          >
         </button>
         <h1
           class="text-2xl font-bold text-white mb-2"
           data-i18n="tools:duplicateOrganize.name"
         >
-          Organize PDF Pages Free - Reorder PDFs Online
+          Duplicate & Organize
         </h1>
         <p
           class="text-gray-400 mb-6"
           data-i18n="tools:duplicateOrganize.subtitle"
         >
-          Drag pages to reorder them. Use the
-          <i
-            data-lucide="copy-plus"
-            class="inline-block w-4 h-4 mx-1 align-text-bottom text-green-500"
-          ></i>
-          icon to duplicate a page or the
-          <i
-            data-lucide="x-circle"
-            class="inline-block w-4 h-4 mx-1 align-text-bottom text-red-400"
-          ></i>
-          icon to delete it.
+          Duplicate, reorder, and delete pages.
         </p>
 
         <!-- Drop Zone -->
@@ -152,7 +144,12 @@
               >
               <span data-i18n="upload.orDragAndDrop">or drag and drop</span>
             </p>
-            <p class="text-xs text-gray-500">PDF Documents</p>
+            <p
+              class="text-xs text-gray-500"
+              data-i18n="upload.hints.pdfDocuments"
+            >
+              PDF Documents
+            </p>
             <p class="text-xs text-gray-500" data-i18n="upload.filesNeverLeave">
               Your files never leave your device.
             </p>
@@ -173,6 +170,32 @@
           id="page-grid"
           class="hidden grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-4 my-6"
         ></div>
+
+        <!-- Advanced Settings -->
+        <div id="advanced-settings" class="hidden mt-6 space-y-3">
+          <h3 class="text-lg font-semibold text-white">Advanced Settings</h3>
+          <div class="bg-gray-800/50 p-4 rounded-lg border border-gray-700">
+            <label
+              for="page-order-input"
+              class="block text-sm font-medium text-gray-300 mb-2"
+              >Page Order (comma-separated)</label
+            >
+            <div class="flex gap-3">
+              <input
+                type="text"
+                id="page-order-input"
+                class="flex-1 bg-gray-900 text-white rounded-lg px-3 py-2.5 text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 border border-gray-600 placeholder-gray-500"
+                placeholder="e.g., 3,1,4,2"
+              />
+              <button
+                id="apply-order-btn"
+                class="btn-gradient whitespace-nowrap !px-5 !py-2.5 text-sm"
+              >
+                Apply Order
+              </button>
+            </div>
+          </div>
+        </div>
 
         <button id="process-btn" class="hidden btn-gradient w-full mt-6">
           Save Changes
@@ -226,7 +249,10 @@
 
     <!-- How It Works Section -->
     <section class="max-w-4xl mx-auto px-4 py-12">
-      <h2 class="text-2xl md:text-3xl font-bold text-white mb-8 text-center">
+      <h2
+        class="text-2xl md:text-3xl font-bold text-white mb-8 text-center"
+        data-i18n="howItWorks.title"
+      >
         How It Works
       </h2>
       <div class="space-y-6">
@@ -238,7 +264,7 @@
           </div>
           <div class="flex-1">
             <h3 class="text-lg font-semibold text-white mb-1">Upload File</h3>
-            <p class="text-gray-400">
+            <p class="text-gray-400" data-i18n="howItWorks.step1">
               Click or drag and drop your file to begin
             </p>
           </div>
@@ -251,7 +277,9 @@
           </div>
           <div class="flex-1">
             <h3 class="text-lg font-semibold text-white mb-1">Process</h3>
-            <p class="text-gray-400">Click the process button to start</p>
+            <p class="text-gray-400" data-i18n="howItWorks.step2">
+              Click the process button to start
+            </p>
           </div>
         </div>
         <div class="flex items-start gap-4">
@@ -262,7 +290,9 @@
           </div>
           <div class="flex-1">
             <h3 class="text-lg font-semibold text-white mb-1">Download</h3>
-            <p class="text-gray-400">Save your processed file instantly</p>
+            <p class="text-gray-400" data-i18n="howItWorks.step3">
+              Save your processed file instantly
+            </p>
           </div>
         </div>
       </div>
@@ -270,7 +300,10 @@
 
     <!-- Related Tools Section -->
     <section class="max-w-6xl mx-auto px-4 py-12">
-      <h2 class="text-2xl md:text-3xl font-bold text-white mb-6 text-center">
+      <h2
+        class="text-2xl md:text-3xl font-bold text-white mb-6 text-center"
+        data-i18n="relatedTools.title"
+      >
         Related PDF Tools
       </h2>
       <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
@@ -314,7 +347,10 @@
 
     <!-- FAQ Section -->
     <section class="max-w-4xl mx-auto px-4 py-12">
-      <h2 class="text-2xl md:text-3xl font-bold text-white mb-6 text-center">
+      <h2
+        class="text-2xl md:text-3xl font-bold text-white mb-6 text-center"
+        data-i18n="faq.sectionTitle"
+      >
         Frequently Asked Questions
       </h2>
       <div class="space-y-4">

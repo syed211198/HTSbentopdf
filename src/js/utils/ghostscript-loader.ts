@@ -1,10 +1,14 @@
 /**
  * PDF/A Conversion using Ghostscript WASM
- * * Converts PDFs to PDF/A-1b, PDF/A-2b, or PDF/A-3b format.
+ * Converts PDFs to PDF/A-1b, PDF/A-2b, or PDF/A-3b format.
+ * Requires user to configure Ghostscript URL in WASM Settings.
  */
 
-import loadWASM from '@bentopdf/gs-wasm';
-import { getWasmBaseUrl, fetchWasmFile } from '../config/wasm-cdn-config.js';
+import {
+  getWasmBaseUrl,
+  fetchWasmFile,
+  isWasmAvailable,
+} from '../config/wasm-cdn-config.js';
 import { PDFDocument, PDFDict, PDFName, PDFArray } from 'pdf-lib';
 
 interface GhostscriptModule {
@@ -29,11 +33,49 @@ export function getCachedGsModule(): GhostscriptModule | null {
   return cachedGsModule;
 }
 
+export async function loadGsModule(): Promise<GhostscriptModule> {
+  const gsBaseUrl = getWasmBaseUrl('ghostscript')!;
+  const normalizedUrl = gsBaseUrl.endsWith('/') ? gsBaseUrl : `${gsBaseUrl}/`;
+
+  const gsJsUrl = `${normalizedUrl}gs.js`;
+  const response = await fetch(gsJsUrl);
+  if (!response.ok) {
+    throw new Error(`Failed to fetch gs.js: HTTP ${response.status}`);
+  }
+  const jsText = await response.text();
+  const blob = new Blob([jsText], { type: 'application/javascript' });
+  const blobUrl = URL.createObjectURL(blob);
+
+  try {
+    const gsModule = await import(/* @vite-ignore */ blobUrl);
+    const ModuleFactory = gsModule.default;
+
+    return (await ModuleFactory({
+      locateFile: (path: string) => {
+        if (path.endsWith('.wasm')) {
+          return `${normalizedUrl}gs.wasm`;
+        }
+        return `${normalizedUrl}${path}`;
+      },
+      print: (text: string) => console.log('[GS]', text),
+      printErr: (text: string) => console.error('[GS Error]', text),
+    })) as GhostscriptModule;
+  } finally {
+    URL.revokeObjectURL(blobUrl);
+  }
+}
+
 export async function convertToPdfA(
   pdfData: Uint8Array,
   level: PdfALevel = 'PDF/A-2b',
   onProgress?: (msg: string) => void
 ): Promise<Uint8Array> {
+  if (!isWasmAvailable('ghostscript')) {
+    throw new Error(
+      'Ghostscript is not configured. Please configure it in WASM Settings.'
+    );
+  }
+
   onProgress?.('Loading Ghostscript...');
 
   let gs: GhostscriptModule;
@@ -41,17 +83,7 @@ export async function convertToPdfA(
   if (cachedGsModule) {
     gs = cachedGsModule;
   } else {
-    const gsBaseUrl = getWasmBaseUrl('ghostscript');
-    gs = (await loadWASM({
-      locateFile: (path: string) => {
-        if (path.endsWith('.wasm')) {
-          return gsBaseUrl + 'gs.wasm';
-        }
-        return path;
-      },
-      print: (text: string) => console.log('[GS]', text),
-      printErr: (text: string) => console.error('[GS Error]', text),
-    })) as GhostscriptModule;
+    gs = await loadGsModule();
     cachedGsModule = gs;
   }
 
@@ -73,11 +105,12 @@ export async function convertToPdfA(
 
   try {
     const iccFileName = 'sRGB_IEC61966-2-1_no_black_scaling.icc';
-    const response = await fetchWasmFile('ghostscript', iccFileName);
+    const iccUrl = `${import.meta.env.BASE_URL}${iccFileName}`;
+    const response = await fetch(iccUrl);
 
     if (!response.ok) {
       throw new Error(
-        `Failed to fetch ICC profile: ${iccFileName}. Ensure it is in your assets folder.`
+        `Failed to fetch ICC profile from ${iccUrl}: HTTP ${response.status}`
       );
     }
 
@@ -362,6 +395,12 @@ export async function convertFontsToOutlines(
   pdfData: Uint8Array,
   onProgress?: (msg: string) => void
 ): Promise<Uint8Array> {
+  if (!isWasmAvailable('ghostscript')) {
+    throw new Error(
+      'Ghostscript is not configured. Please configure it in WASM Settings.'
+    );
+  }
+
   onProgress?.('Loading Ghostscript...');
 
   let gs: GhostscriptModule;
@@ -369,17 +408,7 @@ export async function convertFontsToOutlines(
   if (cachedGsModule) {
     gs = cachedGsModule;
   } else {
-    const gsBaseUrl = getWasmBaseUrl('ghostscript');
-    gs = (await loadWASM({
-      locateFile: (path: string) => {
-        if (path.endsWith('.wasm')) {
-          return gsBaseUrl + 'gs.wasm';
-        }
-        return path;
-      },
-      print: (text: string) => console.log('[GS]', text),
-      printErr: (text: string) => console.error('[GS Error]', text),
-    })) as GhostscriptModule;
+    gs = await loadGsModule();
     cachedGsModule = gs;
   }
 

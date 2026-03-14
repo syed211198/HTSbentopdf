@@ -209,6 +209,21 @@
               </svg>
             </span>
           </a>
+          <!-- DigitalOcean -->
+          <a
+            href="https://www.digitalocean.com/?refcode=d93c189ef6d0&utm_campaign=Referral_Invite&utm_medium=Referral_Program&utm_source=badge"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="mt-8 opacity-50 hover:opacity-100 transition-opacity duration-300 hide-section"
+          >
+            <img
+              src="/images/badge.svg"
+              alt="DigitalOcean Referral Badge"
+              width="150"
+              height="32"
+              class="h-8"
+            />
+          </a>
         </div>
       </section>
 
@@ -701,6 +716,60 @@
                   ></div>
                 </label>
               </div>
+
+              <div
+                class="flex items-center justify-between p-4 bg-gray-900 rounded-lg border border-gray-700"
+              >
+                <div class="flex-1">
+                  <label
+                    for="compact-mode-toggle"
+                    class="text-sm font-medium text-gray-200 cursor-pointer"
+                    data-i18n="settings.compactMode"
+                  >
+                    Compact Mode
+                  </label>
+                  <p
+                    class="text-xs text-gray-400 mt-1"
+                    data-i18n="settings.compactModeDescription"
+                  >
+                    Display tools as a compact list instead of cards
+                  </p>
+                </div>
+                <label
+                  class="relative inline-flex items-center cursor-pointer ml-4"
+                >
+                  <input
+                    type="checkbox"
+                    id="compact-mode-toggle"
+                    class="sr-only peer"
+                  />
+                  <div
+                    class="w-11 h-6 bg-gray-700 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-indigo-800 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-indigo-600"
+                  ></div>
+                </label>
+              </div>
+
+              <!-- Advanced Settings Link -->
+              <a
+                href="wasm-settings.html"
+                class="flex items-center justify-between p-4 bg-gray-900 rounded-lg border border-gray-700 hover:bg-gray-800 hover:border-indigo-500/50 transition-all group"
+              >
+                <div class="flex-1">
+                  <span
+                    class="text-sm font-medium text-gray-200 group-hover:text-white"
+                  >
+                    Advanced Settings
+                  </span>
+                  <p class="text-xs text-gray-400 mt-1">
+                    Configure external processing modules (PyMuPDF, Ghostscript,
+                    CoherentPDF)
+                  </p>
+                </div>
+                <i
+                  data-lucide="chevron-right"
+                  class="w-5 h-5 text-gray-500 group-hover:text-indigo-400 transition-colors"
+                ></i>
+              </a>
             </div>
           </div>
 

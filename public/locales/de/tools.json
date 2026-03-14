@@ -86,9 +86,14 @@
     "name": "Seitenzahlen",
     "subtitle": "Seitenzahlen in Ihr Dokument einfügen."
   },
+  "batesNumbering": {
+    "name": "Bates-Nummerierung",
+    "subtitle": "Fortlaufende Bates-Nummern über eine oder mehrere PDF-Dateien hinzufügen."
+  },
   "addWatermark": {
     "name": "Wasserzeichen hinzufügen",
-    "subtitle": "Text oder ein Bild über Ihre PDF-Seiten stempeln."
+    "subtitle": "Text oder ein Bild über Ihre PDF-Seiten stempeln.",
+    "applyToAllPages": "Auf alle Seiten anwenden"
   },
   "headerFooter": {
     "name": "Kopf- & Fußzeile",
@@ -97,6 +102,37 @@
   "invertColors": {
     "name": "Farben invertieren",
     "subtitle": "Eine \"Dunkelmodus\"-Version Ihrer PDF erstellen."
+  },
+  "scannerEffect": {
+    "name": "Scanner-Effekt",
+    "subtitle": "Lassen Sie Ihr PDF wie ein gescanntes Dokument aussehen.",
+    "scanSettings": "Scan-Einstellungen",
+    "colorspace": "Farbraum",
+    "gray": "Grau",
+    "border": "Rand",
+    "rotate": "Drehen",
+    "rotateVariance": "Drehvarianz",
+    "brightness": "Helligkeit",
+    "contrast": "Kontrast",
+    "blur": "Unschärfe",
+    "noise": "Rauschen",
+    "yellowish": "Gelbstich",
+    "resolution": "Auflösung",
+    "processButton": "Scanner-Effekt anwenden"
+  },
+  "adjustColors": {
+    "name": "Farben anpassen",
+    "subtitle": "Helligkeit, Kontrast, Sättigung und mehr in Ihrem PDF feinabstimmen.",
+    "colorSettings": "Farbeinstellungen",
+    "brightness": "Helligkeit",
+    "contrast": "Kontrast",
+    "saturation": "Sättigung",
+    "hueShift": "Farbton",
+    "temperature": "Temperatur",
+    "tint": "Tönung",
+    "gamma": "Gamma",
+    "sepia": "Sepia",
+    "processButton": "Farbanpassungen anwenden"
   },
   "backgroundColor": {
     "name": "Hintergrundfarbe",
@@ -127,7 +163,8 @@
   },
   "removeBlankPages": {
     "name": "Leere Seiten entfernen",
-    "subtitle": "Leere Seiten automatisch erkennen und löschen."
+    "subtitle": "Leere Seiten automatisch erkennen und löschen.",
+    "sensitivityHint": "Höher = strenger, nur rein leere Seiten. Niedriger = erlaubt Seiten mit etwas Inhalt."
   },
   "imageToPdf": {
     "name": "Bilder zu PDF",
@@ -255,7 +292,47 @@
   },
   "comparePdfs": {
     "name": "PDFs vergleichen",
-    "subtitle": "Zwei PDFs nebeneinander vergleichen."
+    "subtitle": "Zwei PDFs nebeneinander vergleichen.",
+    "firstPdf": "Erste PDF",
+    "secondPdf": "Zweite PDF",
+    "clickOrDrop": "Klicken oder ablegen",
+    "page": "Seite",
+    "overlay": "Überlagerung",
+    "sideBySide": "Nebeneinander",
+    "flicker": "Flackern",
+    "syncScroll": "Synchrones Scrollen",
+    "export": "Exportieren",
+    "exportAsPdf": "Als PDF exportieren",
+    "splitView": "Geteilte Ansicht",
+    "alternating": "Abwechselnd",
+    "leftDocument": "Linkes Dokument",
+    "rightDocument": "Rechtes Dokument",
+    "original": "Original",
+    "modified": "Geändert",
+    "searchChanges": "Änderungen suchen...",
+    "deleted": "Gelöscht",
+    "added": "Hinzugefügt",
+    "prevPage": "Vorherige Seite",
+    "nextPage": "Nächste Seite",
+    "prevChange": "Vorherige Änderung",
+    "nextChange": "Nächste Änderung",
+    "uploadTwoPdfs": "Laden Sie zwei PDFs hoch, um Unterschiede zu sehen.",
+    "noDifferences": "Auf dieser Seite wurden keine Unterschiede gefunden.",
+    "noMatchingChanges": "Keine Änderungen entsprechen dem aktuellen Filter.",
+    "pageNotExist": "Seite {{page}} existiert nicht in dieser PDF.",
+    "noPairedPage": "Für diese Seite gibt es keine zugeordnete Seite.",
+    "buildingModel": "Seitenzuordnungsmodell wird erstellt...",
+    "indexingPdf": "PDF {{num}}, Seite {{page}} von {{total}} wird indiziert...",
+    "loadingComparison": "Vergleich {{current}} von {{total}} wird geladen...",
+    "runningOcr": "OCR wird auf Seite {{page}} ausgeführt...",
+    "preparingExport": "PDF-Export wird vorbereitet...",
+    "renderingPage": "Seite {{current}} von {{total}} wird gerendert...",
+    "exportError": "Exportfehler",
+    "exportFailed": "Vergleichs-PDF konnte nicht exportiert werden.",
+    "loadingFile": "{{name}} wird geladen...",
+    "invalidFile": "Ungültige Datei",
+    "invalidFileMsg": "Bitte wählen Sie eine gültige PDF-Datei aus.",
+    "loadError": "PDF konnte nicht geladen werden. Sie ist möglicherweise beschädigt oder passwortgeschützt."
   },
   "posterizePdf": {
     "name": "PDF posterisieren",
@@ -529,5 +606,66 @@
   "deskewPdf": {
     "name": "PDF entzerren",
     "subtitle": "Automatisch schiefe gescannte Seiten mit OpenCV begradigen."
+  },
+  "pdfToWord": {
+    "name": "PDF zu Word",
+    "subtitle": "PDF-Dateien in bearbeitbare Word-Dokumente umwandeln."
+  },
+  "extractImages": {
+    "name": "Bilder extrahieren",
+    "subtitle": "Alle eingebetteten Bilder aus Ihren PDF-Dateien extrahieren."
+  },
+  "pdfToMarkdown": {
+    "name": "PDF zu Markdown",
+    "subtitle": "PDF-Text und Tabellen in das Markdown-Format umwandeln."
+  },
+  "preparePdfForAi": {
+    "name": "PDF für KI vorbereiten",
+    "subtitle": "PDF-Inhalte als LlamaIndex JSON für RAG/LLM-Pipelines extrahieren."
+  },
+  "pdfOcg": {
+    "name": "PDF-Ebenen (OCG)",
+    "subtitle": "OCG-Ebenen in Ihrem PDF anzeigen, umschalten, hinzufügen und löschen."
+  },
+  "pdfToPdfa": {
+    "name": "PDF zu PDF/A",
+    "subtitle": "PDF in PDF/A für Langzeitarchivierung umwandeln."
+  },
+  "rasterizePdf": {
+    "name": "PDF rastern",
+    "subtitle": "PDF in bildbasiertes PDF umwandeln. Ebenen glätten und auswählbaren Text entfernen."
+  },
+  "pdfWorkflow": {
+    "name": "PDF-Workflow-Builder",
+    "subtitle": "Erstellen Sie individuelle PDF-Verarbeitungspipelines mit einem visuellen Node-Editor.",
+    "nodes": "Nodes",
+    "searchNodes": "Nodes suchen...",
+    "run": "Ausführen",
+    "clear": "Leeren",
+    "save": "Speichern",
+    "load": "Laden",
+    "export": "Exportieren",
+    "import": "Importieren",
+    "ready": "Bereit",
+    "settings": "Einstellungen",
+    "processing": "Verarbeitung...",
+    "saveTemplate": "Vorlage speichern",
+    "templateName": "Vorlagenname",
+    "templatePlaceholder": "z. B. Rechnungs-Workflow",
+    "cancel": "Abbrechen",
+    "loadTemplate": "Vorlage laden",
+    "noTemplates": "Noch keine gespeicherten Vorlagen.",
+    "ok": "OK",
+    "workflowCompleted": "Workflow abgeschlossen",
+    "errorDuringExecution": "Fehler bei der Ausführung",
+    "addNodeError": "Fügen Sie mindestens einen Node hinzu, um den Workflow auszuführen.",
+    "needInputOutput": "Ihr Workflow benötigt mindestens einen Eingabe-Node und einen Ausgabe-Node.",
+    "enterName": "Bitte geben Sie einen Namen ein.",
+    "templateExists": "Eine Vorlage mit diesem Namen existiert bereits.",
+    "templateSaved": "Vorlage \"{{name}}\" gespeichert.",
+    "templateLoaded": "Vorlage \"{{name}}\" geladen.",
+    "failedLoadTemplate": "Vorlage konnte nicht geladen werden.",
+    "noSettings": "Keine konfigurierbaren Einstellungen für diesen Node.",
+    "advancedSettings": "Erweiterte Einstellungen"
   }
 }

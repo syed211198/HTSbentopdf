@@ -86,9 +86,14 @@
     "name": "Numéros de page",
     "subtitle": "Insérer une numérotation dans le document."
   },
+  "batesNumbering": {
+    "name": "Numérotation Bates",
+    "subtitle": "Ajouter des numéros Bates séquentiels sur un ou plusieurs fichiers PDF."
+  },
   "addWatermark": {
     "name": "Ajouter un filigrane",
-    "subtitle": "Apposer un texte ou une image sur les pages du PDF."
+    "subtitle": "Apposer un texte ou une image sur les pages du PDF.",
+    "applyToAllPages": "Appliquer à toutes les pages"
   },
   "headerFooter": {
     "name": "En-tête et pied de page",
@@ -97,6 +102,37 @@
   "invertColors": {
     "name": "Inverser les couleurs",
     "subtitle": "Créer une version « mode sombre » du PDF."
+  },
+  "scannerEffect": {
+    "name": "Effet scanner",
+    "subtitle": "Donnez à votre PDF l'apparence d'un document scanné.",
+    "scanSettings": "Paramètres de numérisation",
+    "colorspace": "Espace colorimétrique",
+    "gray": "Gris",
+    "border": "Bordure",
+    "rotate": "Rotation",
+    "rotateVariance": "Variance de rotation",
+    "brightness": "Luminosité",
+    "contrast": "Contraste",
+    "blur": "Flou",
+    "noise": "Bruit",
+    "yellowish": "Jaunissement",
+    "resolution": "Résolution",
+    "processButton": "Appliquer l'effet scanner"
+  },
+  "adjustColors": {
+    "name": "Ajuster les couleurs",
+    "subtitle": "Affinez la luminosité, le contraste, la saturation et plus dans votre PDF.",
+    "colorSettings": "Paramètres de couleur",
+    "brightness": "Luminosité",
+    "contrast": "Contraste",
+    "saturation": "Saturation",
+    "hueShift": "Teinte",
+    "temperature": "Température",
+    "tint": "Nuance",
+    "gamma": "Gamma",
+    "sepia": "Sépia",
+    "processButton": "Appliquer les ajustements"
   },
   "backgroundColor": {
     "name": "Couleur de fond",
@@ -127,7 +163,8 @@
   },
   "removeBlankPages": {
     "name": "Supprimer les pages blanches",
-    "subtitle": "Détecter et supprimer automatiquement les pages vides."
+    "subtitle": "Détecter et supprimer automatiquement les pages vides.",
+    "sensitivityHint": "Plus élevé = plus strict, uniquement les pages vierges. Plus bas = autorise les pages avec du contenu."
   },
   "imageToPdf": {
     "name": "Images vers PDF",
@@ -255,7 +292,47 @@
   },
   "comparePdfs": {
     "name": "Comparer des PDF",
-    "subtitle": "Comparer deux PDF côte à côte."
+    "subtitle": "Comparer deux PDF côte à côte.",
+    "firstPdf": "Premier PDF",
+    "secondPdf": "Deuxième PDF",
+    "clickOrDrop": "Cliquer ou déposer",
+    "page": "Page",
+    "overlay": "Superposition",
+    "sideBySide": "Côte à côte",
+    "flicker": "Clignotement",
+    "syncScroll": "Synchroniser le défilement",
+    "export": "Exporter",
+    "exportAsPdf": "Exporter en PDF",
+    "splitView": "Vue divisée",
+    "alternating": "Alterné",
+    "leftDocument": "Document de gauche",
+    "rightDocument": "Document de droite",
+    "original": "Original",
+    "modified": "Modifié",
+    "searchChanges": "Rechercher des modifications...",
+    "deleted": "Supprimé",
+    "added": "Ajouté",
+    "prevPage": "Page précédente",
+    "nextPage": "Page suivante",
+    "prevChange": "Modification précédente",
+    "nextChange": "Modification suivante",
+    "uploadTwoPdfs": "Téléversez deux PDF pour voir les différences.",
+    "noDifferences": "Aucune différence détectée sur cette page.",
+    "noMatchingChanges": "Aucune modification ne correspond au filtre actuel.",
+    "pageNotExist": "La page {{page}} n’existe pas dans ce PDF.",
+    "noPairedPage": "Aucune page associée pour ce côté.",
+    "buildingModel": "Création du modèle d’appariement des pages...",
+    "indexingPdf": "Indexation du PDF {{num}}, page {{page}} sur {{total}}...",
+    "loadingComparison": "Chargement de la comparaison {{current}} sur {{total}}...",
+    "runningOcr": "Exécution de l’OCR sur la page {{page}}...",
+    "preparingExport": "Préparation de l’export PDF...",
+    "renderingPage": "Rendu de la page {{current}} sur {{total}}...",
+    "exportError": "Erreur d’export",
+    "exportFailed": "Impossible d’exporter le PDF de comparaison.",
+    "loadingFile": "Chargement de {{name}}...",
+    "invalidFile": "Fichier invalide",
+    "invalidFileMsg": "Veuillez sélectionner un fichier PDF valide.",
+    "loadError": "Impossible de charger le PDF. Il est peut-être corrompu ou protégé par mot de passe."
   },
   "posterizePdf": {
     "name": "Posteriser un PDF",
@@ -529,5 +606,66 @@
   "deskewPdf": {
     "name": "Redresser un PDF",
     "subtitle": "Redresser automatiquement les pages scannées inclinées à l’aide d’OpenCV."
+  },
+  "pdfToWord": {
+    "name": "PDF vers Word",
+    "subtitle": "Convertir des fichiers PDF en documents Word modifiables."
+  },
+  "extractImages": {
+    "name": "Extraire les images",
+    "subtitle": "Extraire toutes les images intégrées de vos fichiers PDF."
+  },
+  "pdfToMarkdown": {
+    "name": "PDF vers Markdown",
+    "subtitle": "Convertir le texte et les tableaux PDF au format Markdown."
+  },
+  "preparePdfForAi": {
+    "name": "Préparer le PDF pour l'IA",
+    "subtitle": "Extraire le contenu PDF en JSON LlamaIndex pour les pipelines RAG/LLM."
+  },
+  "pdfOcg": {
+    "name": "Calques PDF (OCG)",
+    "subtitle": "Afficher, basculer, ajouter et supprimer les calques OCG de votre PDF."
+  },
+  "pdfToPdfa": {
+    "name": "PDF vers PDF/A",
+    "subtitle": "Convertir un PDF en PDF/A pour l'archivage à long terme."
+  },
+  "rasterizePdf": {
+    "name": "Rastériser le PDF",
+    "subtitle": "Convertir un PDF en PDF basé sur des images. Aplatir les calques et supprimer le texte sélectionnable."
+  },
+  "pdfWorkflow": {
+    "name": "Constructeur de workflow PDF",
+    "subtitle": "Créez des pipelines de traitement PDF personnalisés avec un éditeur de nœuds visuel.",
+    "nodes": "Nœuds",
+    "searchNodes": "Rechercher des nœuds...",
+    "run": "Exécuter",
+    "clear": "Effacer",
+    "save": "Enregistrer",
+    "load": "Charger",
+    "export": "Exporter",
+    "import": "Importer",
+    "ready": "Prêt",
+    "settings": "Paramètres",
+    "processing": "Traitement en cours...",
+    "saveTemplate": "Enregistrer le modèle",
+    "templateName": "Nom du modèle",
+    "templatePlaceholder": "ex. Workflow de facturation",
+    "cancel": "Annuler",
+    "loadTemplate": "Charger un modèle",
+    "noTemplates": "Aucun modèle enregistré pour le moment.",
+    "ok": "OK",
+    "workflowCompleted": "Workflow terminé",
+    "errorDuringExecution": "Erreur lors de l'exécution",
+    "addNodeError": "Ajoutez au moins un nœud pour exécuter le workflow.",
+    "needInputOutput": "Votre workflow nécessite au moins un nœud d'entrée et un nœud de sortie pour fonctionner.",
+    "enterName": "Veuillez saisir un nom.",
+    "templateExists": "Un modèle portant ce nom existe déjà.",
+    "templateSaved": "Modèle \"{{name}}\" enregistré.",
+    "templateLoaded": "Modèle \"{{name}}\" chargé.",
+    "failedLoadTemplate": "Échec du chargement du modèle.",
+    "noSettings": "Aucun paramètre configurable pour ce nœud.",
+    "advancedSettings": "Paramètres avancés"
   }
 }
