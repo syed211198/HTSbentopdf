@@ -180,7 +180,7 @@
     },
     "gdprCompliant": {
       "question": "Ist BentoPDF DSGVO-konform?",
-      "answer": "Ja. BentoPDF ist vollständig DSGVO-konform. Da die gesamte Dateiverarbeitung lokal in deinem Browser erfolgt und wir deine Dateien nie sammeln oder übertragen, haben wir keinen Zugang zu Ihren Daten. Dies stellt sicher, dass du immer die Kontrolle über deine Dokumente hast."
+      "answer": "Ja. BentoPDF ist vollständig DSGVO-konform. Da die gesamte Dateiverarbeitung lokal in deinem Browser erfolgt und wir deine Dateien nie sammeln oder übertragen, haben wir keinen Zugang zu deinen Daten. Dies stellt sicher, dass du immer die Kontrolle über deine Dokumente hast."
     },
     "dataStorage": {
       "question": "Speichern oder verfolgt ihr meine Dateien?",
