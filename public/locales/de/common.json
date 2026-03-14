@@ -114,7 +114,7 @@
     "displayPreferences": "Anzeige-Einstellungen",
     "searchShortcuts": "Tastenkürzel suchen...",
     "shortcutsInfo": "Halte die gewünschten Tasten gedrückt, um ein Kürzel festzulegen. Änderungen werden automatisch gespeichert.",
-    "shortcutsWarning": "⚠️ Vermeiden gängige Browser-Tastenkürzel (Strg+W, Strg+T, Strg+N usw.), da diese möglicherweise nicht zuverlässig funktionieren.",
+    "shortcutsWarning": "⚠️ Vermeide gängige Browser-Tastenkürzel (Strg+W, Strg+T, Strg+N usw.), da diese möglicherweise nicht zuverlässig funktionieren.",
     "import": "Importieren",
     "export": "Exportieren",
     "resetToDefaults": "Auf Standard zurücksetzen",
