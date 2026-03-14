@@ -119,9 +119,9 @@
     "export": "Exportieren",
     "resetToDefaults": "Auf Standard zurücksetzen",
     "fullWidthMode": "Volle Breite",
-    "fullWidthDescription": "Verwenden Sie die volle Bildschirmbreite für alle Werkzeuge anstelle eines zentrierten Containers",
+    "fullWidthDescription": "Verwende die volle Bildschirmbreite für alle Werkzeuge anstelle eines zentrierten Containers",
     "settingsAutoSaved": "Einstellungen werden automatisch gespeichert",
-    "clickToSet": "Klicken zum Festlegen",
+    "clickToSet": "Klicke zum Festlegen",
     "pressKeys": "Tasten drücken...",
     "warnings": {
       "alreadyInUse": "Tastenkombination bereits vergeben",
@@ -269,7 +269,7 @@
     "philosophy": {
       "label": "Unsere Kernphilosophie",
       "title": "Privatsphäre zuerst. Immer.",
-      "description": "In einer Zeit, in der Daten eine Ware sind, gehen wir einen anderen Weg. Die gesamte Verarbeitung für Bentopdf-Werkzeuge erfolgt lokal in deinem Browser. Das bedeutet, deine Dateien berühren niemals unsere Server, wir sehen deine Dokumente nie und verfolgen nicht, was du tust. Deine Dokumente bleiben voll und ganz privat, ohne Hintertürchen. Privatsphäre ist nicht nur eine Funktion; es ist unser Fundament."
+      "description": "In einer Zeit, in der Daten eine Ware sind, gehen wir einen anderen Weg. Die gesamte Verarbeitung für BentoPDF-Werkzeuge erfolgt lokal in deinem Browser. Das bedeutet, deine Dateien berühren niemals unsere Server, wir sehen deine Dokumente nie und verfolgen nicht, was du tust. Deine Dokumente bleiben voll und ganz privat, ohne Hintertürchen. Privatsphäre ist nicht nur eine Funktion; es ist unser Fundament."
     },
     "whyBentopdf": {
       "title": "Warum",
@@ -292,7 +292,7 @@
     },
     "cta": {
       "title": "Bereit loszulegen?",
-      "description": "Schließ dich Tausenden von Benutzer*innen an, die Bentopdf für ihre tägliche Arbeit vertrauen. Erlebe den Unterschied, den Privatsphäre und Leistung machen können.",
+      "description": "Schließ dich Tausenden von Benutzer*innen an, die BentoPDF für ihre tägliche Arbeit vertrauen. Erlebe den Unterschied, den Privatsphäre und Leistung machen können.",
       "button": "Alle Werkzeuge erkunden"
     }
   },
