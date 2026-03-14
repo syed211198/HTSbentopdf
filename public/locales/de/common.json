@@ -172,7 +172,7 @@
     },
     "areFilesSecure": {
       "question": "Sind meine Dateien sicher? Wo werden sie verarbeitet?",
-      "answer": "Deine Dateien sind so sicher wie möglich, da sie nie deinen Computer verlassen. Die gesamte Verarbeitung erfolgt direkt im Webbrowser (clientseitig). Wir laden Ihre Dateien nie auf einen Server hoch, sodass du die volle Privatsphäre und Kontrolle über deine Dokumente behältst."
+      "answer": "Deine Dateien sind so sicher wie möglich, da sie nie deinen Computer verlassen. Die gesamte Verarbeitung erfolgt direkt im Webbrowser (clientseitig). Wir laden deine Dateien nie auf einen Server hoch, sodass du die volle Privatsphäre und Kontrolle über deine Dokumente behältst."
     },
     "platforms": {
       "question": "Funktioniert es auf Mac, Windows und Mobilgeräten?",
