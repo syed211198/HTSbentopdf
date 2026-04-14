@@ -5,6 +5,8 @@ import { createIcons, icons } from 'lucide';
 import '@phosphor-icons/web/regular';
 import * as pdfjsLib from 'pdfjs-dist';
 import '../css/styles.css';
+import '../css/hts.css';
+import '../css/hts-theme.css';
 import { formatShortcutDisplay, formatStars } from './utils/helpers.js';
 import {
   initI18n,
@@ -105,7 +107,7 @@ const init = async () => {
         (divider as HTMLElement).style.display = 'none';
       });
 
-      const brandName = __BRAND_NAME__ || 'BentoPDF';
+      const brandName = __BRAND_NAME__ || 'HTS BentoPDF';
       document.title = `${brandName} - ${t('simpleMode.title')}`;
 
       const toolsHeader = document.getElementById('tools-header');

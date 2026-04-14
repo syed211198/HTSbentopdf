@@ -99,6 +99,14 @@ export const injectLanguageSwitcher = (): void => {
   const footer = document.querySelector('footer');
   if (!footer) return;
 
+  const footerLanguageSwitcher = document.getElementById(
+    'footer-language-switcher'
+  );
+  if (footerLanguageSwitcher) {
+    footerLanguageSwitcher.appendChild(createLanguageSwitcher());
+    return;
+  }
+
   const headings = footer.querySelectorAll('h3');
   let followUsColumn: HTMLElement | null = null;
 
