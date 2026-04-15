@@ -125,10 +125,10 @@
   </head>
 
   <body
-    class="antialiased bg-gray-900 h-[100dvh] overflow-hidden flex flex-col"
+    class="antialiased bg-emerald-950 h-[100dvh] overflow-hidden flex flex-col"
   >
     <!-- Navigation -->
-    <nav class="bg-gray-800 border-b border-gray-700 flex-none z-30">
+    <nav class="bg-emerald-900 border-b border-emerald-800 flex-none z-30">
       <div class="container mx-auto px-4">
         <div class="flex justify-between items-center h-16">
           <div class="flex-shrink-0 flex items-center">
@@ -142,13 +142,13 @@
                 >{{#if brandName}}{{brandName}}{{else}}BentoPDF{{/if}}</a
               >
             </span>
-            <span class="text-gray-400 ml-3 text-sm sm:text-base"
+            <span class="text-emerald-400 ml-3 text-sm sm:text-base"
               >PDF Multi Tool</span
             >
           </div>
           <button
             id="close-tool-btn"
-            class="flex items-center gap-1 bg-gray-700 hover:bg-gray-600 text-white px-2 sm:px-3 md:px-4 py-1 sm:py-1.5 md:py-2 rounded text-xs sm:text-sm md:text-base"
+            class="flex items-center gap-1 bg-emerald-900 hover:bg-gray-600 text-white px-2 sm:px-3 md:px-4 py-1 sm:py-1.5 md:py-2 rounded text-xs sm:text-sm md:text-base"
           >
             <i data-lucide="x" class="w-4 h-4 sm:w-5 sm:h-5"></i>
             <span data-i18n="common.close">Close</span>
@@ -164,10 +164,10 @@
     <div class="flex flex-col flex-1 overflow-hidden relative">
       <!-- Toolbar -->
       <div
-        class="bg-gray-800 border-b border-gray-700 p-2 sm:p-3 toolbar-container flex-none z-20"
+        class="bg-emerald-900 border-b border-emerald-800 p-2 sm:p-3 toolbar-container flex-none z-20"
       >
         <div
-          class="flex flex-wrap items-center justify-center sm:justify-start gap-2 bg-gray-900 p-2 sm:p-4 rounded-lg w-full"
+          class="flex flex-wrap items-center justify-center sm:justify-start gap-2 bg-emerald-950 p-2 sm:p-4 rounded-lg w-full"
         >
           <!-- Upload -->
           <button
@@ -181,12 +181,12 @@
             <span class="sm:hidden" data-i18n="multiTool.upload">Upload</span>
           </button>
 
-          <div class="border-l border-gray-600 h-5 sm:h-6 mx-1"></div>
+          <div class="border-l border-emerald-700 h-5 sm:h-6 mx-1"></div>
 
           <!-- Add Blank -->
           <button
             id="add-blank-page-btn"
-            class="flex items-center gap-1 sm:gap-2 bg-gray-700 hover:bg-gray-600 text-white px-2 sm:px-3 md:px-4 py-1 sm:py-1.5 md:py-2 rounded text-xs sm:text-sm md:text-base"
+            class="flex items-center gap-1 sm:gap-2 bg-emerald-900 hover:bg-gray-600 text-white px-2 sm:px-3 md:px-4 py-1 sm:py-1.5 md:py-2 rounded text-xs sm:text-sm md:text-base"
           >
             <i data-lucide="file-plus" class="w-3 h-3 sm:w-4 sm:h-4"></i>
             <span class="hidden sm:inline" data-i18n="multiTool.addBlankPage"
@@ -194,9 +194,9 @@
             >
           </button>
 
-          <div class="border-l border-gray-600 h-5 sm:h-6 mx-1"></div>
+          <div class="border-l border-emerald-700 h-5 sm:h-6 mx-1"></div>
           <span
-            class="text-gray-400 text-xs sm:text-sm md:inline"
+            class="text-emerald-400 text-xs sm:text-sm md:inline"
             data-i18n="multiTool.edit"
             >Edit:</span
           >
@@ -204,7 +204,7 @@
           <!-- Undo / Redo / Reset -->
           <button
             id="undo-btn"
-            class="flex items-center gap-1 sm:gap-2 bg-gray-700 hover:bg-gray-600 text-white px-2 sm:px-3 md:px-4 py-1 sm:py-1.5 md:py-2 rounded text-xs sm:text-sm md:text-base"
+            class="flex items-center gap-1 sm:gap-2 bg-emerald-900 hover:bg-gray-600 text-white px-2 sm:px-3 md:px-4 py-1 sm:py-1.5 md:py-2 rounded text-xs sm:text-sm md:text-base"
           >
             <i data-lucide="undo-2" class="w-3 h-3 sm:w-4 sm:h-4"></i>
             <span class="hidden lg:inline" data-i18n="multiTool.undo"
@@ -214,7 +214,7 @@
 
           <button
             id="redo-btn"
-            class="flex items-center gap-1 sm:gap-2 bg-gray-700 hover:bg-gray-600 text-white px-2 sm:px-3 md:px-4 py-1 sm:py-1.5 md:py-2 rounded text-xs sm:text-sm md:text-base"
+            class="flex items-center gap-1 sm:gap-2 bg-emerald-900 hover:bg-gray-600 text-white px-2 sm:px-3 md:px-4 py-1 sm:py-1.5 md:py-2 rounded text-xs sm:text-sm md:text-base"
           >
             <i data-lucide="redo-2" class="w-3 h-3 sm:w-4 sm:h-4"></i>
             <span class="hidden lg:inline" data-i18n="multiTool.redo"
@@ -224,7 +224,7 @@
 
           <button
             id="reset-btn"
-            class="flex items-center gap-1 sm:gap-2 bg-gray-700 hover:bg-gray-600 text-white px-2 sm:px-3 md:px-4 py-1 sm:py-1.5 md:py-2 rounded text-xs sm:text-sm md:text-base"
+            class="flex items-center gap-1 sm:gap-2 bg-emerald-900 hover:bg-gray-600 text-white px-2 sm:px-3 md:px-4 py-1 sm:py-1.5 md:py-2 rounded text-xs sm:text-sm md:text-base"
           >
             <i data-lucide="refresh-ccw" class="w-3 h-3 sm:w-4 sm:h-4"></i>
             <span class="hidden lg:inline" data-i18n="multiTool.reset"
@@ -232,18 +232,18 @@
             >
           </button>
 
-          <div class="border-l border-gray-600 h-5 sm:h-6 mx-1"></div>
+          <div class="border-l border-emerald-700 h-5 sm:h-6 mx-1"></div>
 
           <!-- Selection -->
           <span
-            class="text-gray-400 text-xs sm:text-sm md:inline"
+            class="text-emerald-400 text-xs sm:text-sm md:inline"
             data-i18n="multiTool.selection"
             >Selection:</span
           >
 
           <button
             id="select-all-btn"
-            class="flex items-center gap-1 sm:gap-2 bg-gray-700 hover:bg-gray-600 text-white px-2 sm:px-3 md:px-4 py-1 sm:py-1.5 md:py-2 rounded text-xs sm:text-sm md:text-base"
+            class="flex items-center gap-1 sm:gap-2 bg-emerald-900 hover:bg-gray-600 text-white px-2 sm:px-3 md:px-4 py-1 sm:py-1.5 md:py-2 rounded text-xs sm:text-sm md:text-base"
           >
             <i data-lucide="check-square" class="w-3 h-3 sm:w-4 sm:h-4"></i>
             <span class="hidden lg:inline" data-i18n="multiTool.selectAll"
@@ -253,7 +253,7 @@
 
           <button
             id="deselect-all-btn"
-            class="flex items-center gap-1 sm:gap-2 bg-gray-700 hover:bg-gray-600 text-white px-2 sm:px-3 md:px-4 py-1 sm:py-1.5 md:py-2 rounded text-xs sm:text-sm md:text-base"
+            class="flex items-center gap-1 sm:gap-2 bg-emerald-900 hover:bg-gray-600 text-white px-2 sm:px-3 md:px-4 py-1 sm:py-1.5 md:py-2 rounded text-xs sm:text-sm md:text-base"
           >
             <i data-lucide="square" class="w-3 h-3 sm:w-4 sm:h-4"></i>
             <span class="hidden lg:inline" data-i18n="multiTool.deselectAll"
@@ -261,17 +261,17 @@
             >
           </button>
 
-          <div class="border-l border-gray-600 h-5 sm:h-6 mx-1"></div>
+          <div class="border-l border-emerald-700 h-5 sm:h-6 mx-1"></div>
 
           <!-- Rotate -->
           <span
-            class="text-gray-400 text-xs sm:text-sm md:inline"
+            class="text-emerald-400 text-xs sm:text-sm md:inline"
             data-i18n="multiTool.rotate"
             >Rotate:</span
           >
           <button
             id="bulk-rotate-left-btn"
-            class="flex items-center gap-1 sm:gap-2 bg-gray-700 hover:bg-gray-600 text-white px-2 sm:px-3 md:px-4 py-1 sm:py-1.5 md:py-2 rounded text-xs sm:text-sm md:text-base"
+            class="flex items-center gap-1 sm:gap-2 bg-emerald-900 hover:bg-gray-600 text-white px-2 sm:px-3 md:px-4 py-1 sm:py-1.5 md:py-2 rounded text-xs sm:text-sm md:text-base"
           >
             <i data-lucide="rotate-ccw" class="w-3 h-3 sm:w-4 sm:h-4"></i>
             <span class="hidden xl:inline" data-i18n="multiTool.rotateLeft"
@@ -281,7 +281,7 @@
 
           <button
             id="bulk-rotate-btn"
-            class="flex items-center gap-1 sm:gap-2 bg-gray-700 hover:bg-gray-600 text-white px-2 sm:px-3 md:px-4 py-1 sm:py-1.5 md:py-2 rounded text-xs sm:text-sm md:text-base"
+            class="flex items-center gap-1 sm:gap-2 bg-emerald-900 hover:bg-gray-600 text-white px-2 sm:px-3 md:px-4 py-1 sm:py-1.5 md:py-2 rounded text-xs sm:text-sm md:text-base"
           >
             <i data-lucide="rotate-cw" class="w-3 h-3 sm:w-4 sm:h-4"></i>
             <span class="hidden xl:inline" data-i18n="multiTool.rotateRight"
@@ -289,9 +289,9 @@
             >
           </button>
 
-          <div class="border-l border-gray-600 h-5 sm:h-6 mx-1"></div>
+          <div class="border-l border-emerald-700 h-5 sm:h-6 mx-1"></div>
           <span
-            class="text-gray-400 text-xs sm:text-sm md:inline"
+            class="text-emerald-400 text-xs sm:text-sm md:inline"
             data-i18n="multiTool.transform"
             >Transform:</span
           >
@@ -299,7 +299,7 @@
           <!-- Duplicate / Split -->
           <button
             id="bulk-duplicate-btn"
-            class="flex items-center gap-1 sm:gap-2 bg-gray-700 hover:bg-gray-600 text-white px-2 sm:px-3 md:px-4 py-1 sm:py-1.5 md:py-2 rounded text-xs sm:text-sm md:text-base"
+            class="flex items-center gap-1 sm:gap-2 bg-emerald-900 hover:bg-gray-600 text-white px-2 sm:px-3 md:px-4 py-1 sm:py-1.5 md:py-2 rounded text-xs sm:text-sm md:text-base"
           >
             <i data-lucide="copy" class="w-3 h-3 sm:w-4 sm:h-4"></i>
             <span class="hidden xl:inline" data-i18n="multiTool.duplicate"
@@ -309,7 +309,7 @@
 
           <button
             id="bulk-split-btn"
-            class="flex items-center gap-1 sm:gap-2 bg-gray-700 hover:bg-gray-600 text-white px-2 sm:px-3 md:px-4 py-1 sm:py-1.5 md:py-2 rounded text-xs sm:text-sm md:text-base"
+            class="flex items-center gap-1 sm:gap-2 bg-emerald-900 hover:bg-gray-600 text-white px-2 sm:px-3 md:px-4 py-1 sm:py-1.5 md:py-2 rounded text-xs sm:text-sm md:text-base"
           >
             <i data-lucide="scissors" class="w-3 h-3 sm:w-4 sm:h-4"></i>
             <span class="hidden xl:inline" data-i18n="multiTool.split"
@@ -317,9 +317,9 @@
             >
           </button>
 
-          <div class="border-l border-gray-600 h-5 sm:h-6 mx-1"></div>
+          <div class="border-l border-emerald-700 h-5 sm:h-6 mx-1"></div>
           <span
-            class="text-gray-400 text-xs sm:text-sm md:inline"
+            class="text-emerald-400 text-xs sm:text-sm md:inline"
             data-i18n="multiTool.clear"
             >Clear:</span
           >
@@ -335,11 +335,11 @@
             >
           </button>
 
-          <div class="border-l border-gray-600 h-5 sm:h-6 mx-1"></div>
+          <div class="border-l border-emerald-700 h-5 sm:h-6 mx-1"></div>
 
           <!-- Download -->
           <span
-            class="text-gray-400 text-xs sm:text-sm md:inline"
+            class="text-emerald-400 text-xs sm:text-sm md:inline"
             data-i18n="multiTool.download"
             >Download:</span
           >
@@ -374,21 +374,21 @@
       >
         <div
           id="upload-area"
-          class="hidden border-2 border-dashed border-gray-600 rounded-lg p-6 sm:p-12 text-center max-w-full cursor-pointer"
+          class="hidden border-2 border-dashed border-emerald-700 rounded-lg p-6 sm:p-12 text-center max-w-full cursor-pointer"
           onclick="document.getElementById('pdf-file-input').click()"
         >
           <i
             data-lucide="upload-cloud"
-            class="w-12 h-12 sm:w-16 sm:h-16 mx-auto text-gray-400 mb-3 sm:mb-4"
+            class="w-12 h-12 sm:w-16 sm:h-16 mx-auto text-emerald-400 mb-3 sm:mb-4"
           ></i>
           <p
-            class="text-gray-300 text-base sm:text-lg mb-1 sm:mb-2"
+            class="text-emerald-300 text-base sm:text-lg mb-1 sm:mb-2"
             data-i18n="multiTool.uploadPdfFiles"
           >
             Select PDF Files
           </p>
           <p
-            class="text-gray-400 text-xs sm:text-sm mb-3 sm:mb-4"
+            class="text-emerald-400 text-xs sm:text-sm mb-3 sm:mb-4"
             data-i18n="multiTool.dragAndDrop"
           >
             Drag and drop PDF files here, or click to select
@@ -424,7 +424,7 @@
       id="loading-overlay"
       class="hidden fixed inset-0 bg-black/80 z-50 flex items-center justify-center"
     >
-      <div class="bg-gray-800 rounded-lg p-8 max-w-md w-full mx-4">
+      <div class="bg-emerald-900 rounded-lg p-8 max-w-md w-full mx-4">
         <div class="flex items-center justify-center mb-4">
           <i
             data-lucide="loader"
@@ -438,7 +438,7 @@
         >
           Rendering pages...
         </p>
-        <div class="w-full bg-gray-700 rounded-full h-2.5">
+        <div class="w-full bg-emerald-900 rounded-full h-2.5">
           <div
             id="loading-progress"
             class="bg-emerald-600 h-2.5 rounded-full transition-all duration-300"
@@ -454,7 +454,7 @@
       class="hidden fixed inset-0 bg-black/80 z-50 flex items-center justify-center"
     >
       <div
-        class="bg-gray-800 rounded-lg p-8 max-w-md w-full mx-4 border border-gray-700"
+        class="bg-emerald-900 rounded-lg p-8 max-w-md w-full mx-4 border border-emerald-800"
       >
         <div class="flex items-center justify-center mb-4">
           <div id="modal-icon"></div>
@@ -463,7 +463,7 @@
           id="modal-title"
           class="text-xl font-bold text-white text-center mb-2"
         ></h3>
-        <p id="modal-message" class="text-gray-300 text-center mb-6"></p>
+        <p id="modal-message" class="text-emerald-300 text-center mb-6"></p>
         <button
           id="modal-close-btn"
           class="w-full bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded"

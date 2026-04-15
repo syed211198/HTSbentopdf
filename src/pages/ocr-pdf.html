@@ -98,16 +98,16 @@
     <link rel="icon" href="/favicon.ico" sizes="32x32" />
   </head>
 
-  <body class="antialiased bg-gray-900">
+  <body class="antialiased bg-emerald-950">
     {{> navbar }}
 
     <div
       id="uploader"
-      class="min-h-screen flex flex-col items-center justify-start py-12 p-4 bg-gray-900"
+      class="min-h-screen flex flex-col items-center justify-start py-12 p-4 bg-emerald-950"
     >
       <div
         id="tool-uploader"
-        class="bg-gray-800 rounded-xl shadow-xl px-4 py-8 md:p-8 max-w-2xl w-full text-gray-200 border border-gray-700"
+        class="bg-emerald-900 rounded-xl shadow-xl px-4 py-8 md:p-8 max-w-2xl w-full text-gray-200 border border-emerald-800"
       >
         <button
           id="back-to-tools"
@@ -125,17 +125,19 @@
         >
           OCR PDF
         </h1>
-        <p class="text-gray-400 mb-6" data-i18n="tools:ocrPdf.subtitle">
+        <p class="text-emerald-400 mb-6" data-i18n="tools:ocrPdf.subtitle">
           Make a PDF searchable and copyable.
         </p>
 
         <!-- How it works info box -->
-        <div class="p-3 bg-gray-900 rounded-lg border border-gray-700 mb-6">
-          <p class="text-sm text-gray-300">
+        <div
+          class="p-3 bg-emerald-950 rounded-lg border border-emerald-800 mb-6"
+        >
+          <p class="text-sm text-emerald-300">
             <strong class="text-white">How it works:</strong>
           </p>
           <ul
-            class="list-disc list-inside text-xs text-gray-400 mt-1 space-y-1"
+            class="list-disc list-inside text-xs text-emerald-400 mt-1 space-y-1"
           >
             <li>
               <strong class="text-white">Extract Text:</strong> Uses Tesseract
@@ -161,14 +163,14 @@
 
         <div
           id="drop-zone"
-          class="relative flex flex-col items-center justify-center w-full h-48 md:h-64 border-2 border-dashed border-gray-600 rounded-xl cursor-pointer bg-gray-900 hover:bg-gray-700 transition-colors duration-300"
+          class="relative flex flex-col items-center justify-center w-full h-48 md:h-64 border-2 border-dashed border-emerald-700 rounded-xl cursor-pointer bg-emerald-950 hover:bg-emerald-900 transition-colors duration-300"
         >
           <div class="flex flex-col items-center justify-center pt-5 pb-6">
             <i
               data-lucide="upload-cloud"
-              class="w-10 h-10 mb-3 text-gray-400"
+              class="w-10 h-10 mb-3 text-emerald-400"
             ></i>
-            <p class="mb-2 text-sm text-gray-400">
+            <p class="mb-2 text-sm text-emerald-400">
               <span class="font-semibold" data-i18n="upload.clickToSelect"
                 >Click to select PDF</span
               >
@@ -191,19 +193,19 @@
         <!-- OCR Options -->
         <div id="tool-options" class="hidden mt-6 space-y-4">
           <div>
-            <label class="block mb-2 text-sm font-medium text-gray-300"
+            <label class="block mb-2 text-sm font-medium text-emerald-300"
               >Languages in Document</label
             >
             <div class="relative">
               <input
                 type="text"
                 id="lang-search"
-                class="w-full bg-gray-900 border border-gray-600 text-white rounded-lg p-2.5 mb-2"
+                class="w-full bg-emerald-950 border border-emerald-700 text-white rounded-lg p-2.5 mb-2"
                 placeholder="Search for languages..."
               />
               <div
                 id="lang-list"
-                class="max-h-48 overflow-y-auto border border-gray-600 rounded-lg p-2 bg-gray-900"
+                class="max-h-48 overflow-y-auto border border-emerald-700 rounded-lg p-2 bg-emerald-950"
               >
                 <!-- Language checkboxes will be populated by JS -->
               </div>
@@ -221,9 +223,11 @@
           </div>
 
           <!-- Advanced settings -->
-          <details class="bg-gray-900 border border-gray-700 rounded-lg p-3">
+          <details
+            class="bg-emerald-950 border border-emerald-800 rounded-lg p-3"
+          >
             <summary
-              class="text-sm font-medium text-gray-300 cursor-pointer flex items-center justify-between"
+              class="text-sm font-medium text-emerald-300 cursor-pointer flex items-center justify-between"
             >
               <span>Advanced Settings (Recommended to improve accuracy)</span>
               <i
@@ -236,12 +240,12 @@
               <div>
                 <label
                   for="ocr-resolution"
-                  class="block mb-1 text-xs font-medium text-gray-400"
+                  class="block mb-1 text-xs font-medium text-emerald-400"
                   >Resolution</label
                 >
                 <select
                   id="ocr-resolution"
-                  class="w-full bg-gray-700 border border-gray-600 text-white rounded-lg p-2 text-sm"
+                  class="w-full bg-emerald-900 border border-emerald-700 text-white rounded-lg p-2 text-sm"
                 >
                   <option value="2.0">Standard (192 DPI)</option>
                   <option value="3.0" selected>High (288 DPI)</option>
@@ -250,22 +254,22 @@
               </div>
               <!-- Binarization -->
               <label
-                class="flex items-center gap-2 text-sm text-gray-300 cursor-pointer"
+                class="flex items-center gap-2 text-sm text-emerald-300 cursor-pointer"
               >
                 <input
                   type="checkbox"
                   id="ocr-binarize"
-                  class="w-4 h-4 rounded text-emerald-600 bg-gray-700 border-gray-600"
+                  class="w-4 h-4 rounded text-emerald-600 bg-emerald-900 border-emerald-700"
                 />
                 Binarize Image (Enhance Contrast for Clean Scans)
               </label>
               <label
-                class="flex items-center gap-2 text-sm text-gray-300 cursor-pointer"
+                class="flex items-center gap-2 text-sm text-emerald-300 cursor-pointer"
               >
                 <input
                   type="checkbox"
                   id="ocr-embed-full-fonts"
-                  class="w-4 h-4 rounded text-emerald-600 bg-gray-700 border-gray-600"
+                  class="w-4 h-4 rounded text-emerald-600 bg-emerald-900 border-emerald-700"
                 />
                 Embed Full Fonts (Larger file, better compatibility)
               </label>
@@ -273,12 +277,12 @@
               <div>
                 <label
                   for="whitelist-preset"
-                  class="block mb-1 text-xs font-medium text-gray-400"
+                  class="block mb-1 text-xs font-medium text-emerald-400"
                   >Character Whitelist Preset</label
                 >
                 <select
                   id="whitelist-preset"
-                  class="w-full bg-gray-700 border border-gray-600 text-white rounded-lg p-2 text-sm mb-2"
+                  class="w-full bg-emerald-900 border border-emerald-700 text-white rounded-lg p-2 text-sm mb-2"
                 >
                   <option value="">None (All characters)</option>
                   <option value="alphanumeric">
@@ -306,13 +310,13 @@
               <div>
                 <label
                   for="ocr-whitelist"
-                  class="block mb-1 text-xs font-medium text-gray-400"
+                  class="block mb-1 text-xs font-medium text-emerald-400"
                   >Character Whitelist (Optional)</label
                 >
                 <input
                   type="text"
                   id="ocr-whitelist"
-                  class="w-full bg-gray-700 border border-gray-600 text-white rounded-lg p-2 text-sm"
+                  class="w-full bg-emerald-900 border border-emerald-700 text-white rounded-lg p-2 text-sm"
                   placeholder="e.g., abcdefghijklmnopqrstuvwxyz0123456789$.,"
                 />
                 <p class="text-xs text-gray-500 mt-1">
@@ -335,10 +339,10 @@
         <!-- Progress Section -->
         <div
           id="ocr-progress"
-          class="hidden mt-6 p-4 bg-gray-900 border border-gray-700 rounded-lg"
+          class="hidden mt-6 p-4 bg-emerald-950 border border-emerald-800 rounded-lg"
         >
           <p id="progress-status" class="text-white mb-2">Initializing...</p>
-          <div class="w-full bg-gray-700 rounded-full h-4">
+          <div class="w-full bg-emerald-900 rounded-full h-4">
             <div
               id="progress-bar"
               class="bg-emerald-600 h-4 rounded-full transition-all duration-300"
@@ -347,14 +351,14 @@
           </div>
           <pre
             id="progress-log"
-            class="mt-4 text-xs text-gray-400 max-h-32 overflow-y-auto bg-black p-2 rounded-md"
+            class="mt-4 text-xs text-emerald-400 max-h-32 overflow-y-auto bg-black p-2 rounded-md"
           ></pre>
         </div>
 
         <!-- Results Section -->
         <div id="ocr-results" class="hidden mt-6">
           <h3 class="text-xl font-bold text-white mb-2">OCR Complete</h3>
-          <p class="mb-4 text-gray-400">
+          <p class="mb-4 text-emerald-400">
             Your searchable PDF is ready. You can also copy or download the
             extracted text below.
           </p>
@@ -362,21 +366,24 @@
             <textarea
               id="ocr-text-output"
               rows="10"
-              class="w-full bg-gray-900 border border-gray-600 text-gray-300 rounded-lg p-2.5 font-sans"
+              class="w-full bg-emerald-950 border border-emerald-700 text-emerald-300 rounded-lg p-2.5 font-sans"
               readonly
             ></textarea>
             <button
               id="copy-text-btn"
-              class="absolute top-2 right-2 bg-gray-700 hover:bg-gray-600 p-2 rounded-md"
+              class="absolute top-2 right-2 bg-emerald-900 hover:bg-gray-600 p-2 rounded-md"
               title="Copy to Clipboard"
             >
-              <i data-lucide="clipboard-copy" class="w-4 h-4 text-gray-300"></i>
+              <i
+                data-lucide="clipboard-copy"
+                class="w-4 h-4 text-emerald-300"
+              ></i>
             </button>
           </div>
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
             <button
               id="download-txt-btn"
-              class="w-full bg-gray-700 text-white font-semibold py-3 rounded-lg hover:bg-gray-600"
+              class="w-full bg-emerald-900 text-white font-semibold py-3 rounded-lg hover:bg-gray-600"
             >
               Download as .txt
             </button>
@@ -397,7 +404,7 @@
       class="hidden fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50"
     >
       <div
-        class="bg-gray-800 p-8 rounded-lg flex flex-col items-center gap-4 border border-gray-700 shadow-xl"
+        class="bg-emerald-900 p-8 rounded-lg flex flex-col items-center gap-4 border border-emerald-800 shadow-xl"
       >
         <div class="solid-spinner"></div>
         <p
@@ -414,10 +421,10 @@
     <!-- Alert Modal -->
     <div
       id="alert-modal"
-      class="fixed inset-0 bg-gray-900 bg-opacity-90 flex items-center justify-center z-50 hidden"
+      class="fixed inset-0 bg-emerald-950 bg-opacity-90 flex items-center justify-center z-50 hidden"
     >
       <div
-        class="bg-gray-800 rounded-lg shadow-xl p-6 max-w-sm w-full border border-gray-700"
+        class="bg-emerald-900 rounded-lg shadow-xl p-6 max-w-sm w-full border border-emerald-800"
       >
         <h3
           id="alert-title"
@@ -427,7 +434,7 @@
         >
           Alert
         </h3>
-        <p id="alert-message" class="text-gray-300 mb-6"></p>
+        <p id="alert-message" class="text-emerald-300 mb-6"></p>
         <button
           id="alert-ok"
           class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors duration-200"
@@ -454,7 +461,7 @@
           </div>
           <div class="flex-1">
             <h3 class="text-lg font-semibold text-white mb-1">Upload File</h3>
-            <p class="text-gray-400" data-i18n="howItWorks.step1">
+            <p class="text-emerald-400" data-i18n="howItWorks.step1">
               Click or drag and drop your file to begin
             </p>
           </div>
@@ -467,7 +474,7 @@
           </div>
           <div class="flex-1">
             <h3 class="text-lg font-semibold text-white mb-1">Process</h3>
-            <p class="text-gray-400" data-i18n="howItWorks.step2">
+            <p class="text-emerald-400" data-i18n="howItWorks.step2">
               Click the process button to start
             </p>
           </div>
@@ -480,7 +487,7 @@
           </div>
           <div class="flex-1">
             <h3 class="text-lg font-semibold text-white mb-1">Download</h3>
-            <p class="text-gray-400" data-i18n="howItWorks.step3">
+            <p class="text-emerald-400" data-i18n="howItWorks.step3">
               Save your processed file instantly
             </p>
           </div>
@@ -499,38 +506,38 @@
       <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
         <a
           href="merge-pdf.html"
-          class="block bg-gray-800 p-4 rounded-lg hover:bg-gray-700 transition-colors border border-gray-700"
+          class="block bg-emerald-900 p-4 rounded-lg hover:bg-emerald-900 transition-colors border border-emerald-800"
         >
           <h3 class="text-white font-semibold mb-1">Merge Pdf</h3>
-          <p class="text-gray-400 text-sm">Free online merge pdf tool</p>
+          <p class="text-emerald-400 text-sm">Free online merge pdf tool</p>
         </a>
         <a
           href="compress-pdf.html"
-          class="block bg-gray-800 p-4 rounded-lg hover:bg-gray-700 transition-colors border border-gray-700"
+          class="block bg-emerald-900 p-4 rounded-lg hover:bg-emerald-900 transition-colors border border-emerald-800"
         >
           <h3 class="text-white font-semibold mb-1">Compress Pdf</h3>
-          <p class="text-gray-400 text-sm">Free online compress pdf tool</p>
+          <p class="text-emerald-400 text-sm">Free online compress pdf tool</p>
         </a>
         <a
           href="split-pdf.html"
-          class="block bg-gray-800 p-4 rounded-lg hover:bg-gray-700 transition-colors border border-gray-700"
+          class="block bg-emerald-900 p-4 rounded-lg hover:bg-emerald-900 transition-colors border border-emerald-800"
         >
           <h3 class="text-white font-semibold mb-1">Split Pdf</h3>
-          <p class="text-gray-400 text-sm">Free online split pdf tool</p>
+          <p class="text-emerald-400 text-sm">Free online split pdf tool</p>
         </a>
         <a
           href="edit-pdf.html"
-          class="block bg-gray-800 p-4 rounded-lg hover:bg-gray-700 transition-colors border border-gray-700"
+          class="block bg-emerald-900 p-4 rounded-lg hover:bg-emerald-900 transition-colors border border-emerald-800"
         >
           <h3 class="text-white font-semibold mb-1">Edit Pdf</h3>
-          <p class="text-gray-400 text-sm">Free online edit pdf tool</p>
+          <p class="text-emerald-400 text-sm">Free online edit pdf tool</p>
         </a>
         <a
           href="rotate-pdf.html"
-          class="block bg-gray-800 p-4 rounded-lg hover:bg-gray-700 transition-colors border border-gray-700"
+          class="block bg-emerald-900 p-4 rounded-lg hover:bg-emerald-900 transition-colors border border-emerald-800"
         >
           <h3 class="text-white font-semibold mb-1">Rotate Pdf</h3>
-          <p class="text-gray-400 text-sm">Free online rotate pdf tool</p>
+          <p class="text-emerald-400 text-sm">Free online rotate pdf tool</p>
         </a>
       </div>
     </section>
@@ -544,38 +551,44 @@
         Frequently Asked Questions
       </h2>
       <div class="space-y-4">
-        <details class="bg-gray-800 p-5 rounded-lg border border-gray-700">
+        <details
+          class="bg-emerald-900 p-5 rounded-lg border border-emerald-800"
+        >
           <summary
             class="cursor-pointer font-semibold text-white flex items-center justify-between"
           >
             Is ocr pdf really free?
             <i data-lucide="chevron-down" class="w-5 h-5"></i>
           </summary>
-          <p class="mt-3 text-gray-400">
+          <p class="mt-3 text-emerald-400">
             Yes! BentoPDF is 100% free with no hidden fees, no signup required,
             and unlimited file processing.
           </p>
         </details>
-        <details class="bg-gray-800 p-5 rounded-lg border border-gray-700">
+        <details
+          class="bg-emerald-900 p-5 rounded-lg border border-emerald-800"
+        >
           <summary
             class="cursor-pointer font-semibold text-white flex items-center justify-between"
           >
             Are my files private and secure?
             <i data-lucide="chevron-down" class="w-5 h-5"></i>
           </summary>
-          <p class="mt-3 text-gray-400">
+          <p class="mt-3 text-emerald-400">
             Absolutely! All processing happens in your browser. Your files never
             leave your device, ensuring complete privacy.
           </p>
         </details>
-        <details class="bg-gray-800 p-5 rounded-lg border border-gray-700">
+        <details
+          class="bg-emerald-900 p-5 rounded-lg border border-emerald-800"
+        >
           <summary
             class="cursor-pointer font-semibold text-white flex items-center justify-between"
           >
             Is there a file size limit?
             <i data-lucide="chevron-down" class="w-5 h-5"></i>
           </summary>
-          <p class="mt-3 text-gray-400">
+          <p class="mt-3 text-emerald-400">
             No! Process files of any size, as many times as you want, completely
             free.
           </p>
