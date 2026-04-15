@@ -1,29 +1,22 @@
-/* ================================
-   BOOKMARK / SORTABLE STYLES – HTS
-   ================================ */
-
 body {
-  color: #e6f5ec; /* soft off‑white text on dark green */
+  color: #374151;
 }
 
-/* Drag/drop ghost */
 .sortable-ghost {
   opacity: 0.4;
-  border: 2px dashed #1f7a4d; /* HTS accent green */
+  border: 2px dashed #2b7fff;
 }
-
 .sortable-drag {
   cursor: move;
 }
 
-/* ================================
-   MODALS (keep white for clarity)
-   ================================ */
-
 .modal-overlay {
   position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.55);
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -32,7 +25,7 @@ body {
 }
 
 .modal-content {
-  background: #ffffff; /* keep white – forms need contrast */
+  background: white;
   border-radius: 0.5rem;
   max-width: 500px;
   width: 100%;
@@ -45,13 +38,10 @@ body {
   top: 1rem;
   right: 1rem;
   max-width: 350px;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.35);
+  max-height: none;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
   z-index: 1001;
 }
-
-/* ================================
-   TREE / CHILD CONNECTORS
-   ================================ */
 
 .child-container {
   position: relative;
@@ -66,7 +56,7 @@ body {
   top: 0;
   bottom: 0;
   width: 2px;
-  background: rgba(183, 217, 198, 0.35); /* muted HTS line */
+  background: #e5e7eb;
 }
 
 .child-container > li {
@@ -80,28 +70,18 @@ body {
   top: 1.25rem;
   width: 0.75rem;
   height: 2px;
-  background: rgba(183, 217, 198, 0.35);
+  background: #e5e7eb;
 }
-
-/* ================================
-   STYLE PREVIEW
-   ================================ */
 
 .style-preview {
   padding: 0.5rem;
-  border: 1px solid rgba(183, 217, 198, 0.25);
+  border: 1px solid #e5e7eb;
   border-radius: 0.25rem;
   min-height: 2.5rem;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(15, 23, 42, 0.6);
-  color: #e6f5ec;
 }
-
-/* ================================
-   DROP DESTINATION MARKER
-   ================================ */
 
 .destination-marker {
   position: absolute;
@@ -114,12 +94,8 @@ body {
 }
 
 .destination-marker svg {
-  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.35));
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
 }
-
-/* ================================
-   PDF CANVAS INTERACTIONS
-   ================================ */
 
 .pdf-canvas-wrapper {
   position: relative;
@@ -132,8 +108,8 @@ body {
 
 .coordinate-tooltip {
   position: absolute;
-  background: rgba(15, 61, 46, 0.9); /* deep green */
-  color: #e6f5ec;
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
   padding: 4px 8px;
   border-radius: 4px;
   font-size: 12px;
@@ -142,15 +118,14 @@ body {
   white-space: nowrap;
 }
 
-/* ================================
-   DROP / DESTINATION OVERLAY
-   ================================ */
-
 .destination-overlay {
   position: absolute;
-  inset: 0;
-  background: rgba(31, 122, 77, 0.15); /* green tint */
-  border: 2px solid #1f7a4d; /* HTS accent */
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(59, 130, 246, 0.1);
+  border: 2px solid #3b82f6;
   pointer-events: none;
   z-index: 5;
 }

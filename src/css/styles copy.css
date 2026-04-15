@@ -50,7 +50,7 @@ html {
 
 body {
   font-family: 'DM Sans', sans-serif;
-  background-color: #1f7a4d;
+  background-color: #111827;
   color: #d1d5db;
 }
 
@@ -59,7 +59,7 @@ body {
     transform 0.2s ease-in-out,
     box-shadow 0.2s ease-in-out;
   border: 1px solid #374151;
-  background-color: #1f7a4d;
+  background-color: #1f2937;
   padding: 1.5rem;
   border-radius: 0.5rem;
   display: flex;
@@ -73,7 +73,7 @@ body {
   box-shadow:
     0 10px 15px -3px rgba(0, 0, 0, 0.2),
     0 4px 6px -2px rgba(0, 0, 0, 0.1);
-  border-color: #16603c;
+  border-color: #4f46e5;
 }
 
 .category-header {
@@ -98,11 +98,11 @@ body {
 }
 
 .category-header:hover {
-  color: #16603c;
+  color: #818cf8;
 }
 
 .category-header:hover .category-chevron {
-  color: #16603c;
+  color: #818cf8;
 }
 
 .category-tools {
@@ -160,8 +160,8 @@ body {
 .compact-mode .tool-card:hover {
   transform: none;
   box-shadow: none;
-  background-color: #16603c;
-  border-color: #16603c;
+  background-color: #1f2937;
+  border-color: #1f2937;
 }
 
 @media (min-width: 640px) {
@@ -206,7 +206,7 @@ input[type='file']::file-selector-button {
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #16603c;
+  background: #4338ca;
   /* indigo-700 */
 }
 
@@ -308,12 +308,12 @@ footer a {
 }
 
 .cta-button:hover {
-  background-color: #16603c;
+  background-color: #4338ca;
   /* indigo-700 */
 }
 
 .marker-text {
-  background-color: rgba(31, 122, 77, 0.25);
+  background-color: rgba(255, 255, 0, 0.5);
   /* Yellow marker color */
   padding: 0 5px;
 }
@@ -725,174 +725,4 @@ input[type='number']::-webkit-inner-spin-button,
 input[type='number']::-webkit-outer-spin-button {
   -webkit-appearance: none; /* Chrome, Safari, Edge */
   margin: 0;
-}
-
-/* =====================================================
-   HTS THEME OVERRIDES (SAFE – ADD AT END OF FILE)
-   ===================================================== */
-
-/* Brand colours */
-:root {
-  --hts-hero-left: #0f3d2e;
-  --hts-hero-right: #0b3a53;
-  --hts-body-bg: #0b1220;
-
-  --hts-accent: #1f7a4d;
-  --hts-accent-hover: #16603c;
-
-  --hts-text-main: #e6f5ec;
-  --hts-text-muted: #b7d9c6;
-
-  --hts-grid: rgba(255, 255, 255, 0.06);
-}
-
-/* Body background after hero */
-body {
-  background-color: var(--hts-body-bg);
-  color: var(--hts-text-main);
-}
-
-/* Hero gradient */
-#hero-section {
-  background: linear-gradient(
-    120deg,
-    var(--hts-hero-left),
-    var(--hts-hero-right)
-  );
-}
-
-/* Grid only visible in hero */
-#hero-section .bg-grid-pattern {
-  background-image:
-    linear-gradient(to right, var(--hts-grid) 1px, transparent 1px),
-    linear-gradient(to bottom, var(--hts-grid) 1px, transparent 1px);
-  background-size: 60px 60px;
-}
-
-/* Hide grid after hero */
-#tools-header .bg-grid-pattern,
-#grid-view .bg-grid-pattern {
-  display: none !important;
-}
-
-/* PDF Toolkit pill */
-.pill,
-.marker-slanted::before {
-  background-color: var(--hts-accent);
-  color: var(--hts-text-main);
-}
-
-/* Start Using / primary buttons */
-.cta-button,
-.btn-gradient {
-  background-color: var(--hts-accent) !important;
-  background-image: none !important;
-}
-
-.cta-button:hover,
-.btn-gradient:hover {
-  background-color: var(--hts-accent-hover) !important;
-}
-
-/* Search bar */
-#search-bar {
-  background-color: rgba(31, 122, 77, 0.25);
-  border-color: rgba(255, 255, 255, 0.15);
-  color: var(--hts-text-main);
-}
-
-#search-bar::placeholder {
-  color: var(--hts-text-muted);
-}
-
-/* Tool cards (keep structure, only tint) */
-.tool-card {
-  background-color: #0f172a;
-  border-color: #134e4a;
-}
-
-.tool-card:hover {
-  border-color: var(--hts-accent);
-}
-/* =====================================================
-   FINAL HTS HARD OVERRIDES – MUST BE LAST
-   This removes remaining Tailwind indigo/blue styles
-   ===================================================== */
-
-/* Kill Tailwind indigo gradients everywhere */
-[class*='from-emerald'],
-[class*='via-emerald'],
-[class*='to-emerald'] {
-  --tw-gradient-from: #1f7a4d !important;
-  --tw-gradient-to: #1f7a4d !important;
-  background-image: none !important;
-}
-
-/* PDF Toolkit pill (formerly purple/blue) */
-.pill,
-span[class*='bg-emerald'],
-span[class*='from-emerald'] {
-  background-color: #1f7a4d !important;
-  color: #e6f5ec !important;
-}
-
-/* Start Using Now button */
-a[class*='bg-emerald'],
-button[class*='bg-emerald'],
-.btn-gradient {
-  background-image: none !important;
-  background-color: #1f7a4d !important;
-  color: #ffffff !important;
-}
-
-a[class*='bg-emerald']:hover,
-button[class*='bg-emerald']:hover,
-.btn-gradient:hover {
-  background-color: #16603c !important;
-}
-
-/* Accent underline / markers */
-.marker-slanted::before,
-.marker::after {
-  background: #1f7a4d !important;
-}
-
-/* Section divider glow */
-.section-divider {
-  background: linear-gradient(
-    to right,
-    transparent,
-    #1f7a4d,
-    transparent
-  ) !important;
-}
-
-/* Tool icons and hover states */
-.tool-card svg,
-.tool-card i {
-  color: #86efac !important;
-}
-
-.tool-card:hover {
-  border-color: #1f7a4d !important;
-}
-
-/* Any remaining indigo text */
-.text-emerald-400,
-.text-emerald-500,
-.text-emerald-600 {
-  color: #86efac !important;
-}
-/* =====================================================
-   FORCE REMOVE TAILWIND GRADIENT BACKGROUNDS
-   (This is what fixes the blue background)
-   ===================================================== */
-
-/* Target elements using Tailwind gradient utilities */
-.bg-gradient-to-b,
-.bg-gradient-to-t,
-.bg-gradient-to-r,
-.bg-gradient-to-l,
-[class*='bg-gradient'] {
-  background-image: linear-gradient(120deg, #0f3d2e, #0b3a53) !important;
 }
