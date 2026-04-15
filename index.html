@@ -59,37 +59,50 @@
     <link href="src/css/styles.css" rel="stylesheet" />
   </head>
 
-  <body class="antialiased">
+  <body class="antialiased bg-emerald-950 text-emerald-100">
     {{> navbar }}
 
-    <div id="app" class="min-h-screen container mx-auto p-4 md:p-8">
-      <section id="hero-section" class="text-center py-20 relative">
+    <div
+      id="app"
+      class="min-h-screen bg-emerald-950 container mx-auto p-4 md:p-8"
+    >
+      <section
+        id="hero-section"
+        class="relative text-center py-20 bg-gradient-to-r from-emerald-900 via-emerald-800 to-teal-900"
+      >
+        <!-- Grid pattern (top only) -->
         <div class="bg-grid-pattern"></div>
+
         <h1 class="text-4xl md:text-7xl font-bold text-white mb-4">
           <span data-i18n="hero.title">The</span>
+
+          <!-- HTS PDF Toolkit pill -->
           <span
-            class="inline-flex items-center gap-3 border-2 border-indigo-400 bg-indigo-900 text-indigo-300 px-4 py-2 rounded-full mx-2 align-middle"
+            class="inline-flex items-center gap-3 border-2 border-emerald-400 bg-emerald-950 text-emerald-200 px-4 py-2 rounded-full mx-2 align-middle"
           >
             <span data-i18n="hero.pdfToolkit">HTS PDF Toolkit</span>
             <i
               data-lucide="briefcase"
-              class="w-8 h-8 md:w-12 md:h-12 transform -rotate-4"
+              class="w-8 h-8 md:w-12 md:h-12 transform -rotate-4 text-emerald-300"
             ></i>
           </span>
-          <span data-i18n="hero.builtForPrivacy">built for privacy</span
-          ><span
-            class="text-4xl md:text-6xl text-transparent bg-clip-text bg-gradient-to-r from-indigo-500 to-purple-500"
+
+          <span data-i18n="hero.builtForPrivacy">built for privacy</span>
+          <span
+            class="text-4xl md:text-6xl text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-400"
             >.</span
           >
         </h1>
 
+        <!-- CTA -->
         <div class="flex flex-col items-center gap-4">
           <a
             href="#tools-header"
-            class="inline-flex items-center gap-3 pl-8 pr-2 py-2 rounded-full bg-gradient-to-b from-indigo-500 to-indigo-600 text-white font-semibold focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-900 focus:ring-indigo-400 hover:shadow-xl hover:shadow-indigo-500/30 transition-all duration-200 transform hover:-translate-y-1"
+            class="inline-flex items-center gap-3 pl-8 pr-2 py-2 rounded-full bg-gradient-to-b from-emerald-600 to-emerald-700 text-white font-semibold focus:ring-2 focus:ring-offset-2 focus:ring-offset-emerald-950 focus:ring-emerald-400 hover:shadow-xl hover:shadow-emerald-500/30 transition-all duration-200 transform hover:-translate-y-1"
           >
             <span data-i18n="hero.startUsing">Start Using Now</span>
-            <span class="bg-white text-indigo-600 rounded-full p-2">
+
+            <span class="bg-white text-emerald-700 rounded-full p-2">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="16"
@@ -107,7 +120,8 @@
               </svg>
             </span>
           </a>
-          <!-- DigitalOcean -->
+
+          <!-- DigitalOcean badge (unchanged) -->
           <a
             href="https://www.digitalocean.com/?refcode=d93c189ef6d0&utm_campaign=Referral_Invite&utm_medium=Referral_Program&utm_source=badge"
             target="_blank"
@@ -150,7 +164,7 @@
             <input
               type="text"
               id="search-bar"
-              class="w-full pl-10 pr-4 py-3 bg-gray-700 text-white border border-gray-600 rounded-lg focus:ring-indigo-500 focus:border-indigo-500"
+              class="w-full pl-10 pr-4 py-3 bg-gray-700 text-white border border-gray-600 rounded-lg focus:ring-emerald-500 focus:border-emerald-500"
               placeholder="Search for a tool (e.g., 'split', 'organize'...)"
               data-i18n-placeholder="tools.searchPlaceholder"
             />
@@ -184,7 +198,7 @@
       >
         <button
           id="back-to-grid"
-          class="flex items-center gap-2 text-indigo-400 hover:text-indigo-300 mb-6 font-semibold"
+          class="flex items-center gap-2 text-emerald-400 hover:text-emerald-300 mb-6 font-semibold"
         >
           <i data-lucide="arrow-left" class="cursor-pointer"></i>
           <span class="cursor-pointer" data-i18n="tools.backToTools">
@@ -227,7 +241,7 @@
           </p>
           <button
             id="alert-ok"
-            class="btn bg-indigo-600 text-white font-semibold py-2 px-6 rounded-lg hover:bg-indigo-700"
+            class="btn bg-emerald-600 text-white font-semibold py-2 px-6 rounded-lg hover:bg-emerald-700"
           >
             OK
           </button>
@@ -246,7 +260,7 @@
             <div class="flex gap-4">
               <button
                 id="preview-download-btn"
-                class="btn bg-indigo-600 text-white font-semibold py-2 px-6 rounded-lg hover:bg-indigo-700"
+                class="btn bg-emerald-600 text-white font-semibold py-2 px-6 rounded-lg hover:bg-emerald-700"
               >
                 Download as PDF
               </button>
@@ -274,7 +288,7 @@
             class="p-6 border-b border-gray-700 flex justify-between items-center"
           >
             <h3 class="text-xl font-bold text-white flex items-center gap-2">
-              <i data-lucide="settings" class="w-6 h-6 text-indigo-400"></i>
+              <i data-lucide="settings" class="w-6 h-6 text-emerald-400"></i>
               <span data-i18n="settings.title">Settings</span>
             </h3>
             <button
@@ -289,7 +303,7 @@
           <div class="flex border-b border-gray-700">
             <button
               id="shortcuts-tab-btn"
-              class="flex-1 py-3 text-sm font-medium bg-indigo-600 text-white"
+              class="flex-1 py-3 text-sm font-medium bg-emerald-600 text-white"
             >
               <i data-lucide="keyboard" class="inline-block w-4 h-4 mr-1"></i>
               <span data-i18n="settings.shortcuts">Shortcuts</span>
@@ -316,19 +330,19 @@
                   id="shortcut-search"
                   data-i18n-placeholder="settings.searchShortcuts"
                   placeholder="Search shortcuts..."
-                  class="w-full bg-gray-900 border border-gray-700 text-white rounded-lg pl-10 pr-4 py-2 focus:ring-indigo-500 focus:border-indigo-500"
+                  class="w-full bg-gray-900 border border-gray-700 text-white rounded-lg pl-10 pr-4 py-2 focus:ring-emerald-500 focus:border-emerald-500"
                 />
               </div>
             </div>
 
             <div
-              class="mb-4 p-3 bg-indigo-900/20 border border-indigo-500/30 rounded-lg flex items-start gap-3"
+              class="mb-4 p-3 bg-emerald-900/20 border border-emerald-500/30 rounded-lg flex items-start gap-3"
             >
               <i
                 data-lucide="info"
-                class="w-5 h-5 text-indigo-400 flex-shrink-0 mt-0.5"
+                class="w-5 h-5 text-emerald-400 flex-shrink-0 mt-0.5"
               ></i>
-              <p class="text-sm text-indigo-200">
+              <p class="text-sm text-emerald-200">
                 <span data-i18n="settings.shortcutsInfo"
                   >Press and hold keys to set a shortcut. Changes are
                   <strong>auto-saved</strong>.</span
@@ -388,7 +402,7 @@
                     class="sr-only peer"
                   />
                   <div
-                    class="w-11 h-6 bg-gray-700 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-indigo-800 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-indigo-600"
+                    class="w-11 h-6 bg-gray-700 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-emerald-800 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-emerald-600"
                   ></div>
                 </label>
               </div>
@@ -420,7 +434,7 @@
                     class="sr-only peer"
                   />
                   <div
-                    class="w-11 h-6 bg-gray-700 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-indigo-800 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-indigo-600"
+                    class="w-11 h-6 bg-gray-700 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-emerald-800 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-emerald-600"
                   ></div>
                 </label>
               </div>
@@ -428,7 +442,7 @@
               <!-- Advanced Settings Link -->
               <a
                 href="wasm-settings.html"
-                class="flex items-center justify-between p-4 bg-gray-900 rounded-lg border border-gray-700 hover:bg-gray-800 hover:border-indigo-500/50 transition-all group"
+                class="flex items-center justify-between p-4 bg-gray-900 rounded-lg border border-gray-700 hover:bg-gray-800 hover:border-emerald-500/50 transition-all group"
               >
                 <div class="flex-1">
                   <span
@@ -443,7 +457,7 @@
                 </div>
                 <i
                   data-lucide="chevron-right"
-                  class="w-5 h-5 text-gray-500 group-hover:text-indigo-400 transition-colors"
+                  class="w-5 h-5 text-gray-500 group-hover:text-emerald-400 transition-colors"
                 ></i>
               </a>
             </div>
@@ -548,9 +562,9 @@
           <div class="p-6">
             <div class="flex items-start gap-4 mb-4">
               <div
-                class="w-12 h-12 flex items-center justify-center rounded-full bg-indigo-500/10 flex-shrink-0"
+                class="w-12 h-12 flex items-center justify-center rounded-full bg-emerald-500/10 flex-shrink-0"
               >
-                <i data-lucide="lock" class="w-6 h-6 text-indigo-400"></i>
+                <i data-lucide="lock" class="w-6 h-6 text-emerald-400"></i>
               </div>
               <div class="flex-1">
                 <h3
@@ -570,7 +584,7 @@
                 <input
                   type="password"
                   id="password-modal-input"
-                  class="w-full bg-gray-700 border border-gray-600 text-gray-200 rounded-lg px-4 py-2.5 pr-10 text-sm focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                  class="w-full bg-gray-700 border border-gray-600 text-gray-200 rounded-lg px-4 py-2.5 pr-10 text-sm focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
                   placeholder="Enter password"
                   autocomplete="off"
                 />
@@ -597,7 +611,7 @@
             </button>
             <button
               id="password-modal-submit"
-              class="flex-1 px-4 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg font-medium transition-colors"
+              class="flex-1 px-4 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg font-medium transition-colors"
             >
               Unlock
             </button>
@@ -617,13 +631,13 @@
             <span class="inline-flex items-center gap-2">
               <i
                 data-lucide="shield"
-                class="w-8 h-8 md:w-10 md:h-10 text-indigo-400 bg-indigo-900 rounded-lg p-1.5"
+                class="w-8 h-8 md:w-10 md:h-10 text-emerald-400 bg-emerald-900 rounded-lg p-1.5"
               ></i>
               <span data-i18n="compliance.weKeep">We keep</span>
             </span>
             <br class="hidden sm:block" />
             <span
-              class="inline-block border-2 border-indigo-400 bg-indigo-900 text-indigo-300 px-4 py-2 rounded-full mx-2 text-2xl md:text-3xl lg:text-4xl font-bold"
+              class="inline-block border-2 border-emerald-400 bg-emerald-900 text-emerald-300 px-4 py-2 rounded-full mx-2 text-2xl md:text-3xl lg:text-4xl font-bold"
               data-i18n="compliance.yourInfoSafe"
             >
               your information safe
@@ -635,7 +649,7 @@
         </div>
         <div class="mb-16 text-center">
           <span
-            class="inline-flex items-center gap-2 text-indigo-400 text-lg font-medium transition-colors"
+            class="inline-flex items-center gap-2 text-emerald-400 text-lg font-medium transition-colors"
             data-i18n="compliance.processingLocal"
           >
             All the processing happens locally on your device.
