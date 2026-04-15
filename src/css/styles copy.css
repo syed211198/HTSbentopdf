@@ -286,9 +286,9 @@ footer a {
 
 .pill {
   background-color: #374151;
-  /* bg-gray-700 */
+  /* bg-emerald-900 */
   color: #d1d5db;
-  /* text-gray-300 */
+  /* text-emerald-300 */
   padding: 8px 16px;
   border-radius: 9999px;
   /* rounded-full */
@@ -320,7 +320,7 @@ footer a {
 
 .feature-card {
   background-color: #1f2937;
-  /* bg-gray-800 */
+  /* bg-emerald-900 */
   padding: 24px;
   border-radius: 8px;
   /* rounded-lg */
@@ -328,11 +328,11 @@ footer a {
 }
 
 .nav-link {
-  @apply text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors;
+  @apply text-emerald-300 hover:bg-emerald-900 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors;
 }
 
 .mobile-nav-link {
-  @apply text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium transition-colors;
+  @apply text-emerald-300 hover:bg-emerald-900 hover:text-white block px-3 py-2 rounded-md text-base font-medium transition-colors;
 }
 
 .marker-slanted {
@@ -407,7 +407,7 @@ footer a {
   height: 64px;
   /* h-16 */
   border: 5px solid #374151;
-  /* border-gray-700 */
+  /* border-emerald-800 */
   border-bottom-color: #4f46e5;
   /* border-indigo-600 */
   border-radius: 50%;
@@ -476,21 +476,21 @@ footer a {
 /* Testimonial Card Styles */
 .testimonial-card {
   background-color: #1f2937;
-  /* bg-gray-800 */
+  /* bg-emerald-900 */
   padding: 24px;
   border-radius: 0.75rem;
   /* rounded-xl */
   border: 1px solid #374151;
-  /* border-gray-700 */
+  /* border-emerald-800 */
   display: flex;
   flex-direction: column;
 }
 
 .pill {
   background-color: #374151;
-  /* bg-gray-700 */
+  /* bg-emerald-900 */
   color: #d1d5db;
-  /* text-gray-300 */
+  /* text-emerald-300 */
   padding: 8px 16px;
   border-radius: 9999px;
   /* rounded-full */
@@ -500,9 +500,9 @@ footer a {
 
 .pill {
   background-color: #374151;
-  /* bg-gray-700 */
+  /* bg-emerald-900 */
   color: #d1d5db;
-  /* text-gray-300 */
+  /* text-emerald-300 */
   /* Smaller padding and font size by default for mobile */
   padding: 6px 12px;
   font-size: 12px;

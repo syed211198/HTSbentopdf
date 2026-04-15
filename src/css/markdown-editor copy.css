@@ -583,8 +583,8 @@
   nav,
   footer,
   #back-to-tools,
-  .bg-gray-800 > h1.text-2xl,
-  .bg-gray-800 > p.text-gray-400,
+  .bg-emerald-900 > h1.text-2xl,
+  .bg-emerald-900 > p.text-emerald-400,
   #markdown-editor-container ~ h1,
   #markdown-editor-container ~ p {
     display: none !important;
@@ -592,7 +592,7 @@
 
   .min-h-screen,
   .max-w-7xl,
-  .bg-gray-800,
+  .bg-emerald-900,
   .rounded-xl,
   .shadow-xl,
   .p-6,

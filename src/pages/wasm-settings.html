@@ -58,16 +58,16 @@
     <link rel="icon" href="/favicon.ico" sizes="32x32" />
   </head>
 
-  <body class="antialiased bg-gray-900">
+  <body class="antialiased bg-emerald-950">
     {{> navbar }}
 
     <div
       id="uploader"
-      class="min-h-screen flex flex-col items-center justify-start py-12 p-4 bg-gray-900"
+      class="min-h-screen flex flex-col items-center justify-start py-12 p-4 bg-emerald-950"
     >
       <div
         id="tool-uploader"
-        class="bg-gray-800 rounded-xl shadow-xl px-4 py-8 md:p-8 max-w-2xl w-full text-gray-200 border border-gray-700"
+        class="bg-emerald-900 rounded-xl shadow-xl px-4 py-8 md:p-8 max-w-2xl w-full text-gray-200 border border-emerald-800"
       >
         <button
           id="back-to-tools"
@@ -82,7 +82,7 @@
         <h1 class="text-2xl font-bold text-white mb-2">
           Advanced Features Settings
         </h1>
-        <p class="text-gray-400 mb-6">
+        <p class="text-emerald-400 mb-6">
           Configure external processing modules to enable advanced PDF features.
           These modules are optional and licensed separately.
         </p>
@@ -109,20 +109,24 @@
 
         <!-- PyMuPDF Section -->
         <div class="space-y-6">
-          <div class="bg-gray-700/50 rounded-lg p-4 border border-gray-600">
+          <div
+            class="bg-emerald-900/50 rounded-lg p-4 border border-emerald-700"
+          >
             <div class="flex items-center justify-between mb-3">
               <div>
                 <h3 class="font-semibold text-white">PyMuPDF</h3>
-                <p class="text-xs text-gray-400">Document Processing Engine</p>
+                <p class="text-xs text-emerald-400">
+                  Document Processing Engine
+                </p>
               </div>
               <span
                 id="pymupdf-status"
-                class="text-xs px-2 py-1 rounded-full bg-gray-600 text-gray-300"
+                class="text-xs px-2 py-1 rounded-full bg-gray-600 text-emerald-300"
               >
                 Not Configured
               </span>
             </div>
-            <p class="text-sm text-gray-400 mb-3">
+            <p class="text-sm text-emerald-400 mb-3">
               Enables: PDF to Text, Markdown, SVG, DOCX, Excel • Extract
               Images/Tables • Format Conversion
             </p>
@@ -131,7 +135,7 @@
                 type="text"
                 id="pymupdf-url"
                 placeholder="https://your-cdn.com/pymupdf-wasm/"
-                class="flex-1 bg-gray-700 border border-gray-600 text-white rounded-lg p-2.5 text-sm"
+                class="flex-1 bg-emerald-900 border border-emerald-700 text-white rounded-lg p-2.5 text-sm"
               />
               <button
                 id="pymupdf-test"
@@ -143,12 +147,12 @@
             <div class="flex items-center gap-2 mt-2">
               <span class="text-xs text-gray-500">Recommended:</span>
               <code
-                class="text-xs text-emerald-400 bg-gray-800 px-2 py-1 rounded flex-1 truncate"
+                class="text-xs text-emerald-400 bg-emerald-900 px-2 py-1 rounded flex-1 truncate"
                 >https://cdn.jsdelivr.net/npm/@bentopdf/pymupdf-wasm@0.11.16/</code
               >
               <button
                 data-copy="https://cdn.jsdelivr.net/npm/@bentopdf/pymupdf-wasm@0.11.16/"
-                class="copy-btn p-1.5 bg-gray-600 hover:bg-gray-500 rounded text-gray-300 hover:text-white transition-colors"
+                class="copy-btn p-1.5 bg-gray-600 hover:bg-gray-500 rounded text-emerald-300 hover:text-white transition-colors"
                 title="Copy to clipboard"
               >
                 <i data-lucide="copy" class="w-3.5 h-3.5"></i>
@@ -157,20 +161,22 @@
           </div>
 
           <!-- Ghostscript Section -->
-          <div class="bg-gray-700/50 rounded-lg p-4 border border-gray-600">
+          <div
+            class="bg-emerald-900/50 rounded-lg p-4 border border-emerald-700"
+          >
             <div class="flex items-center justify-between mb-3">
               <div>
                 <h3 class="font-semibold text-white">Ghostscript</h3>
-                <p class="text-xs text-gray-400">PDF/A Conversion Engine</p>
+                <p class="text-xs text-emerald-400">PDF/A Conversion Engine</p>
               </div>
               <span
                 id="ghostscript-status"
-                class="text-xs px-2 py-1 rounded-full bg-gray-600 text-gray-300"
+                class="text-xs px-2 py-1 rounded-full bg-gray-600 text-emerald-300"
               >
                 Not Configured
               </span>
             </div>
-            <p class="text-sm text-gray-400 mb-3">
+            <p class="text-sm text-emerald-400 mb-3">
               Enables: PDF/A-1b, PDF/A-2b, PDF/A-3b Conversion • Font to Outline
             </p>
             <div class="flex gap-2">
@@ -178,7 +184,7 @@
                 type="text"
                 id="ghostscript-url"
                 placeholder="https://your-cdn.com/ghostscript-wasm/"
-                class="flex-1 bg-gray-700 border border-gray-600 text-white rounded-lg p-2.5 text-sm"
+                class="flex-1 bg-emerald-900 border border-emerald-700 text-white rounded-lg p-2.5 text-sm"
               />
               <button
                 id="ghostscript-test"
@@ -190,12 +196,12 @@
             <div class="flex items-center gap-2 mt-2">
               <span class="text-xs text-gray-500">Recommended:</span>
               <code
-                class="text-xs text-emerald-400 bg-gray-800 px-2 py-1 rounded flex-1 truncate"
+                class="text-xs text-emerald-400 bg-emerald-900 px-2 py-1 rounded flex-1 truncate"
                 >https://cdn.jsdelivr.net/npm/@bentopdf/gs-wasm/assets/</code
               >
               <button
                 data-copy="https://cdn.jsdelivr.net/npm/@bentopdf/gs-wasm/assets/"
-                class="copy-btn p-1.5 bg-gray-600 hover:bg-gray-500 rounded text-gray-300 hover:text-white transition-colors"
+                class="copy-btn p-1.5 bg-gray-600 hover:bg-gray-500 rounded text-emerald-300 hover:text-white transition-colors"
                 title="Copy to clipboard"
               >
                 <i data-lucide="copy" class="w-3.5 h-3.5"></i>
@@ -204,20 +210,24 @@
           </div>
 
           <!-- CPDF Section -->
-          <div class="bg-gray-700/50 rounded-lg p-4 border border-gray-600">
+          <div
+            class="bg-emerald-900/50 rounded-lg p-4 border border-emerald-700"
+          >
             <div class="flex items-center justify-between mb-3">
               <div>
                 <h3 class="font-semibold text-white">CoherentPDF</h3>
-                <p class="text-xs text-gray-400">Bookmarks & Metadata Engine</p>
+                <p class="text-xs text-emerald-400">
+                  Bookmarks & Metadata Engine
+                </p>
               </div>
               <span
                 id="cpdf-status"
-                class="text-xs px-2 py-1 rounded-full bg-gray-600 text-gray-300"
+                class="text-xs px-2 py-1 rounded-full bg-gray-600 text-emerald-300"
               >
                 Not Configured
               </span>
             </div>
-            <p class="text-sm text-gray-400 mb-3">
+            <p class="text-sm text-emerald-400 mb-3">
               Enables: Split by Bookmarks • Edit Bookmarks • PDF Metadata
             </p>
             <div class="flex gap-2">
@@ -225,7 +235,7 @@
                 type="text"
                 id="cpdf-url"
                 placeholder="https://your-cdn.com/cpdf/"
-                class="flex-1 bg-gray-700 border border-gray-600 text-white rounded-lg p-2.5 text-sm"
+                class="flex-1 bg-emerald-900 border border-emerald-700 text-white rounded-lg p-2.5 text-sm"
               />
               <button
                 id="cpdf-test"
@@ -237,12 +247,12 @@
             <div class="flex items-center gap-2 mt-2">
               <span class="text-xs text-gray-500">Recommended:</span>
               <code
-                class="text-xs text-emerald-400 bg-gray-800 px-2 py-1 rounded flex-1 truncate"
+                class="text-xs text-emerald-400 bg-emerald-900 px-2 py-1 rounded flex-1 truncate"
                 >https://cdn.jsdelivr.net/npm/coherentpdf/dist/</code
               >
               <button
                 data-copy="https://cdn.jsdelivr.net/npm/coherentpdf/dist/"
-                class="copy-btn p-1.5 bg-gray-600 hover:bg-gray-500 rounded text-gray-300 hover:text-white transition-colors"
+                class="copy-btn p-1.5 bg-gray-600 hover:bg-gray-500 rounded text-emerald-300 hover:text-white transition-colors"
                 title="Copy to clipboard"
               >
                 <i data-lucide="copy" class="w-3.5 h-3.5"></i>
@@ -266,14 +276,14 @@
 
         <!-- License Notice -->
         <div
-          class="mt-6 p-4 bg-gray-700/30 rounded-lg border border-gray-600/50"
+          class="mt-6 p-4 bg-emerald-900/30 rounded-lg border border-emerald-700/50"
         >
           <p class="text-xs text-gray-500">
-            <strong class="text-gray-400">License Notice:</strong> The external
-            modules (PyMuPDF, Ghostscript, CoherentPDF) are licensed under
-            AGPL-3.0 or similar copyleft licenses. By configuring and using
-            these modules, you agree to their respective license terms. BentoPDF
-            is compatible with any Ghostscript WASM and PyMuPDF WASM
+            <strong class="text-emerald-400">License Notice:</strong> The
+            external modules (PyMuPDF, Ghostscript, CoherentPDF) are licensed
+            under AGPL-3.0 or similar copyleft licenses. By configuring and
+            using these modules, you agree to their respective license terms.
+            BentoPDF is compatible with any Ghostscript WASM and PyMuPDF WASM
             implementation that follows the expected interface.
           </p>
         </div>
@@ -286,7 +296,7 @@
       class="hidden fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50"
     >
       <div
-        class="bg-gray-800 p-8 rounded-lg flex flex-col items-center gap-4 border border-gray-700 shadow-xl"
+        class="bg-emerald-900 p-8 rounded-lg flex flex-col items-center gap-4 border border-emerald-800 shadow-xl"
       >
         <div class="solid-spinner"></div>
         <p
@@ -302,15 +312,15 @@
     <!-- Alert Modal -->
     <div
       id="alert-modal"
-      class="fixed inset-0 bg-gray-900 bg-opacity-90 flex items-center justify-center z-50 hidden"
+      class="fixed inset-0 bg-emerald-950 bg-opacity-90 flex items-center justify-center z-50 hidden"
     >
       <div
-        class="bg-gray-800 rounded-lg shadow-xl p-6 max-w-sm w-full border border-gray-700"
+        class="bg-emerald-900 rounded-lg shadow-xl p-6 max-w-sm w-full border border-emerald-800"
       >
         <h3 id="alert-title" class="text-xl font-bold text-white mb-2">
           Alert
         </h3>
-        <p id="alert-message" class="text-gray-300 mb-6"></p>
+        <p id="alert-message" class="text-emerald-300 mb-6"></p>
         <button
           id="alert-ok"
           class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors duration-200"
