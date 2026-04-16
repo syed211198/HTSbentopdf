@@ -382,10 +382,10 @@ const init = async () => {
         }
 
         const icon = document.createElement('i');
-        icon.className = 'w-10 h-10 mb-3 text-indigo-400';
+        icon.className = 'w-10 h-10 mb-3 ';
 
         if (tool.icon.startsWith('ph-')) {
-          icon.className = `ph ${tool.icon} text-4xl mb-3 text-indigo-400`;
+          icon.className = `ph ${tool.icon} text-4xl mb-3 `;
         } else {
           icon.setAttribute('data-lucide', tool.icon);
         }
@@ -579,10 +579,10 @@ const init = async () => {
 
   if (shortcutsTabBtn && preferencesTabBtn) {
     shortcutsTabBtn.addEventListener('click', () => {
-      shortcutsTabBtn.classList.add('bg-indigo-600', 'text-white');
-      shortcutsTabBtn.classList.remove('text-gray-300');
-      preferencesTabBtn.classList.remove('bg-indigo-600', 'text-white');
-      preferencesTabBtn.classList.add('text-gray-300');
+      shortcutsTabBtn.classList.add('active');
+      preferencesTabBtn.classList.remove('active');
+      //preferencesTabBtn.classList.add('text-gray-300');
+
       shortcutsTabContent?.classList.remove('hidden');
       preferencesTabContent?.classList.add('hidden');
       shortcutsTabFooter?.classList.remove('hidden');
@@ -591,10 +591,10 @@ const init = async () => {
     });
 
     preferencesTabBtn.addEventListener('click', () => {
-      preferencesTabBtn.classList.add('bg-indigo-600', 'text-white');
-      preferencesTabBtn.classList.remove('text-gray-300');
-      shortcutsTabBtn.classList.remove('bg-indigo-600', 'text-white');
-      shortcutsTabBtn.classList.add('text-gray-300');
+      preferencesTabBtn.classList.add('active');
+      shortcutsTabBtn.classList.remove('active');
+      //shortcutsTabBtn.classList.add('text-gray-300');
+
       preferencesTabContent?.classList.remove('hidden');
       shortcutsTabContent?.classList.add('hidden');
       preferencesTabFooter?.classList.remove('hidden');
@@ -944,9 +944,9 @@ const init = async () => {
 
         const icon = document.createElement('i');
         if (tool.icon.startsWith('ph-')) {
-          icon.className = `ph ${tool.icon} w-5 h-5 text-indigo-400`;
+          icon.className = `ph ${tool.icon} w-5 h-5 `;
         } else {
-          icon.className = 'w-5 h-5 text-indigo-400';
+          icon.className = 'w-5 h-5 ';
           icon.setAttribute('data-lucide', tool.icon);
         }
 
@@ -963,7 +963,7 @@ const init = async () => {
         const input = document.createElement('input');
         input.type = 'text';
         input.className =
-          'shortcut-input w-32 bg-gray-800 border border-gray-600 text-white text-center text-sm rounded px-2 py-1 focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition-all';
+          'shortcut-input w-32 bg-gray-800 border border-gray-600 text-white text-center text-sm rounded px-2 py-1 focus:ring-2 focus:ring-emerald-500 focus:border-transparent outline-none transition-all';
         input.placeholder = t('settings.clickToSet');
         input.value = formatShortcutDisplay(currentShortcut, isMac);
         input.readOnly = true;
@@ -1107,7 +1107,7 @@ const init = async () => {
 
         input.onfocus = () => {
           input.value = t('settings.pressKeys');
-          input.classList.add('border-indigo-500', 'text-indigo-400');
+          input.classList.add('border-emerald-500', 'text-emerald-400');
         };
 
         input.onblur = () => {
@@ -1115,7 +1115,7 @@ const init = async () => {
             ShortcutsManager.getShortcut(toolId) || '',
             isMac
           );
-          input.classList.remove('border-indigo-500', 'text-indigo-400');
+          input.classList.remove('border-emerald-500', 'text-emerald-400');
         };
 
         right.append(input);
