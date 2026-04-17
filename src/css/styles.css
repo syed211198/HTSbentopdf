@@ -710,9 +710,12 @@ input[type='number']::-webkit-outer-spin-button {
   --hts-grid: rgba(255, 255, 255, 0.06);
   --hts-base-bg: var(--hts-body-bg);
 
-  --settings-primary: #6366f1; /* indigo-500 */
-  --settings-secondary: #10b981; /* emerald-500 */
-  --settings-surface: #111827; /* slate/indigo base */
+  --settings-primary: #6366f1;
+  /* indigo-500 */
+  --settings-secondary: #10b981;
+  /* emerald-500 */
+  --settings-surface: #111827;
+  /* slate/indigo base */
 }
 
 /* Body background after hero */
@@ -922,7 +925,8 @@ footer {
 }
 
 #shortcuts-modal #shortcut-search::placeholder {
-  color: rgba(16, 185, 129, 0.65); /* emerald-500 softened */
+  color: rgba(16, 185, 129, 0.65);
+  /* emerald-500 softened */
 }
 
 /* 2) Info banner main text (NOT the warning line) */
@@ -932,7 +936,8 @@ footer {
 
 /* Keep warning text yellow */
 #shortcuts-modal .mb-4.p-3 .text-yellow-300 {
-  color: #fde047; /* unchanged */
+  color: #fde047;
+  /* unchanged */
 }
 
 /* =========================================
@@ -955,9 +960,12 @@ footer {
 
 /* === Trigger button (top "English") === */
 #footer-language-switcher > button {
-  background-color: #064e3b; /* emerald-900 */
-  color: #ecfdf5; /* emerald-50 */
-  border: 1px solid #10b981; /* emerald-500 */
+  background-color: #064e3b;
+  /* emerald-900 */
+  color: #ecfdf5;
+  /* emerald-50 */
+  border: 1px solid #10b981;
+  /* emerald-500 */
   border-radius: 9999px;
   padding: 0.45rem 0.9rem;
   font-size: 0.875rem;
@@ -968,8 +976,10 @@ footer {
 /* Dropdown container */
 #footer-language-switcher ul,
 #footer-language-switcher .language-menu {
-  background-color: #064e3b !important; /* emerald-900 */
-  border: 1px solid #10b981 !important; /* emerald-500 */
+  background-color: #064e3b !important;
+  /* emerald-900 */
+  border: 1px solid #10b981 !important;
+  /* emerald-500 */
   box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35) !important;
 }
 
@@ -977,7 +987,8 @@ footer {
 #footer-language-switcher li,
 #footer-language-switcher button:not(:first-child) {
   background-color: transparent !important;
-  color: #ecfdf5 !important; /* emerald-50 */
+  color: #ecfdf5 !important;
+  /* emerald-50 */
 }
 
 /* Hover state */
@@ -1000,6 +1011,7 @@ footer {
   outline: none !important;
   box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.35) !important;
 }
+
 /* =========================================
    Footer Text – White Content, Emerald Accent
    ========================================= */
