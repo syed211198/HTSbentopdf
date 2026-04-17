@@ -56,43 +56,46 @@
       <div class="bg-grid-pattern"></div>
 
       <div class="relative mx-auto max-w-7xl px-6 py-20 text-center">
-        <h1 class="text-4xl md:text-7xl font-bold text-white mb-4">
+        <h1
+          class="text-4xl md:text-7xl font-bold text-white mb-4 leading-tight md:whitespace-nowrap"
+        >
           <span data-i18n="hero.title">The</span>
 
           <span
             class="inline-flex items-center gap-3 border-2 border-emerald-400 bg-emerald-950 text-emerald-200 px-4 py-2 rounded-full mx-2 align-middle"
           >
-            <span data-i18n="hero.pdfToolkit">HTS PDF Toolkit</span>
+            <span data-i18n="hero.pdfToolkit">PDF Toolkit</span>
             <i
               data-lucide="briefcase"
               class="w-8 h-8 md:w-12 md:h-12 transform -rotate-4 text-emerald-300"
             ></i>
           </span>
 
-          <span data-i18n="hero.builtForPrivacy">built for privacy</span>
-          <span
-            class="text-4xl md:text-6xl text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-400"
+          <span data-i18n="hero.builtForPrivacy">built for privacy</span
+          ><span
+            aria-hidden="true"
+            class="ml-0.5 text-4xl md:text-6xl text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-400"
+            >.</span
           >
-            .
-          </span>
         </h1>
 
-        <!-- CTA -->
-        <div class="flex flex-col items-center gap-4">
+        <div class="flex flex-col items-center mt-8">
           <a
             href="#tools-header"
             class="inline-flex items-center gap-3 pl-8 pr-2 py-2 rounded-full bg-gradient-to-b from-emerald-600 to-emerald-700 text-white font-semibold focus:ring-2 focus:ring-offset-2 focus:ring-offset-emerald-950 focus:ring-emerald-400 hover:shadow-xl hover:shadow-emerald-500/30 transition-all duration-200 transform hover:-translate-y-1"
           >
             <span data-i18n="hero.startUsing">Start Using Now</span>
-            <span class="bg-white text-emerald-700 rounded-full p-2">
-              <!-- arrow svg -->
+            <span
+              class="bg-white text-emerald-700 rounded-full p-2 flex items-center justify-center"
+            >
+              <!-- arrow SVG -->
             </span>
           </a>
 
-          <!-- DigitalOcean badge -->
+          <!-- correct original spacing -->
           <a
             href="https://www.digitalocean.com/..."
-            class="mt-8 opacity-50 hover:opacity-100 transition-opacity hide-section"
+            class="mt-6 opacity-50 hover:opacity-100 transition-opacity hide-section"
           >
             <img
               src="/images/badge.svg"
