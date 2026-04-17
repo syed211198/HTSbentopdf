@@ -20,6 +20,7 @@ import {
   isToolDisabled,
   isCurrentPageDisabled,
 } from './utils/disabled-tools.js';
+import { get } from 'sortablejs';
 declare const __BRAND_NAME__: string;
 
 const init = async () => {
@@ -1136,26 +1137,62 @@ const init = async () => {
   const scrollToTopBtn = document.getElementById('scroll-to-top-btn');
 
   if (scrollToTopBtn) {
-    let lastScrollY = window.scrollY;
+    let scrollContainer: HTMLElement | Window = window;
+    let lastScrollY = 0;
 
-    window.addEventListener('scroll', () => {
-      const currentScrollY = window.scrollY;
+    const resolveScrollContainer = (): HTMLElement | Window => {
+      const toolInterface = document.querySelector('#tool-interface');
 
-      if (currentScrollY < lastScrollY && currentScrollY > 300) {
-        scrollToTopBtn.classList.add('visible');
-      } else {
-        scrollToTopBtn.classList.remove('visible');
+      // Use tool-interface ONLY when visible and scrollable
+      if (
+        toolInterface instanceof HTMLElement &&
+        !toolInterface.classList.contains('hidden') &&
+        toolInterface.scrollHeight > toolInterface.clientHeight
+      ) {
+        return toolInterface;
       }
 
-      lastScrollY = currentScrollY;
-    });
+      // Homepage & normal pages always scroll the window
+      return window;
+    };
 
-    scrollToTopBtn.addEventListener('click', () => {
-      window.scrollTo({
-        top: 0,
-        behavior: 'instant',
-      });
-    });
+    const getScrollY = (): number => {
+      return scrollContainer instanceof Window
+        ? scrollContainer.scrollY
+        : scrollContainer.scrollTop;
+    };
+
+    const scrollToTop = () => {
+      if (scrollContainer instanceof Window) {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else {
+        scrollContainer.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    };
+
+    // Delay until layout is ready
+    setTimeout(() => {
+      scrollContainer = resolveScrollContainer();
+      lastScrollY = getScrollY();
+
+      scrollContainer.addEventListener(
+        'scroll',
+        () => {
+          const currentScrollY = getScrollY();
+
+          if (currentScrollY < lastScrollY && currentScrollY > 300) {
+            scrollToTopBtn.classList.add('visible');
+          } else {
+            scrollToTopBtn.classList.remove('visible');
+          }
+
+          lastScrollY = currentScrollY;
+        },
+        { passive: true }
+      );
+    }, 0);
+
+    scrollToTopBtn.addEventListener('click', scrollToTop);
   }
 
   // Rewrite links after all dynamic content is fully loaded
