@@ -1082,7 +1082,7 @@ footer p.text-xs {
 
 #scroll-to-top-btn {
   position: fixed;
-  bottom: 1.25rem;
+  bottom: calc(1.25rem + env(safe-area-inset-bottom));
   right: 1.25rem;
   z-index: 60;
 
@@ -1160,8 +1160,4 @@ footer p.text-xs {
   #scroll-to-top-btn {
     transition: none;
   }
-}
-
-#scroll-to-top-btn {
-  bottom: calc(1.25rem + env(safe-area-inset-bottom));
 }
