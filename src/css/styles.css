@@ -1161,3 +1161,64 @@ footer p.text-xs {
     transition: none;
   }
 }
+
+/* =========================================
+   TABLET & iPAD (Portrait + Landscape)
+   Safari-safe detection
+   ========================================= */
+
+/* Tablet portrait */
+@media (min-width: 768px) and (max-width: 1024px) {
+  #hero-section h1 {
+    font-size: 3.5rem;
+    line-height: 1.1;
+    white-space: normal;
+  }
+
+  #hero-section .inline-flex.border-emerald-400 {
+    padding: 0.5rem 1rem;
+    font-size: 1.75rem;
+  }
+
+  #hero-section a[href='#tools-header'] {
+    font-size: 1rem;
+    padding: 0.55rem 1.5rem;
+  }
+
+  #hero-section {
+    text-align: center;
+  }
+
+  #tool-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1.25rem;
+  }
+}
+
+/* Tablet landscape (Safari-safe, iPad only) */
+@media (max-height: 820px) and (min-width: 1024px) and (orientation: landscape) and (hover: none) {
+  #hero-section h1 {
+    font-size: 3.25rem;
+    line-height: 1.1;
+    white-space: normal;
+  }
+
+  #hero-section .inline-flex.border-emerald-400 {
+    padding: 0.5rem 1rem;
+    font-size: 1.75rem;
+  }
+
+  #hero-section {
+    text-align: center;
+  }
+
+  #hero-section .max-w-7xl {
+    padding-top: 4rem;
+    padding-bottom: 4rem;
+  }
+
+  #tool-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1.25rem;
+  }
+}
