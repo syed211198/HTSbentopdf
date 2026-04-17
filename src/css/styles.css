@@ -48,15 +48,6 @@ html {
   scroll-behavior: smooth;
 }
 
-.tool-card:hover {
-  transform: translateY(-5px);
-  box-shadow:
-    0 10px 15px -3px rgba(0, 0, 0, 0.2),
-    0 4px 6px -2px rgba(0, 0, 0, 0.1);
-  background-color: rgba(15, 23, 42, 1);
-  border-color: var(--hts-accent);
-}
-
 .tool-card:focus-visible {
   outline: none;
   border-color: var(--hts-accent);
@@ -77,9 +68,9 @@ html {
 
 /* Touch feedback for tool cards */
 .tool-card:active {
-  transform: scale(0.98);
-  background-color: rgba(15, 23, 42, 1);
-  border-color: var(--hts-accent);
+  transform: scale(0.96);
+  background-color: #0b1220;
+  border-color: #6366f1;
 }
 
 .category-header {
@@ -104,11 +95,11 @@ html {
 }
 
 .category-header:hover {
-  color: #16603c;
+  color: #c7d2fe;
 }
 
 .category-header:hover .category-chevron {
-  color: #16603c;
+  color: #c7d2fe;
 }
 
 .category-tools {
@@ -166,8 +157,8 @@ html {
 .compact-mode .tool-card:hover {
   transform: none;
   box-shadow: none;
-  background-color: #16603c;
-  border-color: #16603c;
+  background-color: #0b1220;
+  border-color: #6366f1;
 }
 
 @media (min-width: 640px) {
@@ -179,12 +170,6 @@ html {
 @media (min-width: 1024px) {
   .compact-mode .category-tools {
     grid-template-columns: repeat(3, 1fr) !important;
-  }
-}
-
-@media (hover: hover) {
-  .tool-card:hover {
-    background-color: rgba(15, 23, 42, 1);
   }
 }
 
@@ -780,7 +765,7 @@ body {
 /* Tool cards (keep structure, only tint) */
 .tool-card {
   background-color: rgba(15, 23, 42, 0.95);
-  border-color: #134e4a;
+  border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 /* Accent underline / markers */
@@ -802,7 +787,7 @@ body {
 /* Tool icons and hover states */
 .tool-card svg,
 .tool-card i {
-  color: #86efac !important;
+  color: #86efac;
 }
 
 nav,
@@ -1220,5 +1205,26 @@ footer p.text-xs {
   #tool-grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 1.25rem;
+  }
+}
+/*Tool Card Hover – High Contrast & Accessible */
+@media (hover: hover) {
+  .tool-card:hover {
+    background-color: #0b1220; /* deep indigo / near-black */
+    border-color: #6366f1; /* indigo-500 */
+    box-shadow:
+      0 16px 32px rgba(0, 0, 0, 0.5),
+      0 0 0 1px rgba(99, 102, 241, 0.45);
+    transform: translateY(-5px);
+  }
+
+  .tool-card:hover h3,
+  .tool-card:hover p {
+    color: #f8fafc; /* slate-50 */
+  }
+
+  .tool-card:hover svg,
+  .tool-card:hover i {
+    filter: drop-shadow(0 0 6px rgba(134, 239, 172, 0.35));
   }
 }
