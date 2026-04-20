@@ -50,6 +50,7 @@
     "resolveJsonModule": true,
     /* Path aliases (optional but helpful) */
     "baseUrl": ".",
+    "ignoreDeprecations": "6.0",
     "paths": {
       "@/*": ["./src/*"],
       "@/types": ["./src/js/types/index.ts"]
