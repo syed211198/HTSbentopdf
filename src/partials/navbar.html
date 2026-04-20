@@ -49,27 +49,19 @@
 
       <!-- Mobile Hamburger Button -->
       <button
+        id="mobile-menu-button"
         type="button"
         class="inline-flex items-center justify-center p-2 rounded-md text-emerald-300 hover:text-white hover:bg-emerald-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500 md:hidden"
         aria-controls="mobile-menu"
         aria-expanded="false"
       >
         <span class="sr-only">Open main menu</span>
-        <svg
-          class="h-6 w-6"
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-          aria-hidden="true"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M4 6h16M4 12h16M4 18h16"
-          />
-        </svg>
+
+        <!-- Menu icon -->
+        <i id="menu-icon" data-lucide="menu" class="w-6 h-6"></i>
+
+        <!-- Close icon -->
+        <i id="close-icon" data-lucide="x" class="w-6 h-6 hidden"></i>
       </button>
     </div>
   </div>
@@ -77,33 +69,19 @@
   <!-- Mobile Menu Dropdown -->
   <div
     id="mobile-menu"
-    class="hidden md:hidden bg-emerald-950 border-t border-emerald-900"
+    class="hidden md:hidden fixed inset-x-0 top-16 z-50 bg-emerald-950 border-t border-emerald-900"
   >
     <div class="px-2 pt-2 pb-3 space-y-1 text-center">
-      <a
-        href="index.html"
-        class="mobile-nav-link text-emerald-200 hover:text-white"
-        data-i18n="nav.home"
-        >Home</a
-      >
-      <a
-        href="about.html"
-        class="mobile-nav-link text-emerald-200 hover:text-white"
-        data-i18n="nav.about"
+      <a href="index.html" class="mobile-nav-link" data-i18n="nav.home">Home</a>
+      <a href="about.html" class="mobile-nav-link" data-i18n="nav.about"
         >About</a
       >
-      <a
-        href="contact.html"
-        class="mobile-nav-link text-emerald-200 hover:text-white"
-        data-i18n="nav.contact"
+      <a href="contact.html" class="mobile-nav-link" data-i18n="nav.contact"
         >Contact</a
       >
-      <!-- <a href="licensing.html" class="mobile-nav-link" data-i18n="nav.licensing"
-        >Licensing</a
-      > -->
       <a
         href="https://bentopdf.com/docs/"
-        class="mobile-nav-link text-emerald-200 hover:text-white"
+        class="mobile-nav-link"
         data-i18n="nav.docs"
         >Docs</a
       >
