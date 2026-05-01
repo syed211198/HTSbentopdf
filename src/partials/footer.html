@@ -15,6 +15,11 @@
         <p id="footer-copyright" class="text-emerald-400 text-sm" {{#unless footerText}}data-i18n="footer.copyright"{{/unless}}>
           {{#if footerText}}{{footerText}}{{else}}&copy; 2026 HTS BentoPDF. All rights reserved.{{/if}}
         </p>
+        
+        <p class="text-gray-500 text-xs mt-1"> 
+          Developed and maintained by <span class="font-medium">Syed Amjad</span>
+        </p>
+
         <p class="text-gray-500 text-xs mt-2">
           <span data-i18n="footer.version">Version</span>
           <span id="app-version">{{appVersion}}</span>
