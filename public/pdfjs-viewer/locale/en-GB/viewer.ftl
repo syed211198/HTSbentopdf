@@ -619,3 +619,5 @@ pdfjs-editor-add-signature-edit-button-label = Edit description
 ## Edit signature description dialog
 
 pdfjs-editor-edit-signature-dialog-title = Edit description
+
+footer.copyright = © 2026 HTS BentoPDF. All rights reserved.
