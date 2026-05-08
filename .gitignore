@@ -41,4 +41,5 @@ libreoffice-wasm-package
 bentopdf-*.tgz
 
 # test 
-dist-test
+dist-test*.zip
+dist/
