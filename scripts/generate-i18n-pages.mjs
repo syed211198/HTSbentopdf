@@ -51,6 +51,55 @@ function buildUrl(langPrefix, pagePath) {
   return parts.filter(Boolean).join('/').replace(/\/+$/, '') || SITE_URL;
 }
 
+function isExternalUrl(url) {
+  return /^(?:[a-z][a-z0-9+.-]*:|\/\/)/i.test(url);
+}
+
+function rewriteAssetUrl(value) {
+  if (!value) return value;
+
+  if (
+    value.startsWith('#') ||
+    value.startsWith('data:') ||
+    value.startsWith('javascript:') ||
+    isExternalUrl(value)
+  ) {
+    return value;
+  }
+
+  const trimmedBasePath = BASE_PATH.replace(/^\/|\/$/g, '');
+
+  if (value.startsWith('/')) {
+    if (trimmedBasePath && value.startsWith(`/${trimmedBasePath}/`)) {
+      return value;
+    }
+
+    const withoutLeadingSlash = value.replace(/^\/+/g, '');
+    return trimmedBasePath
+      ? `/${trimmedBasePath}/${withoutLeadingSlash}`.replace(/\/+/g, '/')
+      : `/${withoutLeadingSlash}`;
+  }
+
+  const normalized = value.replace(/^(?:\.\/|\.\.\/)+/, '');
+  return trimmedBasePath
+    ? `/${trimmedBasePath}/${normalized}`.replace(/\/+/g, '/')
+    : `/${normalized}`;
+}
+
+function rewriteSrcset(value) {
+  return value
+    .split(',')
+    .map((item) => {
+      const trimmed = item.trim();
+      if (!trimmed) return '';
+      const [url, descriptor] = trimmed.split(/\s+/, 2);
+      return descriptor
+        ? `${rewriteAssetUrl(url)} ${descriptor}`
+        : rewriteAssetUrl(url);
+    })
+    .join(', ');
+}
+
 function processFileForLanguage(
   originalContent,
   file,
@@ -168,6 +217,34 @@ function processFileForLanguage(
     }
 
     link.setAttribute('href', newHref);
+  });
+
+  document.querySelectorAll('[src]').forEach((element) => {
+    const src = element.getAttribute('src');
+    if (!src) return;
+    element.setAttribute('src', rewriteAssetUrl(src));
+  });
+
+  document.querySelectorAll('[srcset]').forEach((element) => {
+    const srcset = element.getAttribute('srcset');
+    if (!srcset) return;
+    element.setAttribute('srcset', rewriteSrcset(srcset));
+  });
+
+  document.querySelectorAll('link[href]').forEach((link) => {
+    if (link.rel === 'alternate') return;
+    const href = link.getAttribute('href');
+    if (!href) return;
+    if (
+      href.startsWith('http') ||
+      href.startsWith('//') ||
+      href.startsWith('mailto:') ||
+      href.startsWith('tel:') ||
+      href.startsWith('javascript:')
+    ) {
+      return;
+    }
+    link.setAttribute('href', rewriteAssetUrl(href));
   });
 
   const result = dom.serialize();
