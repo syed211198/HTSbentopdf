@@ -1,10 +1,8 @@
 window.addEventListener('load', () => {
   const mobileMenuButton = document.getElementById('mobile-menu-button');
   const mobileMenu = document.getElementById('mobile-menu');
-  const menuIcon = document.getElementById('menu-icon');
-  const closeIcon = document.getElementById('close-icon');
 
-  if (mobileMenuButton && mobileMenu && menuIcon && closeIcon) {
+  if (mobileMenuButton && mobileMenu) {
     // Toggle menu on button click
     mobileMenuButton.addEventListener('click', () => {
       const isExpanded =
@@ -12,10 +10,6 @@ window.addEventListener('load', () => {
 
       // Toggle menu visibility
       mobileMenu.classList.toggle('hidden');
-
-      // Toggle icons
-      menuIcon.classList.toggle('hidden');
-      closeIcon.classList.toggle('hidden');
 
       // Update aria-expanded for accessibility
       mobileMenuButton.setAttribute('aria-expanded', (!isExpanded).toString());
@@ -26,8 +20,6 @@ window.addEventListener('load', () => {
     mobileLinks.forEach((link) => {
       link.addEventListener('click', () => {
         mobileMenu.classList.add('hidden');
-        menuIcon.classList.remove('hidden');
-        closeIcon.classList.add('hidden');
         mobileMenuButton.setAttribute('aria-expanded', 'false');
       });
     });
@@ -44,8 +36,6 @@ window.addEventListener('load', () => {
         !mobileMenu.classList.contains('hidden')
       ) {
         mobileMenu.classList.add('hidden');
-        menuIcon.classList.remove('hidden');
-        closeIcon.classList.add('hidden');
         mobileMenuButton.setAttribute('aria-expanded', 'false');
       }
     });
