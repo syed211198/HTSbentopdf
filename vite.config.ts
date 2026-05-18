@@ -64,6 +64,7 @@ function loadPages(): Set<string> {
     'pdf-editor',
     'pdf-security',
     'pdf-merge-split',
+    'rotate-custom',
   ];
   rootPages.forEach((p) => pages.add(p));
 
