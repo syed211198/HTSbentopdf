@@ -105,7 +105,7 @@ docker run -d -p 3000:8080 bentopdf:custom
 | `VITE_DEFAULT_LANGUAGE`              | Default UI language                         | `en`                                                           |
 | `VITE_BRAND_NAME`                    | Custom brand name                           | `BentoPDF`                                                     |
 | `VITE_BRAND_LOGO`                    | Logo path relative to `public/`             | `images/favicon-no-bg.svg`                                     |
-| `VITE_FOOTER_TEXT`                   | Custom footer/copyright text                | `© 2026 BentoPDF. All rights reserved.`                        |
+| `VITE_FOOTER_TEXT`                   | Custom footer/copyright text                | `© 2026 HTS - BentoPDF. All rights reserved.`                  |
 | `DISABLE_TOOLS`                      | Comma-separated tool IDs to hide            | _(empty; all tools enabled)_                                   |
 
 WASM module URLs are pre-configured with CDN defaults — all advanced features work out of the box. Override these for air-gapped or self-hosted deployments.
