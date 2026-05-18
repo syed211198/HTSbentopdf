@@ -815,11 +815,11 @@ For more details, see [SIMPLE_MODE.md](SIMPLE_MODE.md).
 
 Replace the default BentoPDF logo, name, and footer text with your own. Branding is configured via environment variables at **build time** and works across all deployment methods (Docker, static hosting, air-gapped VMs).
 
-| Variable           | Description                             | Default                                 |
-| ------------------ | --------------------------------------- | --------------------------------------- |
-| `VITE_BRAND_NAME`  | Brand name shown in header and footer   | `BentoPDF`                              |
-| `VITE_BRAND_LOGO`  | Path to logo file relative to `public/` | `images/favicon-no-bg.svg`              |
-| `VITE_FOOTER_TEXT` | Custom footer/copyright text            | `© 2026 BentoPDF. All rights reserved.` |
+| Variable           | Description                             | Default                                       |
+| ------------------ | --------------------------------------- | --------------------------------------------- |
+| `VITE_BRAND_NAME`  | Brand name shown in header and footer   | `BentoPDF`                                    |
+| `VITE_BRAND_LOGO`  | Path to logo file relative to `public/` | `images/favicon-no-bg.svg`                    |
+| `VITE_FOOTER_TEXT` | Custom footer/copyright text            | `© 2026 HTS - BentoPDF. All rights reserved.` |
 
 **Docker:**
 

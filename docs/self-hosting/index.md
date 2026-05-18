@@ -112,11 +112,11 @@ BASE_URL=/pdf-tools/ npm run build
 
 Replace the default BentoPDF logo, name, and footer text with your own at build time:
 
-| Variable           | Description                           | Default                                 |
-| ------------------ | ------------------------------------- | --------------------------------------- |
-| `VITE_BRAND_NAME`  | Brand name shown in header and footer | `BentoPDF`                              |
-| `VITE_BRAND_LOGO`  | Logo path relative to `public/`       | `images/favicon-no-bg.svg`              |
-| `VITE_FOOTER_TEXT` | Custom footer/copyright text          | `© 2026 BentoPDF. All rights reserved.` |
+| Variable           | Description                           | Default                                       |
+| ------------------ | ------------------------------------- | --------------------------------------------- |
+| `VITE_BRAND_NAME`  | Brand name shown in header and footer | `BentoPDF`                                    |
+| `VITE_BRAND_LOGO`  | Logo path relative to `public/`       | `images/favicon-no-bg.svg`                    |
+| `VITE_FOOTER_TEXT` | Custom footer/copyright text          | `© 2026 HTS - BentoPDF. All rights reserved.` |
 
 ```bash
 # Place your logo in public/, then build

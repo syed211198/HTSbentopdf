@@ -378,7 +378,7 @@ interactive_mode() {
     echo "    Place your logo in the public/ folder before building."
     read -r -p "    Logo path relative to public/ [images/favicon-no-bg.svg]: " input
     BRAND_LOGO="${input:-}"
-    read -r -p "    Footer text [© 2026 BentoPDF. All rights reserved.]: " input
+    read -r -p "    Footer text [© 2026 HTS - BentoPDF. All rights reserved.]: " input
     FOOTER_TEXT="${input:-}"
   fi
   echo ""
