@@ -104,6 +104,8 @@ jobs:
         if: steps.version.outputs.is_release == 'true'
         uses: docker/build-push-action@v6
         with:
+          context: .
+          dockerfile: ./Dockerfile
           push: true
           build-args: |
             SIMPLE_MODE=${{ matrix.mode.simple_mode }}
@@ -117,6 +119,8 @@ jobs:
         if: steps.version.outputs.is_release == 'false'
         uses: docker/build-push-action@v6
         with:
+          context: .
+          dockerfile: ./Dockerfile
           push: true
           build-args: |
             SIMPLE_MODE=${{ matrix.mode.simple_mode }}
@@ -176,6 +180,8 @@ jobs:
         if: steps.version.outputs.is_release == 'true'
         uses: docker/build-push-action@v6
         with:
+          context: .
+          dockerfile: ./Dockerfile
           push: true
           build-args: |
             SIMPLE_MODE=${{ matrix.mode.simple_mode }}
@@ -189,6 +195,8 @@ jobs:
         if: steps.version.outputs.is_release == 'false'
         uses: docker/build-push-action@v6
         with:
+          context: .
+          dockerfile: ./Dockerfile
           push: true
           build-args: |
             SIMPLE_MODE=${{ matrix.mode.simple_mode }}
