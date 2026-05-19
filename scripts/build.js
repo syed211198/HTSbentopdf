@@ -54,3 +54,17 @@ function processDirectory(dirPath) {
 console.log('Starting JavaScript build process...');
 processDirectory(sourceDir);
 console.log('Build complete. Files are in the /dist/js folder.');
+
+try {
+  const configSrc = path.join(__dirname, '../public/config.json');
+  const configDest = path.join(__dirname, '../dist/config.json');
+
+  if (fs.existsSync(configSrc)) {
+    fs.copyFileSync(configSrc, configDest);
+    console.log(' config.json copied to dist/');
+  } else {
+    console.warn(' config.json not found in public/');
+  }
+} catch (error) {
+  console.error('Failed to copy config.json:', error.message);
+}
