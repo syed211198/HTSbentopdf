@@ -105,7 +105,7 @@ jobs:
           build-args: |
             SIMPLE_MODE=${{ matrix.mode.simple_mode }}
           tags: |
-            ghcr.io/${{ github.repository_owner }}/bentopdf${{ matrix.mode.suffix }}:${{ steps.version.outputs.version }}-amd64
+            ghcr.io/${{ steps.version.outputs.owner_lower }}/bentopdf${{ matrix.mode.suffix }}:${{ steps.version.outputs.version }}-amd64
           platforms: linux/amd64
           cache-from: type=gha,scope=amd64-${{ matrix.mode.name }}
           cache-to: type=gha,mode=max,scope=amd64-${{ matrix.mode.name }}
@@ -118,7 +118,7 @@ jobs:
           build-args: |
             SIMPLE_MODE=${{ matrix.mode.simple_mode }}
           tags: |
-            ghcr.io/${{ github.repository_owner }}/bentopdf${{ matrix.mode.suffix }}:edge-amd64
+            ghcr.io/${{ steps.version.outputs.owner_lower }}/bentopdf${{ matrix.mode.suffix }}:edge-amd64
           platforms: linux/amd64
           cache-from: type=gha,scope=amd64-${{ matrix.mode.name }}
           cache-to: type=gha,mode=max,scope=amd64-${{ matrix.mode.name }}
@@ -165,6 +165,9 @@ jobs:
             echo "short_sha=${SHORT_SHA}" >> $GITHUB_OUTPUT
             echo "is_release=false" >> $GITHUB_OUTPUT
           fi
+          # Convert repository owner to lowercase for Docker image names
+          OWNER_LOWER=$(echo "${{ github.repository_owner }}" | tr '[:upper:]' '[:lower:]')
+          echo "owner_lower=${OWNER_LOWER}" >> $GITHUB_OUTPUT
 
       - name: Build and push arm64 ${{ matrix.mode.name }} (release)
         if: steps.version.outputs.is_release == 'true'
@@ -174,7 +177,7 @@ jobs:
           build-args: |
             SIMPLE_MODE=${{ matrix.mode.simple_mode }}
           tags: |
-            ghcr.io/${{ github.repository_owner }}/bentopdf${{ matrix.mode.suffix }}:${{ steps.version.outputs.version }}-arm64
+            ghcr.io/${{ steps.version.outputs.owner_lower }}/bentopdf${{ matrix.mode.suffix }}:${{ steps.version.outputs.version }}-arm64
           platforms: linux/arm64
           cache-from: type=gha,scope=arm64-${{ matrix.mode.name }}
           cache-to: type=gha,mode=max,scope=arm64-${{ matrix.mode.name }}
@@ -187,7 +190,7 @@ jobs:
           build-args: |
             SIMPLE_MODE=${{ matrix.mode.simple_mode }}
           tags: |
-            ghcr.io/${{ github.repository_owner }}/bentopdf${{ matrix.mode.suffix }}:edge-arm64
+            ghcr.io/${{ steps.version.outputs.owner_lower }}/bentopdf${{ matrix.mode.suffix }}:edge-arm64
           platforms: linux/arm64
           cache-from: type=gha,scope=arm64-${{ matrix.mode.name }}
           cache-to: type=gha,mode=max,scope=arm64-${{ matrix.mode.name }}
@@ -227,32 +230,35 @@ jobs:
             echo "short_sha=${SHORT_SHA}" >> $GITHUB_OUTPUT
             echo "is_release=false" >> $GITHUB_OUTPUT
           fi
+          # Convert repository owner to lowercase for Docker image names
+          OWNER_LOWER=$(echo "${{ github.repository_owner }}" | tr '[:upper:]' '[:lower:]')
+          echo "owner_lower=${OWNER_LOWER}" >> $GITHUB_OUTPUT
 
       - name: Create and push GHCR manifest (release)
         if: steps.version.outputs.is_release == 'true'
         run: |
-          docker buildx imagetools create -t ghcr.io/${{ github.repository_owner }}/bentopdf${{ matrix.mode.suffix }}:latest \
-            ghcr.io/${{ github.repository_owner }}/bentopdf${{ matrix.mode.suffix }}:${{ steps.version.outputs.version }}-amd64 \
-            ghcr.io/${{ github.repository_owner }}/bentopdf${{ matrix.mode.suffix }}:${{ steps.version.outputs.version }}-arm64
+          docker buildx imagetools create -t ghcr.io/${{ steps.version.outputs.owner_lower }}/bentopdf${{ matrix.mode.suffix }}:latest \
+            ghcr.io/${{ steps.version.outputs.owner_lower }}/bentopdf${{ matrix.mode.suffix }}:${{ steps.version.outputs.version }}-amd64 \
+            ghcr.io/${{ steps.version.outputs.owner_lower }}/bentopdf${{ matrix.mode.suffix }}:${{ steps.version.outputs.version }}-arm64
 
-          docker buildx imagetools create -t ghcr.io/${{ github.repository_owner }}/bentopdf${{ matrix.mode.suffix }}:${{ steps.version.outputs.version }} \
-            ghcr.io/${{ github.repository_owner }}/bentopdf${{ matrix.mode.suffix }}:${{ steps.version.outputs.version }}-amd64 \
-            ghcr.io/${{ github.repository_owner }}/bentopdf${{ matrix.mode.suffix }}:${{ steps.version.outputs.version }}-arm64
+          docker buildx imagetools create -t ghcr.io/${{ steps.version.outputs.owner_lower }}/bentopdf${{ matrix.mode.suffix }}:${{ steps.version.outputs.version }} \
+            ghcr.io/${{ steps.version.outputs.owner_lower }}/bentopdf${{ matrix.mode.suffix }}:${{ steps.version.outputs.version }}-amd64 \
+            ghcr.io/${{ steps.version.outputs.owner_lower }}/bentopdf${{ matrix.mode.suffix }}:${{ steps.version.outputs.version }}-arm64
 
-          docker buildx imagetools create -t ghcr.io/${{ github.repository_owner }}/bentopdf${{ matrix.mode.suffix }}:${{ steps.version.outputs.version_without_v }} \
-            ghcr.io/${{ github.repository_owner }}/bentopdf${{ matrix.mode.suffix }}:${{ steps.version.outputs.version }}-amd64 \
-            ghcr.io/${{ github.repository_owner }}/bentopdf${{ matrix.mode.suffix }}:${{ steps.version.outputs.version }}-arm64
+          docker buildx imagetools create -t ghcr.io/${{ steps.version.outputs.owner_lower }}/bentopdf${{ matrix.mode.suffix }}:${{ steps.version.outputs.version_without_v }} \
+            ghcr.io/${{ steps.version.outputs.owner_lower }}/bentopdf${{ matrix.mode.suffix }}:${{ steps.version.outputs.version }}-amd64 \
+            ghcr.io/${{ steps.version.outputs.owner_lower }}/bentopdf${{ matrix.mode.suffix }}:${{ steps.version.outputs.version }}-arm64
 
       - name: Create and push GHCR manifest (edge)
         if: steps.version.outputs.is_release == 'false'
         run: |
-          docker buildx imagetools create -t ghcr.io/${{ github.repository_owner }}/bentopdf${{ matrix.mode.suffix }}:edge \
-            ghcr.io/${{ github.repository_owner }}/bentopdf${{ matrix.mode.suffix }}:edge-amd64 \
-            ghcr.io/${{ github.repository_owner }}/bentopdf${{ matrix.mode.suffix }}:edge-arm64
+          docker buildx imagetools create -t ghcr.io/${{ steps.version.outputs.owner_lower }}/bentopdf${{ matrix.mode.suffix }}:edge \
+            ghcr.io/${{ steps.version.outputs.owner_lower }}/bentopdf${{ matrix.mode.suffix }}:edge-amd64 \
+            ghcr.io/${{ steps.version.outputs.owner_lower }}/bentopdf${{ matrix.mode.suffix }}:edge-arm64
 
-          docker buildx imagetools create -t ghcr.io/${{ github.repository_owner }}/bentopdf${{ matrix.mode.suffix }}:sha-${{ steps.version.outputs.short_sha }} \
-            ghcr.io/${{ github.repository_owner }}/bentopdf${{ matrix.mode.suffix }}:edge-amd64 \
-            ghcr.io/${{ github.repository_owner }}/bentopdf${{ matrix.mode.suffix }}:edge-arm64
+          docker buildx imagetools create -t ghcr.io/${{ steps.version.outputs.owner_lower }}/bentopdf${{ matrix.mode.suffix }}:sha-${{ steps.version.outputs.short_sha }} \
+            ghcr.io/${{ steps.version.outputs.owner_lower }}/bentopdf${{ matrix.mode.suffix }}:edge-amd64 \
+            ghcr.io/${{ steps.version.outputs.owner_lower }}/bentopdf${{ matrix.mode.suffix }}:edge-arm64
 
   # Copy images from GHCR to DockerHub
   push-to-dockerhub:
@@ -297,29 +303,32 @@ jobs:
             echo "short_sha=${SHORT_SHA}" >> $GITHUB_OUTPUT
             echo "is_release=false" >> $GITHUB_OUTPUT
           fi
+          # Convert repository owner to lowercase for Docker image names
+          OWNER_LOWER=$(echo "${{ github.repository_owner }}" | tr '[:upper:]' '[:lower:]')
+          echo "owner_lower=${OWNER_LOWER}" >> $GITHUB_OUTPUT
 
       - name: Copy images to DockerHub (release)
         if: steps.version.outputs.is_release == 'true'
         run: |
           docker buildx imagetools create -t bentopdfteam/bentopdf${{ matrix.mode.suffix }}:latest \
-            ghcr.io/${{ github.repository_owner }}/bentopdf${{ matrix.mode.suffix }}:${{ steps.version.outputs.version }}-amd64 \
-            ghcr.io/${{ github.repository_owner }}/bentopdf${{ matrix.mode.suffix }}:${{ steps.version.outputs.version }}-arm64
+            ghcr.io/${{ steps.version.outputs.owner_lower }}/bentopdf${{ matrix.mode.suffix }}:${{ steps.version.outputs.version }}-amd64 \
+            ghcr.io/${{ steps.version.outputs.owner_lower }}/bentopdf${{ matrix.mode.suffix }}:${{ steps.version.outputs.version }}-arm64
 
           docker buildx imagetools create -t bentopdfteam/bentopdf${{ matrix.mode.suffix }}:${{ steps.version.outputs.version }} \
-            ghcr.io/${{ github.repository_owner }}/bentopdf${{ matrix.mode.suffix }}:${{ steps.version.outputs.version }}-amd64 \
-            ghcr.io/${{ github.repository_owner }}/bentopdf${{ matrix.mode.suffix }}:${{ steps.version.outputs.version }}-arm64
+            ghcr.io/${{ steps.version.outputs.owner_lower }}/bentopdf${{ matrix.mode.suffix }}:${{ steps.version.outputs.version }}-amd64 \
+            ghcr.io/${{ steps.version.outputs.owner_lower }}/bentopdf${{ matrix.mode.suffix }}:${{ steps.version.outputs.version }}-arm64
 
           docker buildx imagetools create -t bentopdfteam/bentopdf${{ matrix.mode.suffix }}:${{ steps.version.outputs.version_without_v }} \
-            ghcr.io/${{ github.repository_owner }}/bentopdf${{ matrix.mode.suffix }}:${{ steps.version.outputs.version }}-amd64 \
-            ghcr.io/${{ github.repository_owner }}/bentopdf${{ matrix.mode.suffix }}:${{ steps.version.outputs.version }}-arm64
+            ghcr.io/${{ steps.version.outputs.owner_lower }}/bentopdf${{ matrix.mode.suffix }}:${{ steps.version.outputs.version }}-amd64 \
+            ghcr.io/${{ steps.version.outputs.owner_lower }}/bentopdf${{ matrix.mode.suffix }}:${{ steps.version.outputs.version }}-arm64
 
       - name: Copy images to DockerHub (edge)
         if: steps.version.outputs.is_release == 'false'
         run: |
           docker buildx imagetools create -t bentopdfteam/bentopdf${{ matrix.mode.suffix }}:edge \
-            ghcr.io/${{ github.repository_owner }}/bentopdf${{ matrix.mode.suffix }}:edge-amd64 \
-            ghcr.io/${{ github.repository_owner }}/bentopdf${{ matrix.mode.suffix }}:edge-arm64
+            ghcr.io/${{ steps.version.outputs.owner_lower }}/bentopdf${{ matrix.mode.suffix }}:edge-amd64 \
+            ghcr.io/${{ steps.version.outputs.owner_lower }}/bentopdf${{ matrix.mode.suffix }}:edge-arm64
 
           docker buildx imagetools create -t bentopdfteam/bentopdf${{ matrix.mode.suffix }}:sha-${{ steps.version.outputs.short_sha }} \
-            ghcr.io/${{ github.repository_owner }}/bentopdf${{ matrix.mode.suffix }}:edge-amd64 \
-            ghcr.io/${{ github.repository_owner }}/bentopdf${{ matrix.mode.suffix }}:edge-arm64
+            ghcr.io/${{ steps.version.outputs.owner_lower }}/bentopdf${{ matrix.mode.suffix }}:edge-amd64 \
+            ghcr.io/${{ steps.version.outputs.owner_lower }}/bentopdf${{ matrix.mode.suffix }}:edge-arm64
