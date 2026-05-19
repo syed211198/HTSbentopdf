@@ -3,7 +3,7 @@
 ARG BASE_URL=
 
 # Build stage
-FROM public.ecr.aws/docker/library/node:20.19-alpine AS builder
+FROM public.ecr.aws/docker/library/node:26.1-alpine AS builder
 WORKDIR /app
 COPY package*.json ./
 COPY vendor ./vendor
