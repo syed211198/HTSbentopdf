@@ -1228,3 +1228,29 @@ footer p.text-xs {
     filter: drop-shadow(0 0 6px rgba(134, 239, 172, 0.35));
   }
 }
+
+.cta-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 22px;
+  height: 22px;
+
+  background-color: white;
+  color: #10b981;
+
+  border-radius: 9999px;
+
+  transition: transform 0.2s ease;
+}
+/* Fix CTA arrow visibility */
+.cta-icon svg {
+  stroke: #047857; /* emerald-700 */
+}
+
+nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
