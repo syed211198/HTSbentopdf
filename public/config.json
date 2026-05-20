@@ -3,5 +3,7 @@
   "apiUrl": "",
   "featureFlags": {},
   "corsProxyUrl": "",
-  "corsProxySecret": ""
+  "corsProxySecret": "",
+  "disabledTools": [],
+  "editorDisabledCategories": []
 }

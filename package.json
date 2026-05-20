@@ -53,6 +53,8 @@
     "jsdom": "^28.1.0",
     "lint-staged": "^16.3.1",
     "prettier": "^3.8.1",
+    "stylelint": "^17.11.1",
+    "stylelint-config-recommended": "^18.0.0",
     "typescript": "~5.9.3",
     "typescript-eslint": "^8.56.1",
     "vite": "^7.3.3",
